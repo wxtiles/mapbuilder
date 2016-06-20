@@ -22,10 +22,11 @@
   "author": "Troy Mare",
   "license": "MIT",
   "dependencies": {
-    "mapbox-gl": "0.20.0",
-    "react": "^15.1.0",
-    "react-dom": "^15.1.0",
-    "simplifyify": "2.0.1",
+    "event-emitter": "^0.3.4",
+    "leaflet": "^0.7.7",
+    "react": "15.1.0",
+    "react-dom": "15.1.0",
+    "react-select": "1.0.0-beta13",
     "superagent": "2.0.0"
   },
   "devDependencies": {
