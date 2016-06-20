@@ -1,23 +1,21 @@
-var request = require('superagent')
+import React from 'react'
+import ReactDOM from 'react-dom'
+import request from 'superagent'
+
 request
   .get('http://tapa01.unisys.metocean.co.nz/wxtiles/layer/')
   .end(function(err, res) {
     console.log(JSON.parse(res.text))
   })
-console.log('test')
-var mapboxgl = require('mapbox-gl')
-mapboxgl.accessToken = 'pk.eyJ1IjoibWV0b2NlYW4iLCJhIjoia1hXZjVfSSJ9.rQPq6XLE0VhVPtcD9Cfw6A'
 
-var map = new mapboxgl.Map({
-  container: 'map',
-  style: 'mapbox://styles/mapbox/outdoors-v9',
-  center: [-122.420679, 37.772537],
-  zoom: 13
-})
+var Hello = React.createClass({
+  displayName: 'Hello',
+  render: function() {
+    return React.createElement("div", null, "Hello ", this.props.name);
+  }
+});
 
-var thingy = (abc) => {
-  console.log('zzzzzz zzzinside thiasdngy')
-}
-thingy()
-
-console.log('is watchify working?')
+ReactDOM.render(
+    React.createElement(Hello, {name: "World"}),
+    document.getElementById('map')
+);
