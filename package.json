@@ -1,0 +1,20 @@
+{
+  "name": "cloudburst-example",
+  "version": "0.0.1",
+  "description": "cloudburst example",
+  "main": "index.js",
+  "scripts": {
+    "watch": "watchify index.js -t babelify -o dist.js -d",
+    "js": "browserify index.js -t babelify -o dist.js --debug"
+  },
+  "author": "Troy Mare",
+  "license": "MIT",
+  "dependencies": {
+    "mapbox-gl": "0.20.0",
+    "simplifyify": "2.0.1",
+    "superagent": "2.0.0"
+  },
+  "devDependencies": {
+    "babelify": "7.3.0"
+  }
+}
