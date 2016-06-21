@@ -24,6 +24,7 @@
   "dependencies": {
     "event-emitter": "^0.3.4",
     "leaflet": "^0.7.7",
+    "lodash": "^4.13.1",
     "react": "15.1.0",
     "react-dom": "15.1.0",
     "react-select": "1.0.0-beta13",

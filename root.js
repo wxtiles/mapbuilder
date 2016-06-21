@@ -1,8 +1,9 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import EventEmitter from 'event-emitter'
-import wxtiles from './wxtiles'
+import wxTiles from './wxtiles'
 import select from 'react-select'
+import _ from 'lodash'
 
 class root extends React.Component {
   constructor() {
@@ -13,23 +14,39 @@ class root extends React.Component {
   }
 
   componentWillMount() {
+    this.eventEmitter.on('loadLayersList', () => {
+      this.setState({loadedLayers: null})
+      var onSuccess = (layers) => {
+        layers = _.map(layers, (layer) => {
+          layer.value = layer.id
+          layer.label = layer.meta.name
+          return layer
+        })
+        this.setState({loadedLayers: layers})
+      }
+      var onError = (err) => console.log(err)
+      wxTiles.getAllLayers(onSuccess, onError)
+    })
+
     this.eventEmitter.on('selectedLayer', (layerId) => {
-      console.log(layerId)
+      this.setState({selectedLayer: layerId})
     })
 
-    this.eventEmitter.emit('selectedLayer', {testProps: 2})
-
-    wxtiles.getAllLayers((err, res) => {
-      console.log(root)
-    })
+    this.eventEmitter.emit('loadLayersList')
   }
 
   render() {
     console.log(this.state)
+
     return React.createElement(`div`, null,
       React.createElement(`div`, null,
         React.createElement(`div`, null, `Pick a layer`),
-        React.createElement(select)
+        (this.state.loadedLayers == null) && React.createElement('div', null, 'Loading...'),
+        this.state.loadedLayers && React.createElement(select, {
+          options: this.state.loadedLayers,
+          value: this.state.selectedLayer,
+          onChange: (thing) => this.eventEmitter.emit('selectedLayer', thing)
+        })
       )
     )
   }

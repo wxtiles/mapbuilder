@@ -2,12 +2,13 @@ import request from 'superagent'
 
 const server = 'http://tapa01.unisys.metocean.co.nz'
 
-var getAllLayers = (callback) => {
+var getAllLayers = (onSuccess, onError) => {
   console.log('get all layers')
   request
     .get(`${server}/wxtiles/layer/`)
     .end((err, res) => {
-      callback(err, JSON.parse(res.text))
+      if (err) return onError(err)
+      onSuccess(JSON.parse(res.text))
     })
 }
 
