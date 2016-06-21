@@ -45,7 +45,7 @@ class root extends React.Component {
           times = _.map(times, (time) => {
             return {value: time, label: time}
           })
-          this.setState({times, selectedTime: times[0]})
+          this.setState({times}, () => this.eventEmitter.emit('selectedTime', times[0]))
         },
         onError: (error) => console.log(error),
       }
@@ -54,7 +54,18 @@ class root extends React.Component {
     })
 
     this.eventEmitter.on('selectedTime', (time) => {
-      this.setState({selectedTime: time})
+      this.setState({selectedTime: time}, () =>{
+        // var getTileUrl = ({layerId, instanceId, time, level, onSuccess, onError}) => {
+        var getTileLayerUrlOptions = {
+          layerId: this.state.selectedLayer.id,
+          instanceId: this.state.selectedInstance.id,
+          time: this.state.selectedTime.value,
+          level: 0,
+          onSuccess: (url) => console.log(url),
+          onError: (err) => console.log(err),
+        }
+        wxTiles.getTileLayerUrl(getTileLayerUrlOptions)
+      })
     })
 
     this.eventEmitter.emit('loadLayersList')
@@ -81,7 +92,8 @@ class root extends React.Component {
           options: this.state.times,
           value: this.state.selectedTime,
           onChange: (thing) => this.eventEmitter.emit('selectedTime', thing)
-        })
+        }),
+        this.state.tileUrl && React.createElement('div', null, this.state.tileUrl)
       )
     )
   }
