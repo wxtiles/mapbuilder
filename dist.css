@@ -1,6 +1,16 @@
 @import "node_modules/react-select/dist/react-select.css";
 .createTileLayer {
-  background-color: black;
+  height: 60px;
+}
+.createTileLayer .closeButtonContainer {
+  padding-left: 30px;
+  height: 100%;
+}
+.createTileLayer .closeButton {
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 100%;
 }
 #map {
   height: 70%;

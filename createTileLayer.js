@@ -71,7 +71,9 @@ class createTileLayer extends React.Component {
 
   render() {
     return React.createElement(`div`, {className: 'row createTileLayer'},
-      React.createElement('div', {className: 'btn default col-sm-1'}, 'X'),
+      React.createElement('div', {className: 'col-sm-1 closeButtonContainer'},
+        React.createElement('div', {className: 'btn btn-default closeButton'}, 'X')
+      ),
       React.createElement(`div`, {className: 'col-sm-3'},
         React.createElement(`div`, null, `Pick a layer`),
         (this.state.loadedLayers == null) && React.createElement('div', null, 'Loading...'),
