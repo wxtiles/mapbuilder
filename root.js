@@ -4,7 +4,6 @@ import EventEmitter from 'event-emitter'
 import wxTiles from './wxtiles'
 import select from 'react-select'
 import _ from 'lodash'
-import moment from 'moment'
 
 class root extends React.Component {
   constructor() {
@@ -32,7 +31,7 @@ class root extends React.Component {
     this.eventEmitter.on('selectedLayer', (layer) => {
       var instances = _.map(layer.instances, (instance) => {
         instance.value = instance.id
-        instance.label = moment(instance.start).format('YYYY MM DD - hh mm ')
+        instance.label = instance.id
         return instance
       })
       this.setState({selectedLayer: layer, selectedInstance: instances[0], instances: instances})
