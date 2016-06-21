@@ -2,8 +2,8 @@ import request from 'superagent'
 
 const server = 'http://tapa01.unisys.metocean.co.nz'
 
+// /<ownerID>/layer/
 var getAllLayers = (onSuccess, onError) => {
-  console.log('get all layers')
   request
     .get(`${server}/wxtiles/layer/`)
     .end((err, res) => {
@@ -12,13 +12,14 @@ var getAllLayers = (onSuccess, onError) => {
     })
 }
 
-var getLayer = (id, callback) => {
-  console.log(`get layer ${id}`)
+// /<ownerID>/layer/<layerID>/<instanceID>/times/
+var getTimesForInstance = (options) => {
   request
-    .get(`${server}/wxtiles/layer/${id}/`)
+    .get(`${server}/wxtiles/layer/${options.layerId}/${options.instanceId}/times`)
     .end((err, res) => {
-      callback(err, JSON.parse(res.text))
+      if (err) return options.onError(err)
+      options.onSuccess(JSON.parse(res.text))
     })
 }
 
-export default {getAllLayers, getLayer}
+export default {getAllLayers, getTimesForInstance}
