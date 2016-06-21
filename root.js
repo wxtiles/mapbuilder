@@ -34,18 +34,27 @@ class root extends React.Component {
         instance.label = instance.id
         return instance
       })
-      this.setState({selectedLayer: layer, selectedInstance: instances[0], instances: instances})
+      this.setState({selectedLayer: layer, instances: instances}, () => this.eventEmitter.emit('selectedInstance', instances[0]))
     })
 
     this.eventEmitter.on('selectedInstance', (instance) => {
       var options = {
         layerId: this.state.selectedLayer.id,
         instanceId: instance.id,
-        onSuccess: (times) => console.log(times),
+        onSuccess: (times) => {
+          times = _.map(times, (time) => {
+            return {value: time, label: time}
+          })
+          this.setState({times, selectedTime: times[0]})
+        },
         onError: (error) => console.log(error),
       }
       wxTiles.getTimesForInstance(options)
       this.setState({selectedInstance: instance})
+    })
+
+    this.eventEmitter.on('selectedTime', (time) => {
+      this.setState({selectedTime: time})
     })
 
     this.eventEmitter.emit('loadLayersList')
@@ -66,6 +75,12 @@ class root extends React.Component {
           options: this.state.instances,
           value: this.state.selectedInstance,
           onChange: (thing) => this.eventEmitter.emit('selectedInstance', thing)
+        }),
+        this.state.times && React.createElement('div', null, 'Pick a time'),
+        this.state.times && React.createElement(select, {
+          options: this.state.times,
+          value: this.state.selectedTime,
+          onChange: (thing) => this.eventEmitter.emit('selectedTime', thing)
         })
       )
     )

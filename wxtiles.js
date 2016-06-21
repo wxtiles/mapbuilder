@@ -15,7 +15,17 @@ var getAllLayers = (onSuccess, onError) => {
 // /<ownerID>/layer/<layerID>/<instanceID>/times/
 var getTimesForInstance = (options) => {
   request
-    .get(`${server}/wxtiles/layer/${options.layerId}/${options.instanceId}/times`)
+    .get(`${server}/wxtiles/layer/${options.layerId}/${options.instanceId}/times/`)
+    .end((err, res) => {
+      if (err) return options.onError(err)
+      options.onSuccess(JSON.parse(res.text))
+    })
+}
+
+// /<ownerID>/layer/<layerID>/<instanceID>/levels/
+var getLevelsForInstance = (options) => {
+  request
+    .get(`${server}/wxtiles/layer/${options.layerId}/${options.instanceId}/levels/`)
     .end((err, res) => {
       if (err) return options.onError(err)
       options.onSuccess(JSON.parse(res.text))
