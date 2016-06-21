@@ -10,7 +10,7 @@ var baseMap = leaflet.tileLayer('https://c.tiles.mapbox.com/v4/aj.Sketchy2/{z}/{
 
 import React from 'react'
 import ReactDOM from 'react-dom'
-import root from './root'
+import createTileLayer from './createTileLayer'
 var reactMount = document.querySelector('#interface')
 
 var putLayer = (url) => {
@@ -19,4 +19,4 @@ var putLayer = (url) => {
   }).addTo(map)
 }
 
-ReactDOM.render(React.createElement(root, {putLayer}), reactMount)
+ReactDOM.render(React.createElement(createTileLayer, {putLayer}), reactMount)

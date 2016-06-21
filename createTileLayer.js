@@ -4,7 +4,7 @@ import wxTiles from './wxtiles'
 import select from 'react-select'
 import _ from 'lodash'
 
-class root extends React.Component {
+class createTileLayer extends React.Component {
   constructor() {
     super()
     this.state = {}
@@ -70,8 +70,9 @@ class root extends React.Component {
   }
 
   render() {
-    return React.createElement(`div`, {className: 'row'},
-      React.createElement('div', {name: 'col-sm-4'},
+    return React.createElement(`div`, {className: 'row createTileLayer'},
+      React.createElement('div', {className: 'btn default col-sm-1'}, 'X'),
+      React.createElement(`div`, {className: 'col-sm-3'},
         React.createElement(`div`, null, `Pick a layer`),
         (this.state.loadedLayers == null) && React.createElement('div', null, 'Loading...'),
         this.state.loadedLayers && React.createElement(select, {
@@ -80,21 +81,26 @@ class root extends React.Component {
           onChange: (thing) => this.selectLayer(thing)
         })
       ),
-      this.state.selectedInstance && React.createElement('div', null, 'Pick an instance'),
-      this.state.selectedInstance && React.createElement(select, {
-        options: this.state.instances,
-        value: this.state.selectedInstance,
-        onChange: (thing) => this.selectInstance(thing)
-      }),
-      this.state.times && React.createElement('div', null, 'Pick a time'),
-      this.state.times && React.createElement(select, {
-        options: this.state.times,
-        value: this.state.selectedTime,
-        onChange: (thing) => this.selectTime(thing)
-      }),
-      this.state.tileUrl && React.createElement('div', null, this.state.tileUrl)
+      React.createElement('div', {className: 'col-sm-1'}, '->'),
+      React.createElement(`div`, {className: 'col-sm-3'},
+        this.state.selectedInstance && React.createElement('div', null, 'Pick an instance'),
+        this.state.selectedInstance && React.createElement(select, {
+          options: this.state.instances,
+          value: this.state.selectedInstance,
+          onChange: (thing) => this.selectInstance(thing)
+        })
+      ),
+      React.createElement('div', {className: 'col-sm-1'}, '->'),
+      React.createElement(`div`, {className: 'col-sm-3'},
+        this.state.times && React.createElement('div', null, 'Pick a time'),
+        this.state.times && React.createElement(select, {
+          options: this.state.times,
+          value: this.state.selectedTime,
+          onChange: (thing) => this.selectTime(thing)
+        })
+      )
     )
   }
 }
 
-export default root
+export default createTileLayer

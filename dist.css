@@ -1,0 +1,7 @@
+@import "node_modules/react-select/dist/react-select.css";
+.createTileLayer {
+  background-color: black;
+}
+#map {
+  height: 70%;
+}
