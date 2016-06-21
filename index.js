@@ -12,4 +12,11 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import root from './root'
 var reactMount = document.querySelector('#interface')
-ReactDOM.render(React.createElement(root), reactMount)
+
+var putLayer = (url) => {
+  leaflet.tileLayer(url, {
+      maxZoom: 18
+  }).addTo(map)
+}
+
+ReactDOM.render(React.createElement(root, {putLayer}), reactMount)
