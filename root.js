@@ -31,7 +31,7 @@ class root extends React.Component {
     return React.createElement('div', {className: 'root'},
       React.createElement('div', {className: 'row addLayerRow'},
         React.createElement('div', {className: 'addLayer col-sm-1'},
-          React.createElement('div', {className: 'btn btn-default', onClick: this.addLayer}, '+ Layer')
+          React.createElement('div', {className: 'btn btn-default', onClick: this.addLayer}, '+Layer')
         )
       ),
       _.map(this.state.layers, (layerKey) =>
