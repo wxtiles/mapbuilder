@@ -10,16 +10,18 @@ class mapSelector extends React.Component {
   }
 
   render() {
-    return React.createElement(`div`, {className: 'mapSelector'},
-      React.createElement('div', null, 'Pick an example'),
-      React.createElement(select, {
-        options: this.props.options,
-        value: this.state.selectedMap,
-        onChange: (selectedMap) => {
-          this.setState({selectedMap})
-          this.props.showMap(selectedMap)
-        }
-      })
+    return React.createElement('div', { className: 'row mapSelector' },
+      React.createElement(`div`, { className: 'col-sm-3 select-container' },
+        React.createElement('div', null, 'Choose an example map integration:'),
+        React.createElement(select, {
+          options: this.props.options,
+          value: this.state.selectedMap,
+          onChange: (selectedMap) => {
+            this.setState({ selectedMap })
+            this.props.showMap(selectedMap)
+          }
+        })
+      )
     )
   }
 }
