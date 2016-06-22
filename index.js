@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom'
 import root from './root'
 import leaflet from 'leaflet'
 import createTileLayer from './createTileLayer'
-import mapSelector from './mapSelector'
+import mapSelector from './mapSelector/mapSelector'
 
 var leafletMap, googleMap;
 
@@ -51,7 +51,7 @@ var examples = [
 ]
 
 var defaultMap = examples[0]
-ReactDOM.render(React.createElement(mapSelector, { options: examples, showMap: showMap, selectedMap: defaultMap }), mapSelectorMount)
+ReactDOM.render(React.createElement(mapSelector, { mapOptions: examples, showMap: showMap, selectedMap: defaultMap }), mapSelectorMount)
 
 //Prepare the maps.
 mountLeafletMap()
