@@ -15,7 +15,8 @@ var reactMount = document.querySelector('#interface')
 
 var putLayer = (url) => {
   leaflet.tileLayer(url, {
-      maxZoom: 18
+      maxZoom: 18,
+      tms: true
   }).addTo(map)
 }
 
