@@ -18,7 +18,8 @@
   "scripts": {
     "watch": "watchify index.js -o dist.js -dv",
     "js": "browserify index.js -o dist.js --debug",
-    "css": "lessc --clean-css style.less dist.css"
+    "css": "lessc --clean-css style.less dist.css",
+    "build": "npm run js && npm run css && echo Build Complete"
   },
   "author": "Troy Mare",
   "license": "MIT",
@@ -32,6 +33,7 @@
   },
   "devDependencies": {
     "babel-preset-es2015": "^6.9.0",
-    "babelify": "7.3.0"
+    "babelify": "7.3.0",
+    "less-plugin-clean-css": "^1.5.1"
   }
 }
