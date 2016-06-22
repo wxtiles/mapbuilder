@@ -58,7 +58,10 @@ class createTileLayer extends React.Component {
         instanceId: this.state.selectedInstance.id,
         time: this.state.selectedTime.value,
         level: 0,
-        onSuccess: (url) => this.props.putLayer(url),
+        onSuccess: (url) => {
+          this.setState({url})
+          this.props.putLayer(url)
+        },
         onError: (err) => console.log(err),
       }
       wxTiles.getTileLayerUrl(getTileLayerUrlOptions)
@@ -114,7 +117,8 @@ class createTileLayer extends React.Component {
             onChange: (thing) => this.selectTime(thing)
           })
         )
-      )
+      ),
+      React.createElement('div', {className: 'col-sm-12 urlDisplay'}, this.state.url)
     )
   }
 }
