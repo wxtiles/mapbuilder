@@ -23,6 +23,7 @@
   "author": "Troy Mare",
   "license": "MIT",
   "dependencies": {
+    "bootstrap": "^3.3.6",
     "leaflet": "^0.7.7",
     "lodash": "^4.13.1",
     "react": "15.1.0",
