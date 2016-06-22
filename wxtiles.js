@@ -35,7 +35,7 @@ var getLevelsForInstance = (options) => {
 // /<ownerID>/tile/<layerID>/<instanceID>/<time>/<level>/<z>/<x>/<y>.<extension>
 var getTileLayerUrl = ({layerId, instanceId, time, level, onSuccess, onError}) => {
   level = level || 0
-  onSuccess(`${server}/wxtiles/tile/${layerId}/${instanceId}/${time}/${level}/<z>/<x>/<y>.png`)
+  onSuccess(`${server}/wxtiles/tile/${layerId}/${instanceId}/${time}/${level}/{z}/{x}/{y}.png`)
 }
 
 export default {getAllLayers, getTimesForInstance, getTileLayerUrl}

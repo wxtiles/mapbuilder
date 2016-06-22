@@ -17,7 +17,8 @@
   },
   "scripts": {
     "watch": "watchify index.js -o dist.js -dv",
-    "js": "browserify index.js -o dist.js --debug"
+    "js": "browserify index.js -o dist.js --debug",
+    "css": "lessc style.less dist.css"
   },
   "author": "Troy Mare",
   "license": "MIT",

@@ -2,6 +2,8 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import root from './root'
 import leaflet from 'leaflet'
+import createTileLayer from './createTileLayer'
+import mapSelector from './mapSelector'
 
 var clearMapContainer = () => {
   //Kill the map div and replace it with a black one so we can re-mount a map into a fresh container.
@@ -32,9 +34,7 @@ var mountGoogleMap = () => {
 }
 
 var reactMount = document.querySelector('#interface')
-ReactDOM.render(React.createElement(root), reactMount)
 
-import mapSelector from './mapSelector'
 var mapSelectorMount = document.querySelector('#mapSelector')
 var examples = [
   { label: 'Leaflet', value: 'leaflet', mountMap: mountLeafletMap },
@@ -43,3 +43,12 @@ var examples = [
 ]
 
 ReactDOM.render(React.createElement(mapSelector, { options: examples }), mapSelectorMount)
+
+var putLayer = (url) => {
+  leaflet.tileLayer(url, {
+      maxZoom: 18,
+      tms: true
+  }).addTo(map)
+}
+
+ReactDOM.render(React.createElement(createTileLayer, {putLayer}), reactMount)

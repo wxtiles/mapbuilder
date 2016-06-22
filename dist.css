@@ -1,0 +1,27 @@
+@import "node_modules/react-select/dist/react-select.css";
+.createTileLayer {
+  height: 60px;
+  padding-top: 20px;
+  margin-left: 0px;
+  margin-right: 0px;
+}
+.createTileLayer .closeButtonContainer {
+  padding-left: 30px;
+  height: 100%;
+}
+.createTileLayer .closeButton {
+  width: 100%;
+}
+.createTileLayer .select-list {
+  width: 100%;
+}
+.createTileLayer .select-container {
+  height: 100%;
+}
+.createTileLayer .arrow-container {
+  padding-top: 28px;
+  text-align: center;
+}
+#map {
+  height: 70%;
+}
