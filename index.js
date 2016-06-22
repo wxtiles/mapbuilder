@@ -34,7 +34,11 @@ var showMap = (selectedMap) => {
 
   document.getElementById(`${selectedMap.value}Map`).style.display = 'block';
 
+  //Poke the maps so they render correctly after being hidden.
   leafletMap.invalidateSize()
+  var center = googleMap.getCenter();
+  google.maps.event.trigger(googleMap, 'resize');
+  googleMap.setCenter(center);
 }
 
 var reactMount = document.querySelector('#interface')
