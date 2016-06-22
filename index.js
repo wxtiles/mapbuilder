@@ -33,6 +33,8 @@ var showMap = (selectedMap) => {
   document.getElementById('mapBoxGLMap').style.display = 'none';
 
   document.getElementById(`${selectedMap.value}Map`).style.display = 'block';
+
+  leafletMap.invalidateSize()
 }
 
 var reactMount = document.querySelector('#interface')
@@ -44,11 +46,14 @@ var examples = [
   { label: 'Map Box GL', value: 'mapBoxGL' },
 ]
 
-ReactDOM.render(React.createElement(mapSelector, { options: examples, showMap: showMap }), mapSelectorMount)
+var defaultMap = examples[0]
+ReactDOM.render(React.createElement(mapSelector, { options: examples, showMap: showMap, selectedMap: defaultMap }), mapSelectorMount)
 
 //Prepare the maps.
 mountLeafletMap()
 mountGoogleMap()
+showMap(defaultMap)
+
 
 var putLayer = (url) => {
   console.log(url)

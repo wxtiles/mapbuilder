@@ -3,10 +3,10 @@ import ReactDOM from 'react-dom'
 import select from 'react-select'
 
 class mapSelector extends React.Component {
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
     this.state = {}
-    this.state.selectedMap = null;
+    this.state.selectedMap = props.selectedMap;
   }
 
   render() {
@@ -19,7 +19,6 @@ class mapSelector extends React.Component {
           this.setState({selectedMap})
           this.props.showMap(selectedMap)
         }
-
       })
     )
   }
