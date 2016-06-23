@@ -11,7 +11,7 @@ class mapButton extends React.Component {
   }
 
   handleClick() {
-    this.props.showMap(this.props.mapOption);
+    this.props.selectMap(this.props.mapOption);
   }
 
   render() {

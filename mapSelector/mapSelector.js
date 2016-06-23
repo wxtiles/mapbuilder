@@ -8,6 +8,12 @@ class mapSelector extends React.Component {
   constructor(props) {
     super(props)
     this.state = {}
+    this.state.selectedMap = this.props.selectedMap
+    this.changeMap = this.changeMap.bind(this)
+  }
+
+  changeMap(selectedMap) {
+    this.setState({selectedMap}, this.props.showMap(selectedMap))
   }
 
   render() {
@@ -17,9 +23,9 @@ class mapSelector extends React.Component {
       ),
       React.createElement('div', { className: 'row' },
         _.map(this.props.mapOptions, (mapOption) => {
-          var buttonSelected = this.props.selectedMap === mapOption; 
-          return React.createElement('div', { className: 'col-sm-4' },
-            React.createElement(mapButton, { key: mapOption.value, mapOption: mapOption, showMap: this.props.showMap, selected: buttonSelected })
+          var buttonSelected = this.state.selectedMap === mapOption; 
+          return React.createElement('div', { key: mapOption.value, className: 'col-sm-4' },
+            React.createElement(mapButton, { mapOption: mapOption, selectMap: this.changeMap, selected: buttonSelected })
           )
         }
         )

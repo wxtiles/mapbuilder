@@ -22,7 +22,6 @@ ReactDOM.render(React.createElement(mapSelector, { mapOptions: mapExamples, show
 
 maps.showMap(defaultMap)
 
-
 var putLayer = (url) => {
   console.log(url)
   leaflet.tileLayer(url, {
