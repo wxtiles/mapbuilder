@@ -26,21 +26,27 @@ ReactDOM.render(React.createElement(mapSelector, { mapOptions: mapExamples, show
 maps.showMap(defaultMap)
 
 var putLayer = (layerKey, url) => {
-  activeLayers[layerKey] = url;
+  activeLayers[layerKey] = { url: url };
 
   //add this layer to the google map.
-  var mapLayer = wxTiles.google.getImageMapType(activeLayers[layerKey]);
-  googleMap.overlayMapTypes.setAt(layerKey, mapLayer);
+  var googleMapLayer = wxTiles.google.getImageMapType(activeLayers[layerKey]);
+  googleMap.overlayMapTypes.setAt(layerKey, googleMapLayer);
+  activeLayers[layerKey].googleMapLayer = googleMapLayer;
 
-  leaflet.tileLayer(url, {
+  var leafletMapLayer = leaflet.tileLayer(url, {
     maxZoom: 18,
     tms: true
-  }).addTo(leafletMap)
+  });
+  leafletMapLayer.addTo(leafletMap);
+  activeLayers[layerKey].leafletMapLayer = leafletMapLayer;
 }
 
 var removeLayer = ({layerKey}) => {
+  //This will error if the user clicks the removal button before the data has loaded. So we check if the map layers have been added before trying to remove them.
+  if(googleMap.overlayMapTypes.getAt(layerKey) !== undefined) googleMap.overlayMapTypes.removeAt(layerKey);
+  if(leafletMap.hasLayer(activeLayers[layerKey])) leafletMap.removeLayer(activeLayers[layerKey]);
+
   activeLayers[layerKey] = undefined;
-  googleMap.overlayMapTypes.removeAt(layerKey);
 }
 
 var reactMount = document.querySelector('#interface')
