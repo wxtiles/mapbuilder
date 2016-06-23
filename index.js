@@ -5,6 +5,7 @@ import createTileLayer from './createTileLayer'
 import mapSelector from './mapSelector/mapSelector'
 import maps from './maps'
 import leaflet from 'leaflet'
+import wxTiles from './wxtiles'
 
 //Prepare the maps.
 var mapExamples = [
@@ -24,21 +25,12 @@ ReactDOM.render(React.createElement(mapSelector, { mapOptions: mapExamples, show
 
 maps.showMap(defaultMap)
 
-var mapTilerGenerator = (layerKey) => {
-  return new google.maps.ImageMapType({
-    getTileUrl: (coord, zoom) => {
-      return activeLayers[layerKey].replace('{z}', zoom).replace('{x}', coord.x).replace('{y}', (Math.pow(2, zoom) - coord.y - 1));
-    },
-    tileSize: new google.maps.Size(256, 256),
-    isPng: true
-  });
-}
-
 var putLayer = (layerKey, url) => {
   activeLayers[layerKey] = url;
 
   //add this layer to the google map.
-  googleMap.overlayMapTypes.setAt(layerKey, mapTilerGenerator(layerKey));
+  var mapLayer = wxTiles.google.getImageMapType(activeLayers[layerKey]);
+  googleMap.overlayMapTypes.setAt(layerKey, mapLayer);
 
   leaflet.tileLayer(url, {
     maxZoom: 18,
