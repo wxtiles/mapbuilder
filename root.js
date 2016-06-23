@@ -23,8 +23,8 @@ class root extends React.Component {
     this.setState({layers: allLayers})
   }
 
-  createLayer({url}) {
-    this.props.putLayer(url)
+  createLayer({layerKey, url}) {
+    this.props.putLayer(layerKey, url)
   }
 
   render() {
@@ -35,7 +35,7 @@ class root extends React.Component {
         )
       ),
       _.map(this.state.layers, (layerKey) =>
-        React.createElement(createTileLayer, {key: layerKey, putLayer: this.createLayer})
+        React.createElement(createTileLayer, {key: layerKey, layerKey: layerKey, putLayer: this.createLayer})
       )
     )
   }

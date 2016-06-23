@@ -15,7 +15,7 @@ var mapExamples = [
 
 var leafletMap = maps.mountLeafletMap();
 var googleMap = maps.mountGoogleMap();
-var currentLayerUrl = '';
+var activeLayers = [];
 
 var defaultMap = mapExamples[0]
 
@@ -24,25 +24,29 @@ ReactDOM.render(React.createElement(mapSelector, { mapOptions: mapExamples, show
 
 maps.showMap(defaultMap)
 
-var mapTiler = new google.maps.ImageMapType({ 
-  getTileUrl: (coord, zoom) => {
-    return currentLayerUrl.replace('{z}', zoom).replace('{x}', coord.x).replace('{y}', (Math.pow(2,zoom)-coord.y-1) ); 
-    //return zoom + "/" +  + "/" + (Math.pow(2,zoom)-coord.y-1) + ".png"; 
-}, 
-  tileSize: new google.maps.Size(256, 256), 
-  isPng: true
-}); 
+var mapTilerGenerator = (layerKey) => {
+  return new google.maps.ImageMapType({
+    getTileUrl: (coord, zoom) => {
+      return activeLayers[layerKey].replace('{z}', zoom).replace('{x}', coord.x).replace('{y}', (Math.pow(2, zoom) - coord.y - 1));
+    },
+    tileSize: new google.maps.Size(256, 256),
+    isPng: true
+  });
+}
 
-googleMap.overlayMapTypes.insertAt(0, mapTiler);
-
-var putLayer = (url) => {
+var putLayer = (layerKey, url) => {
+  debugger;
   console.log(url)
-  currentLayerUrl = url;
+  activeLayers[layerKey] = url;
+
+  //add this layer to the google map.
+  googleMap.overlayMapTypes.setAt(layerKey, mapTilerGenerator(layerKey));
+
   leaflet.tileLayer(url, {
-      maxZoom: 18,
-      tms: true
+    maxZoom: 18,
+    tms: true
   }).addTo(leafletMap)
 }
 
 var reactMount = document.querySelector('#interface')
-ReactDOM.render(React.createElement(root, {putLayer}), reactMount)
+ReactDOM.render(React.createElement(root, { putLayer }), reactMount)
