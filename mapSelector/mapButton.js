@@ -15,8 +15,12 @@ class mapButton extends React.Component {
   }
 
   render() {
+    var selectedClass = '';
+    if(this.props.selected) {
+      selectedClass = 'active';
+    }
     return React.createElement('div', {
-            className: 'btn btn-default',
+            className: 'btn btn-default ' + selectedClass,
             onClick: () => this.handleClick()
           }, this.props.mapOption.label)
   }
