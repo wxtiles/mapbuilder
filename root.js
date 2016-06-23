@@ -11,6 +11,7 @@ class root extends React.Component {
 
     this.addLayer = this.addLayer.bind(this);
     this.createLayer = this.createLayer.bind(this);
+    this.removeLayer = this.removeLayer.bind(this);
   }
 
   componentWillMount() {
@@ -21,6 +22,14 @@ class root extends React.Component {
     var allLayers = this.state.layers
     allLayers.push(allLayers.length)
     this.setState({layers: allLayers})
+  }
+
+  removeLayer(layerKey) {
+    var allLayers = this.state.layers
+    //TODO: If I just remove the layer here, then this layer list will get out of sync with the layer list passed to the maps.
+    //These lists should be merged.
+    //May be move all the index stuff to be under here?
+    this.props.removeLayer(layerKey)
   }
 
   createLayer({layerKey, url}) {
@@ -35,7 +44,7 @@ class root extends React.Component {
         )
       ),
       _.map(this.state.layers, (layerKey) =>
-        React.createElement(createTileLayer, {key: layerKey, layerKey: layerKey, putLayer: this.createLayer})
+        React.createElement(createTileLayer, {key: layerKey, layerKey: layerKey, putLayer: this.createLayer, removeLayer: this.removeLayer})
       )
     )
   }

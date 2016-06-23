@@ -35,8 +35,6 @@ var mapTilerGenerator = (layerKey) => {
 }
 
 var putLayer = (layerKey, url) => {
-  debugger;
-  console.log(url)
   activeLayers[layerKey] = url;
 
   //add this layer to the google map.
@@ -48,5 +46,10 @@ var putLayer = (layerKey, url) => {
   }).addTo(leafletMap)
 }
 
+var removeLayer = ({layerKey}) => {
+  activeLayers[layerKey] = undefined;
+  googleMap.overlayMapTypes.removeAt(layerKey);
+}
+
 var reactMount = document.querySelector('#interface')
-ReactDOM.render(React.createElement(root, { putLayer }), reactMount)
+ReactDOM.render(React.createElement(root, { putLayer, removeLayer }), reactMount)
