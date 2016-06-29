@@ -431,7 +431,7 @@ definitions:
       extend:
         type: string
         description: Indicates whether the upper- or lower-boundary of the colourmap should be extended. Unless this is 'neither' or null, contour levels are automatically added to one or both ends of the range so that all data are included. These added ranges are then mapped to the special colormap values which default to the ends of the colormap range.
-        enum: ['neither', 'both', 'min', 'max', null]
+        enum: ['neither', 'both', 'min', 'max', 'null']
       hatches:
         type: array
         description: Sorted array of hatch styles for the plot's levels
@@ -462,7 +462,7 @@ definitions:
         items:
           type: string
           description: The linestyle for the sub-plot
-          enum: ['solid', 'dashed', 'dashdot', 'dotted', '-', '--', '-.', ':', ' ', '', null]
+          enum: ['solid', 'dashed', 'dashdot', 'dotted', '-', '--', '-.', ':', ' ', '', 'null']
       linewidths:
         type: array
         description: A sorted array of linewidths for the plot levels
@@ -490,11 +490,11 @@ definitions:
     properties:
       extend:
         type: string
-        enum: ['neither', 'both', 'min', 'max', null]
+        enum: ['neither', 'both', 'min', 'max', 'null']
         description: See "extend" for the LegendItem; indicates if the extend method of the legend has been set independently to the plot.
       spacing:
         type: string
-        enum: ['proportional', 'uniform', null]
+        enum: ['proportional', 'uniform', 'null']
         description: Indicates whether class breaks are separated uniformly, or in proportion to their actual value between the highest and the lowest breaks.
       alpha:
         type: number
