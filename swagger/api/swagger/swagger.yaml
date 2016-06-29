@@ -329,7 +329,10 @@ definitions:
         type: string
         description: Layer ID
       instances:
-        $ref: '#/definitions/Instance'
+        type: array
+        description: A list of the instances of this layer.
+        items:
+          $ref: '#/definitions/Instance'
       bounds:
         $ref: '#/definitions/Bounds'
       meta:
@@ -348,6 +351,7 @@ definitions:
         description: ISO 8601 datetime string representing when the instance configuration was created
       start_time:
         type: string
+        format: date-time
         description: ISO 8601 datetime string representing the earliest retrievable time-step for an instance
       end_time:
         type: string
