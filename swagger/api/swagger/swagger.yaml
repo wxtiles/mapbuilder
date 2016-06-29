@@ -150,7 +150,7 @@ paths:
           schema:
             $ref: '#/definitions/Error'
             
-  /{ownerId}/tile/{layerId}/{instanceId}/{time}/{level}/{z}/{x}/{y}.{extension}:
+  /{ownerId}/tile/{layerId}/{instanceId}/{time}/{level}/{z}/{x}/{y2}.{extension}:
     parameters:
       - $ref: '#/parameters/ownerId'
       - $ref: '#/parameters/layerId'
@@ -159,7 +159,7 @@ paths:
       - $ref: '#/parameters/level'
       - $ref: '#/parameters/z'
       - $ref: '#/parameters/x'
-      - $ref: '#/parameters/y'
+      - $ref: '#/parameters/y2'
       - $ref: '#/parameters/extension'
     get:
       produces: [image/png]
@@ -281,8 +281,8 @@ parameters:
     required: true
     in: path
     type: integer
-  y:
-    name: y
+  y2:
+    name: y2
     description: The y.
     required: true
     in: path
