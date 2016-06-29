@@ -16,7 +16,8 @@ produces:
   - image/png
 paths:
   /{ownerId}/layer/:
-    x-swagger-router-controller: weather
+    #Ignore the x-swagger-router-controller value, it is just to get mocking to work.
+    x-swagger-router-controller: mock
     parameters:
       - $ref: '#/parameters/ownerId'
     get:
@@ -49,6 +50,8 @@ paths:
             $ref: '#/definitions/Error'
             
   /{ownerId}/layer/{layerId}/:
+    #Ignore the x-swagger-router-controller value, it is just to get mocking to work.
+    x-swagger-router-controller: mock
     parameters:
       - $ref: '#/parameters/ownerId'
       - $ref: '#/parameters/layerId'
@@ -73,6 +76,8 @@ paths:
             $ref: '#/definitions/Error'
             
   /{ownerId}/layer/{layerId}/{instanceId}/:
+    #Ignore the x-swagger-router-controller value, it is just to get mocking to work.
+    x-swagger-router-controller: mock
     parameters:
       - $ref: '#/parameters/ownerId'
       - $ref: '#/parameters/layerId'
@@ -97,6 +102,8 @@ paths:
             $ref: '#/definitions/Error'
             
   /{ownerId}/layer/{layerId}/{instanceId}/times/:
+    #Ignore the x-swagger-router-controller value, it is just to get mocking to work.
+    x-swagger-router-controller: mock
     parameters:
       - $ref: '#/parameters/ownerId'
       - $ref: '#/parameters/layerId'
@@ -124,6 +131,8 @@ paths:
             $ref: '#/definitions/Error'
             
   /{ownerId}/layer/{layerId}/{instanceId}/levels/:
+    #Ignore the x-swagger-router-controller value, it is just to get mocking to work.
+    x-swagger-router-controller: mock
     parameters:
       - $ref: '#/parameters/ownerId'
       - $ref: '#/parameters/layerId'
@@ -151,6 +160,8 @@ paths:
             $ref: '#/definitions/Error'
             
   /{ownerId}/tile/{layerId}/{instanceId}/{time}/{level}/{z}/{x}/{y2}.{extension}:
+    #Ignore the x-swagger-router-controller value, it is just to get mocking to work.
+    x-swagger-router-controller: mock
     parameters:
       - $ref: '#/parameters/ownerId'
       - $ref: '#/parameters/layerId'
@@ -182,6 +193,8 @@ paths:
             $ref: '#/definitions/Error'
             
   /{ownerId}/legend/{size}/{orientation}/{layerId}/{instanceId}.png:
+    #Ignore the x-swagger-router-controller value, it is just to get mocking to work.
+    x-swagger-router-controller: mock
     parameters:
       - $ref: '#/parameters/ownerId'
       - $ref: '#/parameters/layerId'
@@ -209,6 +222,8 @@ paths:
             $ref: '#/definitions/Error'
             
   /{ownerId}/legend/{size}/{orientation}/{layerId}/{instanceId}.json:
+    #Ignore the x-swagger-router-controller value, it is just to get mocking to work.
+    x-swagger-router-controller: mock
     parameters:
       - $ref: '#/parameters/ownerId'
       - $ref: '#/parameters/layerId'
