@@ -36,7 +36,8 @@
         url = decodeURIComponent(url[1]);
       } else {
         //url = "http://petstore.swagger.io/v2/swagger.json";
-        url = "../api/swagger/swagger.json";
+        var url = window.location.host;
+        url = url + "/wxtilesjs-example/swagger/api/swagger/swagger.json";
       }
 
       // Pre load translate...
