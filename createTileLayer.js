@@ -9,6 +9,7 @@ class createTileLayer extends React.Component {
     super()
     this.state = {}
     this.state.selectedLayer = null
+    this.onDelete = this.onDelete.bind(this)
   }
 
   loadLayersList() {
@@ -52,7 +53,6 @@ class createTileLayer extends React.Component {
 
   selectTime(time) {
     this.setState({selectedTime: time}, () =>{
-      // var getTileUrl = ({layerId, instanceId, time, level, onSuccess, onError}) => {
       var getTileLayerUrlOptions = {
         layerId: this.state.selectedLayer.id,
         instanceId: this.state.selectedInstance.id,
@@ -61,12 +61,16 @@ class createTileLayer extends React.Component {
         onSuccess: (url) => {
           console.log(this.props)
           this.setState({url})
-          this.props.putLayer({url})
+          this.props.putLayer({layerKey: this.props.layerKey, url: url})
         },
         onError: (err) => console.log(err),
       }
       wxTiles.getTileLayerUrl(getTileLayerUrlOptions)
     })
+  }
+
+  onDelete() {
+    this.props.removeLayer({layerKey: this.props.layerKey})
   }
 
   componentWillMount() {
@@ -77,7 +81,10 @@ class createTileLayer extends React.Component {
     return React.createElement(`div`, {className: 'row createTileLayer'},
       React.createElement('div', {className: 'col-sm-1 closeButtonContainer'},
         React.createElement('span', null, 'Delete layer'),
-        React.createElement('div', {className: 'btn btn-default closeButton'}, 'X')
+        React.createElement('div', {
+          className: 'btn btn-default closeButton',
+          onClick: this.onDelete
+        }, 'X')
       ),
       React.createElement('div', {className: 'col-sm-3 select-container'},
         React.createElement('span', null, 'Choose a layer'),

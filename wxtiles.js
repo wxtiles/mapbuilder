@@ -38,4 +38,19 @@ var getTileLayerUrl = ({layerId, instanceId, time, level, onSuccess, onError}) =
   onSuccess(`${server}/wxtiles/tile/${layerId}/${instanceId}/${time}/${level}/{z}/{x}/{y}.png`)
 }
 
-export default {getAllLayers, getTimesForInstance, getTileLayerUrl}
+//Call this with your url and plug the returned object into google maps.
+//E.G:
+//var mapLayer = wxTiles.google.getImageMapType(layerTilesUrl);
+//googleMap.overlayMapTypes.setAt(layerKey, mapLayer);
+var google = {}
+google.getImageMapType = (layerTilesUrl) => {
+  return new google.maps.ImageMapType({
+    getTileUrl: (coord, zoom) => {
+      return layerTilesUrl.replace('{z}', zoom).replace('{x}', coord.x).replace('{y}', (Math.pow(2, zoom) - coord.y - 1));
+    },
+    tileSize: new google.maps.Size(256, 256),
+    isPng: true
+  });
+}
+
+export default {getAllLayers, getTimesForInstance, getTileLayerUrl, google}

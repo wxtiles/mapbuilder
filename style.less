@@ -1,8 +1,22 @@
 @import (inline) "node_modules/react-select/dist/react-select.css";
 @import (inline) "leaflet.css";
 @import "createTileLayer";
+@import "mapSelector/mapSelector";
 @import "root";
 
-.map {
+.mapContainer {
+  max-height: 600px;
   height: 70%;
+  width: 100%;
+  padding-right: 2.5%;
+  padding-left: 2.5%;
+
+  .map {
+    height: 100%;
+    width: 100%;
+  }
+}
+
+h1 {
+  text-align: center;
 }
