@@ -4,7 +4,8 @@ info:
   description: Make and explore beautiful, rapidly-refreshed weather maps with the Cloudburst API
   version: "1.0.1"
 # the domain of the service
-host: tilecache03.wxtiles.com
+#host: tilecache03.wxtiles.com
+host: localhost:6060
 # array of all schemes that your API supports
 schemes:
   - http
@@ -103,7 +104,7 @@ paths:
             
   /{ownerId}/layer/{layerId}/{instanceId}/times/:
     #Ignore the x-swagger-router-controller value, it is just to get mocking to work.
-    x-swagger-router-controller: mock
+    x-swagger-router-controller: times
     parameters:
       - $ref: '#/parameters/ownerId'
       - $ref: '#/parameters/layerId'

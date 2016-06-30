@@ -1,8 +1,8 @@
 import request from 'superagent'
 
 //const server = 'http://tapa01.unisys.metocean.co.nz'
-//const server = 'http://localhost:6060'
-const server = 'http://tilecache03.wxtiles.com'
+const server = 'http://localhost:6060'
+//const server = 'http://tilecache03.wxtiles.com'
 
 // /<ownerID>/layer/
 var getAllLayers = (onSuccess, onError) => {
