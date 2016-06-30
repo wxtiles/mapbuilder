@@ -29,7 +29,7 @@ var putLayer = (layerKey, url) => {
   activeLayers[layerKey] = { url: url };
 
   //add this layer to the google map.
-  var googleMapLayer = wxTiles.google.getImageMapType(activeLayers[layerKey]);
+  var googleMapLayer = wxTiles.googleMaps.getImageMapType(activeLayers[layerKey].url);
   googleMap.overlayMapTypes.setAt(layerKey, googleMapLayer);
   activeLayers[layerKey].googleMapLayer = googleMapLayer;
 

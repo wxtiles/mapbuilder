@@ -1,6 +1,8 @@
 import request from 'superagent'
 
-const server = 'http://tapa01.unisys.metocean.co.nz'
+//const server = 'http://tapa01.unisys.metocean.co.nz'
+//const server = 'http://localhost:6060'
+const server = 'http://tilecache03.wxtiles.com'
 
 // /<ownerID>/layer/
 var getAllLayers = (onSuccess, onError) => {
@@ -42,8 +44,8 @@ var getTileLayerUrl = ({layerId, instanceId, time, level, onSuccess, onError}) =
 //E.G:
 //var mapLayer = wxTiles.google.getImageMapType(layerTilesUrl);
 //googleMap.overlayMapTypes.setAt(layerKey, mapLayer);
-var google = {}
-google.getImageMapType = (layerTilesUrl) => {
+var googleMaps = {}
+googleMaps.getImageMapType = (layerTilesUrl) => {
   return new google.maps.ImageMapType({
     getTileUrl: (coord, zoom) => {
       return layerTilesUrl.replace('{z}', zoom).replace('{x}', coord.x).replace('{y}', (Math.pow(2, zoom) - coord.y - 1));
@@ -53,4 +55,4 @@ google.getImageMapType = (layerTilesUrl) => {
   });
 }
 
-export default {getAllLayers, getTimesForInstance, getTileLayerUrl, google}
+export default {getAllLayers, getTimesForInstance, getTileLayerUrl, googleMaps}
