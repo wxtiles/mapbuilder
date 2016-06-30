@@ -2,7 +2,7 @@ swagger: '2.0'
 info:
   title: Cloudburst API
   description: Make and explore beautiful, rapidly-refreshed weather maps with the Cloudburst API
-  version: "1.0.1"
+  version: "1.2.0"
 # the domain of the service
 #host: tilecache03.wxtiles.com
 host: localhost:6060
@@ -15,6 +15,22 @@ produces:
   - application/json
   - application/x-protobuf
   - image/png
+tags:
+  - name: Metadata
+    description: Metadata description
+  - name: Layer
+    description: Layer description
+  - name: Level
+    description: Level descriptiov
+  - name: Instance
+    description: Instance description
+  - name: Time
+    description: Time description
+  - name: Tile
+    description: Tile description
+  - name: Legend
+    description: Legend description
+    
 paths:
   /{ownerId}/layer/:
     #Ignore the x-swagger-router-controller value, it is just to get mocking to work.
@@ -76,7 +92,7 @@ paths:
           schema:
             $ref: '#/definitions/Error'
             
-  /{ownerId}/layer/{layerId}/{instanceId}/:
+  /{ownerId}/layer/{layerId}/instance/{instanceId}/:
     #Ignore the x-swagger-router-controller value, it is just to get mocking to work.
     x-swagger-router-controller: mock
     parameters:
@@ -102,7 +118,7 @@ paths:
           schema:
             $ref: '#/definitions/Error'
             
-  /{ownerId}/layer/{layerId}/{instanceId}/times/:
+  /{ownerId}/layer/{layerId}/instance/{instanceId}/times/:
     #Ignore the x-swagger-router-controller value, it is just to get mocking to work.
     x-swagger-router-controller: times
     parameters:
@@ -131,7 +147,7 @@ paths:
           schema:
             $ref: '#/definitions/Error'
             
-  /{ownerId}/layer/{layerId}/{instanceId}/levels/:
+  /{ownerId}/layer/{layerId}/instance/{instanceId}/levels/:
     #Ignore the x-swagger-router-controller value, it is just to get mocking to work.
     x-swagger-router-controller: mock
     parameters:
@@ -141,7 +157,7 @@ paths:
     get:
       produces: [application/json]
       summary: A collection of vertical levels for which data exists and can be requested (as tiles) for an instance of a layer.
-      description: This endpoint exposes the array of vertical positions that data exists for a particular instance. Each element can be used to substitute the <level> part of a tile URL. Not all layer instances have a vertical (e.g. it may be surface wave height and therefore only apply at sea level). If a layer has no vertical dimension, the array will be empty.
+      description: This endpoint exposes the array of vertical positions that data exists for a particular instance. Each element can be used to substitute the {level} part of a tile URL. Not all layer instances have a vertical (e.g. it may be surface wave height and therefore only apply at sea level). If a layer has no vertical dimension, the array will be empty.
       tags:
         - Layer
         - Instance
@@ -195,7 +211,7 @@ paths:
           schema:
             $ref: '#/definitions/Error'
             
-  /{ownerId}/legend/{size}/{orientation}/{layerId}/{instanceId}.png:
+  /{ownerId}/legend/{layerId}/{instanceId}/{size}/{orientation}.png:
     #Ignore the x-swagger-router-controller value, it is just to get mocking to work.
     x-swagger-router-controller: mock
     parameters:
@@ -224,7 +240,7 @@ paths:
           schema:
             $ref: '#/definitions/Error'
             
-  /{ownerId}/legend/{size}/{orientation}/{layerId}/{instanceId}.json:
+  /{ownerId}/legend/{layerId}/{instanceId}/{size}/{orientation}.json:
     #Ignore the x-swagger-router-controller value, it is just to get mocking to work.
     x-swagger-router-controller: mock
     parameters:
@@ -373,6 +389,7 @@ definitions:
         description: ISO 8601 datetime string representing the earliest retrievable time-step for an instance
       end_time:
         type: string
+        format: date-time
         description: ISO 8601 datetime string representing the latest retrievable time-step for an instance
   Bounds:
     type: object
@@ -555,13 +572,16 @@ definitions:
       $ref: '#/definitions/Level'
   Level:
     type: string
-    description: A potential value of a vertical dimension of an instance. Values in this array is used to substitute "level" in a tile URL.
+    description: A potential value of a vertical dimension of an instance. Values in this array is used to substitute {level} in a tile URL.
   Times:
     type: array
     items:
       $ref: '#/definitions/Time'
   Time:
     type: string
+    #Remove this comment when we can update the mock server to use swagger-tools 0.10.1 or newer.
+    #In the mean time we have to comment it out or we will get a schema validation error from the mock server.
+    #format: date-time
     description: ISO 8601 string representing a datetime, a possible value of the temporal dimension of an instance. Values in this array is used to ubstitute "time" in a tile URL.
   Metadata:
     type: object
