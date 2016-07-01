@@ -33,10 +33,36 @@ maps.mountGoogleMap = () => {
   return googleMap;
 }
 
+var openLayersBaseMap = new ol.layer.Tile({
+  source: new ol.source.XYZ({
+    attributons: [
+      new ol.Attribution({
+        html: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="http://cartodb.com/attributions">CartoDB</a>'
+      })
+    ],
+    url: 'http://{a-c}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png'
+  })
+});
+
+maps.mountOpenLayersMap = () => {
+  var openLayersMap = new ol.Map({
+    target: 'openLayersMap',
+    layers: [openLayersBaseMap],
+    view: new ol.View({
+      center: ol.proj.fromLonLat([37.41, 8.82]),
+      zoom: 4
+    })
+  });
+
+  //Keep a reference to the map so we can reset it after showing and hiding.
+  maps.openLayersMap = openLayersMap;
+  return openLayersMap;
+}
+
 maps.showMap = (selectedMap) => {
   document.getElementById('leafletMap').style.display = 'none';
   document.getElementById('googleMap').style.display = 'none';
-  document.getElementById('mapBoxGLMap').style.display = 'none';
+  document.getElementById('openLayersMap').style.display = 'none';
 
   document.getElementById(`${selectedMap.value}Map`).style.display = 'block';
 
