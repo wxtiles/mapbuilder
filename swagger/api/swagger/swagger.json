@@ -3,7 +3,7 @@
     "info": {
         "title": "Cloudburst API",
         "description": "Make and explore beautiful, rapidly-refreshed weather maps with the Cloudburst API",
-        "version": "1.0.1"
+        "version": "1.2.0"
     },
     "host": "localhost:6060",
     "schemes": [
@@ -17,7 +17,7 @@
     ],
     "paths": {
         "/{ownerId}/layer/": {
-            "x-swagger-router-controller": "weather",
+            "x-swagger-router-controller": "mock",
             "parameters": [
                 {
                     "$ref": "#/parameters/ownerId"
@@ -41,11 +41,6 @@
                         "allowEmptyValue": true
                     }
                 ],
-                "tags": [
-                    "Layer",
-                    "Instance",
-                    "Metadata"
-                ],
                 "responses": {
                     "200": {
                         "description": "Matched layers' configurations",
@@ -66,6 +61,7 @@
             }
         },
         "/{ownerId}/layer/{layerId}/": {
+            "x-swagger-router-controller": "mock",
             "parameters": [
                 {
                     "$ref": "#/parameters/ownerId"
@@ -80,11 +76,6 @@
                 ],
                 "summary": "Information about a specific layer",
                 "description": "This endpoint provides information about a specific *Cloudburst* layer that can be requested as map tiles, and its metadata, including bounding boxes and the unit system (metric, USCS, etc.) that is used when rendering map tiles.",
-                "tags": [
-                    "Layer",
-                    "Instance",
-                    "Metadata"
-                ],
                 "responses": {
                     "200": {
                         "description": "Matched layers' configurations",
@@ -104,7 +95,8 @@
                 }
             }
         },
-        "/{ownerId}/layer/{layerId}/{instanceId}/": {
+        "/{ownerId}/layer/{layerId}/instance/{instanceId}/": {
+            "x-swagger-router-controller": "mock",
             "parameters": [
                 {
                     "$ref": "#/parameters/ownerId"
@@ -122,10 +114,6 @@
                 ],
                 "summary": "Information about a particular (potentially non-persistant) instance of a layer",
                 "description": "This endpoint provides information about an instance of a specific *Cloudburst* layer that can be requested as map tiles. Instances are typically added and removed as the data underlying a dataset changes with time (e.g. forecasts expire, and forecast horizons continuously move forward). Therefore a particular instance of a layer may not be persistant.",
-                "tags": [
-                    "Layer",
-                    "Instance"
-                ],
                 "responses": {
                     "200": {
                         "description": "Matched layers' configurations",
@@ -145,7 +133,8 @@
                 }
             }
         },
-        "/{ownerId}/layer/{layerId}/{instanceId}/times/": {
+        "/{ownerId}/layer/{layerId}/instance/{instanceId}/times/": {
+            "x-swagger-router-controller": "times",
             "parameters": [
                 {
                     "$ref": "#/parameters/ownerId"
@@ -163,11 +152,6 @@
                 ],
                 "summary": "A collection of moments in time for which data exists and can be requested (as tiles) for an instance of a layer.",
                 "description": "This endpoint exposes the array of moments that data exists for a particular instance. Each element can be used to substitute the <time> part of a tile URL. Not all layer instances have a temporal dimension (e.g. it may be static bathymetry, or an observational dataset with no forecast or hindcast). If a layer has no temporal dimension, the array will be empty. The times in the array may not be unique (this is almost always due to grouped datasets containing overlapping time steps).",
-                "tags": [
-                    "Layer",
-                    "Instance",
-                    "Time"
-                ],
                 "responses": {
                     "200": {
                         "description": "Matched layers' configurations",
@@ -190,7 +174,8 @@
                 }
             }
         },
-        "/{ownerId}/layer/{layerId}/{instanceId}/levels/": {
+        "/{ownerId}/layer/{layerId}/instance/{instanceId}/levels/": {
+            "x-swagger-router-controller": "mock",
             "parameters": [
                 {
                     "$ref": "#/parameters/ownerId"
@@ -207,12 +192,7 @@
                     "application/json"
                 ],
                 "summary": "A collection of vertical levels for which data exists and can be requested (as tiles) for an instance of a layer.",
-                "description": "This endpoint exposes the array of vertical positions that data exists for a particular instance. Each element can be used to substitute the <level> part of a tile URL. Not all layer instances have a vertical (e.g. it may be surface wave height and therefore only apply at sea level). If a layer has no vertical dimension, the array will be empty.",
-                "tags": [
-                    "Layer",
-                    "Instance",
-                    "Level"
-                ],
+                "description": "This endpoint exposes the array of vertical positions that data exists for a particular instance. Each element can be used to substitute the {level} part of a tile URL. Not all layer instances have a vertical (e.g. it may be surface wave height and therefore only apply at sea level). If a layer has no vertical dimension, the array will be empty.",
                 "responses": {
                     "200": {
                         "description": "Matched layers' configurations",
@@ -235,7 +215,8 @@
                 }
             }
         },
-        "/{ownerId}/tile/{layerId}/{instanceId}/{time}/{level}/{z}/{x}/{y}.{extension}": {
+        "/{ownerId}/tile/{layerId}/{instanceId}/{time}/{level}/{z}/{x}/{y2}.{extension}": {
+            "x-swagger-router-controller": "tile",
             "parameters": [
                 {
                     "$ref": "#/parameters/ownerId"
@@ -259,7 +240,7 @@
                     "$ref": "#/parameters/x"
                 },
                 {
-                    "$ref": "#/parameters/y"
+                    "$ref": "#/parameters/y2"
                 },
                 {
                     "$ref": "#/parameters/extension"
@@ -271,16 +252,12 @@
                 ],
                 "summary": "A tiled map image, for use by map clients capable of consuming PNG map images in OGC TMS coordinate notation.",
                 "description": "Cloudburst produces map tiles, and PNG map tiles are the traditional format for representing these. Other possibilities include protocol-buffer vector tiles in the Mapbox vector tile specification, and others. This endpoint will most often be used by map clients (such as Leaflet, Mapbox GL JS, OpenLayers, and Google Maps), which know exactly which tiles to request for a given geographical map view and zoom level. **The Cloudburst Javascript API is responsible for completing the resource URI via these client libraries, based on what a user is authenticated to request, and what these layers support, via requests to other endpoints. Manual requests are possible but are not recommended.** The resources for a particular layer can be discovered through a `GET` request to `/layer/<layerId>/` and inspecting the response's `resources` property. The `/layer/<layerId>/<instanceID>/times/` endpoints can be used to request the times that are valid (many layer instances have only one time and/or vertical level).",
-                "tags": [
-                    "Tile",
-                    "Layer",
-                    "Instance",
-                    "Time",
-                    "Level"
-                ],
                 "responses": {
                     "200": {
-                        "description": "A rendered map tile as a PNG"
+                        "description": "A rendered map tile as a PNG",
+                        "schema": {
+                            "type": "file"
+                        }
                     },
                     "default": {
                         "description": "Unexpected error",
@@ -291,7 +268,8 @@
                 }
             }
         },
-        "/{ownerId}/legend/{size}/{orientation}/{layerId}/{instanceId}.png": {
+        "/{ownerId}/legend/{layerId}/{instanceId}/{size}/{orientation}.png": {
+            "x-swagger-router-controller": "mock",
             "parameters": [
                 {
                     "$ref": "#/parameters/ownerId"
@@ -315,11 +293,6 @@
                 ],
                 "summary": "A legend for PNG map tiles",
                 "description": "Legends are inferred from plot configurations for each layer. When a legend is disabled on a per-layer basis (or if a legend cannot be rendered due to the plot type), then this endpoint will return a 204 No Content response. The size must be substituted by either `small` or `large`. The orientation must be substituted by either `horizontal` or `vertical`.",
-                "tags": [
-                    "Legend",
-                    "Layer",
-                    "Instance"
-                ],
                 "responses": {
                     "200": {
                         "description": "A rendered map legend as a PNG"
@@ -336,7 +309,8 @@
                 }
             }
         },
-        "/{ownerId}/legend/{size}/{orientation}/{layerId}/{instanceId}.json": {
+        "/{ownerId}/legend/{layerId}/{instanceId}/{size}/{orientation}.json": {
+            "x-swagger-router-controller": "mock",
             "parameters": [
                 {
                     "$ref": "#/parameters/ownerId"
@@ -360,11 +334,6 @@
                 ],
                 "summary": "A JSON representation of the legend for PNG map tiles",
                 "description": "Legends are inferred from plot configurations for each layer. When a legend is disabled on a per-layer basis (or if a legend cannot be rendered due to the plot type), then this endpoint will return a 204 No Content response. Cloudburst internally uses this JSON representation to render the PNG version of the legend, and this endpoint is exposed to support client-side legend rendering and the interaction that implies. The size must be substituted by either `small` or `large`. The orientation must be substituted by either `horizontal` or `vertical`.",
-                "tags": [
-                    "Legend",
-                    "Layer",
-                    "Instance"
-                ],
                 "responses": {
                     "200": {
                         "description": "JSON representation of the legend (Cloudburst uses thus to render the PNG legend server-side)",
@@ -436,8 +405,8 @@
             "in": "path",
             "type": "integer"
         },
-        "y": {
-            "name": "y",
+        "y2": {
+            "name": "y2",
             "description": "The y.",
             "required": true,
             "in": "path",
@@ -530,6 +499,7 @@
                 },
                 "end_time": {
                     "type": "string",
+                    "format": "date-time",
                     "description": "ISO 8601 datetime string representing the latest retrievable time-step for an instance"
                 }
             }
@@ -639,7 +609,7 @@
                         "both",
                         "min",
                         "max",
-                        null
+                        "null"
                     ]
                 },
                 "hatches": {
@@ -722,7 +692,7 @@
                             ":",
                             " ",
                             "",
-                            null
+                            "null"
                         ]
                     }
                 },
@@ -767,7 +737,7 @@
                         "both",
                         "min",
                         "max",
-                        null
+                        "null"
                     ],
                     "description": "See \"extend\" for the LegendItem; indicates if the extend method of the legend has been set independently to the plot."
                 },
@@ -776,7 +746,7 @@
                     "enum": [
                         "proportional",
                         "uniform",
-                        null
+                        "null"
                     ],
                     "description": "Indicates whether class breaks are separated uniformly, or in proportion to their actual value between the highest and the lowest breaks."
                 },
@@ -843,7 +813,7 @@
         },
         "Level": {
             "type": "string",
-            "description": "A potential value of a vertical dimension of an instance. Values in this array is used to substitute \"level\" in a tile URL."
+            "description": "A potential value of a vertical dimension of an instance. Values in this array is used to substitute {level} in a tile URL."
         },
         "Times": {
             "type": "array",
