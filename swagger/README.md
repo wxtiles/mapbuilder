@@ -23,7 +23,7 @@ Swagger code generator from here: https://github.com/swagger-api/swagger-codegen
 
 To run the swagger code generator (for swagger.json):
 ```
-java -jar swagger-codegen-cli.jar generate -i ./api/swagger/swagger.json -l swagger -o ../clients/swagger
+java -jar swagger-codegen-cli.jar generate -i ./api/swagger/swagger.yaml -l swagger -o ../clients/swagger
 ```
 
 To run the swagger code generator (for javascript):
