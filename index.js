@@ -44,7 +44,7 @@ var putLayer = (layerKey, url) => {
 
   //Add this layer to the openLayers map.
   var openLayersSource = new ol.source.XYZ();
-  openLayersSource.setUrl(url);
+  openLayersSource.setUrl(url.replace('{y}', '{-y}'));
   var openLayersMapLayer = new ol.layer.Tile({source: openLayersSource});
   activeLayers[layerKey].openLayersMapLayer = openLayersMapLayer;
   //We shift the layer up one level because the base map is is already a layer zero.
