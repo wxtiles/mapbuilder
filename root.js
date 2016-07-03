@@ -33,7 +33,7 @@ class root extends React.Component {
     allLayers[layerKey] = undefined;
     this.setState({layers: allLayers});
 
-    this.props.removeLayer(layerKey)
+    this.props.removeLayer({layerKey})
   }
 
   render() {
