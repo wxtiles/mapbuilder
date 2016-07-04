@@ -19,7 +19,10 @@
     "watch": "watchify index.js -o dist.js -dv",
     "js": "browserify index.js -o dist.js --debug",
     "css": "lessc --clean-css style.less dist.css",
-    "build": "npm run js && npm run css && echo Build Complete"
+    "build": "npm run js && npm run css && echo Build Complete",
+    "build-swagger": "npm run build-swagger-json && npm run build-swagger-js-client",
+    "build-swagger-json": "java -jar ./swagger/swagger-codegen-cli.jar generate -i ./swagger/api/swagger/swagger.yaml -l swagger -o ./clients/swagger",
+    "build-swagger-js-client": "java -jar ./swagger/swagger-codegen-cli.jar generate -i ./swagger/api/swagger/swagger.yaml -l javascript -o ./clients/javascript"
   },
   "author": "Troy Mare",
   "license": "MIT",
