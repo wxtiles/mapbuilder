@@ -4,8 +4,8 @@ info:
   description: Make and explore beautiful, rapidly-refreshed weather maps with the Cloudburst API
   version: "1.0.1"
 # the domain of the service
-#host: tilecache03.wxtiles.com
-host: localhost:6060
+#host: localhost:6060
+host: api.wxtiles.com
 # array of all schemes that your API supports
 schemes:
   - http
