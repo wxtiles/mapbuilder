@@ -52,13 +52,12 @@ var putLayer = (layerKey, url) => {
 }
 
 var removeLayer = ({layerKey}) => {
+  if(activeLayers[layerKey] === undefined) return;
+
   //This will error if the user clicks the removal button before the data has loaded. So we check if the map layers have been added before trying to remove them.
   if (googleMap.overlayMapTypes.getAt(layerKey) !== undefined) googleMap.overlayMapTypes.removeAt(layerKey);
-  if (leafletMap.hasLayer(activeLayers[layerKey])) leafletMap.removeLayer(activeLayers[layerKey]);
-  
-  debugger;
-  //We shift the layer up one level because the base map is is already a layer zero.
-  openLayersMap.getLayers().removeAt(layerKey + 1);
+  if (leafletMap.hasLayer(activeLayers[layerKey].leafletMapLayer)) leafletMap.removeLayer(activeLayers[layerKey].leafletMapLayer);
+  openLayersMap.getLayers().remove(activeLayers[layerKey].openLayersMapLayer);
 
   activeLayers[layerKey] = undefined;
 }
