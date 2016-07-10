@@ -82,7 +82,7 @@ class createTileLayer extends React.Component {
       React.createElement('div', {className: 'col-sm-1 closeButtonContainer'},
         React.createElement('span', null, 'Delete layer'),
         React.createElement('div', {
-          className: 'btn btn-default closeButton',
+          className: 'btn btn-danger closeButton',
           onClick: this.onDelete
         }, 'X')
       ),
