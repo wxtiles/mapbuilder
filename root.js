@@ -21,7 +21,7 @@ class root extends React.Component {
     this.setState({layers: allLayers})
     //createLayer will be called at the end of this chain, after all the data has come back from the server.
   }
-  
+
   //This is called when the use selects a time value for the layer.
   //This also happens once when the layer selection row is first loaded, the 0th time value is auto selected for the user.
   createLayer({layerKey, url}) {
@@ -40,7 +40,7 @@ class root extends React.Component {
     return React.createElement('div', {className: 'root'},
       React.createElement('div', {className: 'row addLayerRow'},
         React.createElement('div', {className: 'addLayer col-sm-1'},
-          React.createElement('div', {className: 'btn btn-default', onClick: this.addLayerSelectionRow}, 'Add a layer')
+          React.createElement('div', {className: 'btn btn-success', onClick: this.addLayerSelectionRow}, 'Add a layer')
         )
       ),
       _.map(this.state.layers, (layerKey) =>
