@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import root from './root'
+import layers from './layers'
 import createTileLayer from './createTileLayer'
 import mapSelector from './mapSelector/mapSelector'
 import maps from './maps'
@@ -62,5 +62,5 @@ var removeLayer = ({layerKey}) => {
   activeLayers[layerKey] = undefined;
 }
 
-var reactMount = document.querySelector('#interface')
-ReactDOM.render(React.createElement(root, { putLayer, removeLayer }), reactMount)
+var reactMount = document.querySelector('#layerEditor')
+ReactDOM.render(React.createElement(layers, { putLayer, removeLayer }), reactMount)

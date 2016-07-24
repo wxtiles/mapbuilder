@@ -2,19 +2,32 @@
 @import (inline) "leaflet.css";
 @import "createTileLayer";
 @import "mapSelector/mapSelector";
-@import "root";
+@import "layers";
+@import "layerLabel";
+
+body {
+  display: flex;
+}
 
 .mapContainer {
-  max-height: 400px;
-  height: 70%;
+  height: 100%;
   width: 100%;
-  padding-right: 2.5%;
-  padding-left: 2.5%;
-
-  .map {
-    height: 100%;
-    width: 100%;
+  flex: 0.989;
+  padding: 0 10px;
+  .mapSelectorContainer {
+    height: 8%;
   }
+  .map {
+    height: 90%;
+  }
+}
+
+.layers-container {
+  flex: 0 0 480px;
+  box-shadow: 0 0 5px 5px rgba(0,0,0,.3);
+  height: 100%;
+  overflow-y: scroll;
+  padding-left: 3px;
 }
 
 h1 {
