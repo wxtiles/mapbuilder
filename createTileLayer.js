@@ -3,13 +3,16 @@ import ReactDOM from 'react-dom'
 import wxTiles from './wxtiles'
 import select from 'react-select'
 import _ from 'lodash'
+import layerLabel from './layerLabel'
 
 class createTileLayer extends React.Component {
   constructor() {
     super()
     this.state = {}
     this.state.selectedLayer = null
+    this.state.isEditing = true
     this.onDelete = this.onDelete.bind(this)
+    this.edit = this.edit.bind(this);
   }
 
   loadLayersList() {
@@ -59,7 +62,6 @@ class createTileLayer extends React.Component {
         time: this.state.selectedTime.value,
         level: 0,
         onSuccess: (url) => {
-          console.log(this.props)
           this.setState({url})
           this.props.putLayer({layerKey: this.props.layerKey, url: url})
         },
@@ -77,56 +79,46 @@ class createTileLayer extends React.Component {
     this.loadLayersList()
   }
 
+  edit() {
+    this.setState({
+      isEditing: !this.state.isEditing
+    })
+  }
+
   render() {
-    return React.createElement(`div`, {className: 'row createTileLayer'},
-      React.createElement('div', {className: 'col-sm-1 closeButtonContainer'},
-        React.createElement('span', null, 'Delete layer'),
-        React.createElement('div', {
-          className: 'btn btn-danger closeButton',
-          onClick: this.onDelete
-        }, 'X')
-      ),
-      React.createElement('div', {className: 'col-sm-3 select-container'},
-        React.createElement('span', null, 'Choose a layer'),
+    var labelForLayerLabel = 'New layer'
+    if (this.state.selectedLayer) {
+      labelForLayerLabel = this.state.selectedLayer.label
+    }
+    return React.createElement('li', {className: 'createTileLayer'},
+      React.createElement('div', {className: 'select-container'},
         React.createElement('div', {className: 'select-list'},
-          (this.state.loadedLayers == null) && React.createElement('div', null, 'Downloading layers...'),
-          this.state.loadedLayers && React.createElement(select, {
-            options: this.state.loadedLayers,
-            placeholder: 'Choose a layer...',
-            value: this.state.selectedLayer,
-            onChange: (thing) => this.selectLayer(thing)
-          })
+          React.createElement('div', {onClick: this.edit},
+            React.createElement(layerLabel, {label: labelForLayerLabel, isCollapsed: this.state.isEditing})
+          ),
+          this.state.isEditing && React.createElement('div', {},
+            (this.state.loadedLayers == null) && React.createElement('div', null, 'Downloading layers...'),
+            this.state.loadedLayers && React.createElement(select, {
+              options: this.state.loadedLayers,
+              placeholder: 'Select a layer...',
+              value: this.state.selectedLayer,
+              onChange: (thing) => this.selectLayer(thing)
+            }),
+            this.state.selectedLayer && React.createElement(select, {
+              options: this.state.selectedLayer.instances,
+              placeholder: 'Select an instance',
+              value: this.state.selectedInstance,
+              onChange: (thing) => this.selectInstance(thing)
+            }),
+            this.state.selectedInstance && React.createElement(select, {
+              options: this.state.selectedLayer.times,
+              placeholder: 'Select a time',
+              value: this.state.selectedTime,
+              onChange: (thang) => this.selectTime(thang)
+            })
+          )
         )
-      ),
-      React.createElement('div', {className: 'col-sm-1 arrow-container'},
-          React.createElement('span', {className: 'glyphicon glyphicon-arrow-right'}, '')
-      ),
-      React.createElement(`div`, {className: 'col-sm-3 select-container'},
-        React.createElement('span', null, 'Choose an instance'),
-        React.createElement('div', {className: 'select-list'},
-          this.state.selectedInstance && React.createElement(select, {
-            options: this.state.instances,
-            placeholder: 'Choose an instance...',
-            value: this.state.selectedInstance,
-            onChange: (thing) => this.selectInstance(thing)
-          })
-        )
-      ),
-      React.createElement('div', {className: 'col-sm-1 arrow-container'},
-        React.createElement('span', {className: 'glyphicon glyphicon-arrow-right'}, '')
-      ),
-      React.createElement(`div`, {className: 'col-sm-3 select-container'},
-        React.createElement('span', null, 'Choose a time'),
-        React.createElement('div', {className: 'select-list'},
-          this.state.times && React.createElement(select, {
-            options: this.state.times,
-            placeholder: 'Choose an time...',
-            value: this.state.selectedTime,
-            onChange: (thing) => this.selectTime(thing)
-          })
-        )
-      ),
-      React.createElement('div', {className: 'col-sm-12 urlDisplay'}, this.state.url)
+      )
     )
   }
 }

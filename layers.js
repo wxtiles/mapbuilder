@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom'
 import _ from 'lodash'
 import createTileLayer from './createTileLayer'
 
-class root extends React.Component {
+class layers extends React.Component {
   constructor() {
     super()
     this.state = {}
@@ -17,7 +17,7 @@ class root extends React.Component {
   //This is called when the user clicks the button to add a new layer.
   addLayerSelectionRow() {
     var allLayers = this.state.layers
-    allLayers.push(allLayers.length)
+    allLayers.unshift(allLayers.length)
     this.setState({layers: allLayers})
     //createLayer will be called at the end of this chain, after all the data has come back from the server.
   }
@@ -37,17 +37,18 @@ class root extends React.Component {
   }
 
   render() {
-    return React.createElement('div', {className: 'root'},
-      React.createElement('div', {className: 'row addLayerRow'},
-        React.createElement('div', {className: 'addLayer col-sm-1'},
-          React.createElement('div', {className: 'btn btn-success', onClick: this.addLayerSelectionRow}, 'Add a layer')
+    return React.createElement('div', {className: 'layers'},
+      React.createElement('div', { className: 'paddingContainer'}, ''),
+      React.createElement('ul', {},
+        React.createElement('li', {className: 'addLayerRow'},
+          React.createElement('div', {className: 'btn btn-success addLayer', onClick: this.addLayerSelectionRow}, 'Add a layer')
+        ),
+        _.map(this.state.layers, (layerKey) =>
+          (layerKey !== undefined) && React.createElement(createTileLayer, {key: layerKey, layerKey: layerKey, putLayer: this.createLayer, removeLayer: this.removeLayer})
         )
-      ),
-      _.map(this.state.layers, (layerKey) =>
-        (layerKey !== undefined) && React.createElement(createTileLayer, {key: layerKey, layerKey: layerKey, putLayer: this.createLayer, removeLayer: this.removeLayer})
       )
     )
   }
 }
 
-export default root
+export default layers
