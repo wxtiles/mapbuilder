@@ -17,10 +17,11 @@ class layerLabel extends React.Component {
       chevron = 'glyphicon-chevron-down'
     }
     return React.createElement('div', {className: 'layerLabel'},
+      React.createElement('div', {className: 'removey glyphicon glyphicon-remove remove-button'}, ''),
       React.createElement('div', {className: 'layerLabel-text'},
         React.createElement('span', {}, this.props.label)
       ),
-      React.createElement('span', {className: 'glyphicon ' + chevron}, '')
+      React.createElement('span', {className: 'chevy glyphicon ' + chevron}, '')
     )
   }
 }

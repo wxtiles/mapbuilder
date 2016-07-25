@@ -98,24 +98,28 @@ class createTileLayer extends React.Component {
           ),
           this.state.isEditing && React.createElement('div', {},
             (this.state.loadedLayers == null) && React.createElement('div', null, 'Downloading layers...'),
-            this.state.loadedLayers && React.createElement(select, {
-              options: this.state.loadedLayers,
-              placeholder: 'Select a layer...',
-              value: this.state.selectedLayer,
-              onChange: (thing) => this.selectLayer(thing)
-            }),
-            this.state.selectedLayer && React.createElement(select, {
-              options: this.state.selectedLayer.instances,
-              placeholder: 'Select an instance',
-              value: this.state.selectedInstance,
-              onChange: (thing) => this.selectInstance(thing)
-            }),
-            this.state.selectedInstance && React.createElement(select, {
-              options: this.state.selectedLayer.times,
-              placeholder: 'Select a time',
-              value: this.state.selectedTime,
-              onChange: (thang) => this.selectTime(thang)
-            })
+            this.state.loadedLayers && React.createElement('div', {},
+              React.createElement(select, {
+                options: this.state.loadedLayers,
+                placeholder: 'Select a layer...',
+                value: this.state.selectedLayer,
+                onChange: (thing) => this.selectLayer(thing)
+              })
+            ),
+            this.state.selectedLayer && React.createElement('div', {},
+              React.createElement(select, {
+                options: this.state.selectedLayer.instances,
+                placeholder: 'Select an instance',
+                value: this.state.selectedInstance,
+                onChange: (thing) => this.selectInstance(thing)
+              }),
+              React.createElement(select, {
+                options: this.state.selectedLayer.times,
+                placeholder: 'Select a time',
+                value: this.state.selectedTime,
+                onChange: (thang) => this.selectTime(thang)
+              })
+            )
           )
         )
       )
