@@ -12,7 +12,16 @@ class layerLabel extends React.Component {
   }
 
   render() {
-    return React.createElement('div', {className: 'layerLabel'}, 'layer label')
+    var chevron = 'glyphicon-chevron-up'
+    if(this.props.isCollapsed) {
+      chevron = 'glyphicon-chevron-down'
+    }
+    return React.createElement('div', {className: 'layerLabel'},
+      React.createElement('div', {className: 'layerLabel-text'},
+        React.createElement('span', {}, this.props.label)
+      ),
+      React.createElement('span', {className: 'glyphicon ' + chevron}, '')
+    )
   }
 }
 

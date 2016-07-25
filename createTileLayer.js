@@ -10,7 +10,9 @@ class createTileLayer extends React.Component {
     super()
     this.state = {}
     this.state.selectedLayer = null
+    this.state.isEditing = true
     this.onDelete = this.onDelete.bind(this)
+    this.edit = this.edit.bind(this);
   }
 
   loadLayersList() {
@@ -77,30 +79,44 @@ class createTileLayer extends React.Component {
     this.loadLayersList()
   }
 
+  edit() {
+    this.setState({
+      isEditing: !this.state.isEditing
+    })
+  }
+
   render() {
+    var labelForLayerLabel = 'New layer'
+    if (this.state.selectedLayer) {
+      labelForLayerLabel = this.state.selectedLayer.label
+    }
     return React.createElement('li', {className: 'createTileLayer'},
       React.createElement('div', {className: 'select-container'},
         React.createElement('div', {className: 'select-list'},
-          (this.state.loadedLayers == null) && React.createElement('div', null, 'Downloading layers...'),
-          React.createElement(layerLabel),
-          this.state.loadedLayers && React.createElement(select, {
-            options: this.state.loadedLayers,
-            placeholder: 'Select a layer...',
-            value: this.state.selectedLayer,
-            onChange: (thing) => this.selectLayer(thing)
-          }),
-          this.state.selectedLayer && React.createElement(select, {
-            options: this.state.selectedLayer.instances,
-            placeholder: 'Select an instance',
-            value: this.state.selectedInstance,
-            onChange: (thing) => this.selectInstance(thing)
-          }),
-          this.state.selectedInstance && React.createElement(select, {
-            options: this.state.selectedLayer.times,
-            placeholder: 'Select a time',
-            value: this.state.selectedTime,
-            onChange: (thang) => this.selectTime(thang)
-          })
+          React.createElement('div', {onClick: this.edit},
+            React.createElement(layerLabel, {label: labelForLayerLabel, isCollapsed: this.state.isEditing})
+          ),
+          this.state.isEditing && React.createElement('div', {},
+            (this.state.loadedLayers == null) && React.createElement('div', null, 'Downloading layers...'),
+            this.state.loadedLayers && React.createElement(select, {
+              options: this.state.loadedLayers,
+              placeholder: 'Select a layer...',
+              value: this.state.selectedLayer,
+              onChange: (thing) => this.selectLayer(thing)
+            }),
+            this.state.selectedLayer && React.createElement(select, {
+              options: this.state.selectedLayer.instances,
+              placeholder: 'Select an instance',
+              value: this.state.selectedInstance,
+              onChange: (thing) => this.selectInstance(thing)
+            }),
+            this.state.selectedInstance && React.createElement(select, {
+              options: this.state.selectedLayer.times,
+              placeholder: 'Select a time',
+              value: this.state.selectedTime,
+              onChange: (thang) => this.selectTime(thang)
+            })
+          )
         )
       )
     )
