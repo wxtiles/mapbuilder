@@ -11,6 +11,7 @@ class createTileLayer extends React.Component {
     this.state = {}
     this.state.selectedLayer = null
     this.state.isEditing = true
+    this.state.loadingInstance = false
     this.deleteLayer = this.deleteLayer.bind(this)
     this.edit = this.edit.bind(this);
   }
@@ -42,23 +43,24 @@ class createTileLayer extends React.Component {
     var options = {
       layerId: this.state.selectedLayer.id,
       instanceId: instance.id,
-      onSuccess: (times) => {
-        times = _.map(times, (time) => {
+      onSuccess: (instance) => {
+        instance.times = _.map(instance.times, (time) => {
           return {value: time, label: time}
         })
-        this.setState({times}, () => this.selectTime(times[0]))
+        instance.times.reverse()
+        this.setState({selectedInstance: instance, loadingInstance: false})
       },
       onError: (error) => console.log(error),
     }
-    wxTiles.getTimesForInstance(options)
-    this.setState({selectedInstance: instance})
+    wxTiles.getInstance(options)
+    this.setState({loadingInstance: true})
   }
 
   selectTime(time) {
     this.setState({selectedTime: time}, () =>{
       var getTileLayerUrlOptions = {
         layerId: this.state.selectedLayer.id,
-        instanceId: this.state.selectedInstance.id,
+        instanceId: this.state.selectedInstance.instance.id,
         time: this.state.selectedTime.value,
         level: 0,
         onSuccess: (url) => {
@@ -106,19 +108,20 @@ class createTileLayer extends React.Component {
                 onChange: (thing) => this.selectLayer(thing)
               })
             ),
-            this.state.selectedLayer && React.createElement('div', {},
+            this.state.selectedInstance && React.createElement('div', {},
               React.createElement(select, {
                 options: this.state.selectedLayer.instances,
                 placeholder: 'Select an instance',
-                value: this.state.selectedInstance,
+                value: this.state.selectedInstance.instance.id,
                 onChange: (thing) => this.selectInstance(thing)
               }),
-              React.createElement(select, {
-                options: this.state.selectedLayer.times,
+              (this.state.loadingInstance == false) && React.createElement(select, {
+                options: this.state.selectedInstance.times,
                 placeholder: 'Select a time',
                 value: this.state.selectedTime,
                 onChange: (thang) => this.selectTime(thang)
-              })
+              }),
+              this.state.loadingInstance && React.createElement('div', {}, 'loading...')
             )
           )
         )

@@ -15,6 +15,15 @@ var getAllLayers = (onSuccess, onError) => {
     })
 }
 
+var getInstance = ({layerId, instanceId, onSuccess, onError}) => {
+  request
+    .get(`${server}/wxtiles/layer/${layerId}/instance/${instanceId}/`)
+    .end((err, res) => {
+      if (err) return onError(err)
+      onSuccess(res.body)
+    })
+}
+
 // /<ownerID>/layer/<layerID>/<instanceID>/times/
 var getTimesForInstance = (options) => {
   request
@@ -56,4 +65,4 @@ googleMaps.getImageMapType = (layerTilesUrl) => {
   });
 }
 
-export default {getAllLayers, getTimesForInstance, getTileLayerUrl, googleMaps}
+export default {getAllLayers, getTimesForInstance, getTileLayerUrl, googleMaps, getInstance}
