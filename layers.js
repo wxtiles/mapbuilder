@@ -7,32 +7,36 @@ class layers extends React.Component {
   constructor() {
     super()
     this.state = {}
-    this.state.layers = [0]
+    this.state.layers = []
+    this.state.totalLayers = 0
 
-    this.addLayerSelectionRow = this.addLayerSelectionRow.bind(this);
-    this.createLayer = this.createLayer.bind(this);
-    this.removeLayer = this.removeLayer.bind(this);
+    this.addLayerSelectionRow = this.addLayerSelectionRow.bind(this)
+    this.createLayer = this.createLayer.bind(this)
+    this.removeLayer = this.removeLayer.bind(this)
+  }
+
+  componentWillMount() {
+    this.addLayerSelectionRow()
   }
 
   //This is called when the user clicks the button to add a new layer.
   addLayerSelectionRow() {
     var allLayers = this.state.layers
-    allLayers.unshift(allLayers.length)
-    this.setState({layers: allLayers})
+    allLayers.unshift(this.state.totalLayers+1)
+    this.setState({layers: allLayers, totalLayers: this.state.totalLayers+1})
     //createLayer will be called at the end of this chain, after all the data has come back from the server.
   }
 
   //This is called when the use selects a time value for the layer.
-  //This also happens once when the layer selection row is first loaded, the 0th time value is auto selected for the user.
+  //This also happens once when the slayer selection row is first loaded, the 0th time value is auto selected for the user.
   createLayer({layerKey, url}) {
     this.props.putLayer(layerKey, url)
   }
 
   removeLayer({layerKey}) {
     var allLayers = this.state.layers;
-    allLayers[layerKey] = undefined;
+    allLayers.splice(allLayers.indexOf(layerKey), 1)
     this.setState({layers: allLayers});
-
     this.props.removeLayer({layerKey})
   }
 

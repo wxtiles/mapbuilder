@@ -11,7 +11,7 @@ class createTileLayer extends React.Component {
     this.state = {}
     this.state.selectedLayer = null
     this.state.isEditing = true
-    this.onDelete = this.onDelete.bind(this)
+    this.deleteLayer = this.deleteLayer.bind(this)
     this.edit = this.edit.bind(this);
   }
 
@@ -71,10 +71,6 @@ class createTileLayer extends React.Component {
     })
   }
 
-  onDelete() {
-    this.props.removeLayer({layerKey: this.props.layerKey})
-  }
-
   componentWillMount() {
     this.loadLayersList()
   }
@@ -83,6 +79,10 @@ class createTileLayer extends React.Component {
     this.setState({
       isEditing: !this.state.isEditing
     })
+  }
+
+  deleteLayer() {
+    this.props.removeLayer({layerKey: this.props.layerKey})
   }
 
   render() {
@@ -94,7 +94,7 @@ class createTileLayer extends React.Component {
       React.createElement('div', {className: 'select-container'},
         React.createElement('div', {className: 'select-list'},
           React.createElement('div', {onClick: this.edit},
-            React.createElement(layerLabel, {label: labelForLayerLabel, isCollapsed: this.state.isEditing})
+            React.createElement(layerLabel, {deleteLayer: this.deleteLayer, label: labelForLayerLabel, isCollapsed: this.state.isEditing})
           ),
           this.state.isEditing && React.createElement('div', {},
             (this.state.loadedLayers == null) && React.createElement('div', null, 'Downloading layers...'),
