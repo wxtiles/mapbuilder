@@ -8,7 +8,7 @@ const server = 'https://api.wxtiles.com/v0';
 var getAllLayers = (onSuccess, onError) => {
   console.trace()
   request
-    .get(`https://api.wxtiles.com/wxtiles/layer/`)
+    .get(`${server}/wxtiles/layer/`)
     .end((err, res) => {
       if (err) return onError(err)
       onSuccess(JSON.parse(res.text))
