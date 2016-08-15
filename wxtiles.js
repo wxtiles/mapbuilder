@@ -1,7 +1,7 @@
 import request from 'superagent'
 
 //const server = 'http://localhost:6060'
-const server = 'https://api.wxtiles.com';
+const server = 'https://api.wxtiles.com/v0';
 
 
 // /<ownerID>/layer/
