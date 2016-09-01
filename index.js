@@ -27,6 +27,7 @@ ReactDOM.render(React.createElement(mapSelector, { mapOptions: mapExamples, show
 maps.showMap(defaultMap)
 
 var putLayer = (layerKey, url) => {
+  removeLayer({layerKey})
   activeLayers[layerKey] = { url: url };
 
   //Add this layer to the google map.
