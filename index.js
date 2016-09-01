@@ -60,7 +60,7 @@ var removeLayer = ({layerKey}) => {
   if (leafletMap.hasLayer(activeLayers[layerKey].leafletMapLayer)) leafletMap.removeLayer(activeLayers[layerKey].leafletMapLayer);
   openLayersMap.getLayers().remove(activeLayers[layerKey].openLayersMapLayer);
 
-  activeLayers[layerKey] = undefined;
+  delete activeLayers[layerKey]
 }
 
 var reactMount = document.querySelector('#layerEditor')
