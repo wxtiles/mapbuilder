@@ -50,7 +50,7 @@ class createTileLayer extends React.Component {
           return {value: time, label: time}
         })
         instance.times.reverse()
-        this.setState({selectedInstance: instance, loadingInstance: false})
+        this.setState({selectedInstance: instance, loadingInstance: false, selectedTime: null})
       },
       onError: (error) => console.log(error),
     }
