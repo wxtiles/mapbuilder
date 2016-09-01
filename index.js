@@ -38,8 +38,7 @@ var putLayer = (layerKey, url) => {
   //Add this layer to the leaflet map.
   var leafletMapLayer = leaflet.tileLayer(url, {
     maxZoom: 18,
-    tms: true,
-    opacity: 0.8
+    tms: true
   });
   leafletMapLayer.addTo(leafletMap);
   activeLayers[layerKey].leafletMapLayer = leafletMapLayer;
@@ -51,6 +50,9 @@ var putLayer = (layerKey, url) => {
   activeLayers[layerKey].openLayersMapLayer = openLayersMapLayer;
   //We shift the layer up one level because the base map is is already a layer zero.
   openLayersMap.getLayers().insertAt(layerKey + 1, openLayersMapLayer);
+
+  var defaultOpacity = 0.8
+  setOpacityOfLayer({layerKey, opacity: defaultOpacity})
 }
 
 var removeLayer = ({layerKey}) => {
