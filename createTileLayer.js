@@ -60,10 +60,14 @@ class createTileLayer extends React.Component {
 
   selectTime(time) {
     this.setState({selectedTime: time}, () =>{
+      var timeValue = null
+      if (this.state.selectedTime && this.state.selectedTime.value)
+        timeValue = this.state.selectedTime.value
+
       var getTileLayerUrlOptions = {
         layerId: this.state.selectedLayer.id,
         instanceId: this.state.selectedInstance.instance.id,
-        time: this.state.selectedTime.value,
+        time: timeValue,
         level: 0,
         onSuccess: (url) => {
           this.setState({url})
