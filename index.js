@@ -38,7 +38,8 @@ var putLayer = (layerKey, url) => {
   //Add this layer to the leaflet map.
   var leafletMapLayer = leaflet.tileLayer(url, {
     maxZoom: 18,
-    tms: true
+    tms: true,
+    opacity: 0.8
   });
   leafletMapLayer.addTo(leafletMap);
   activeLayers[layerKey].leafletMapLayer = leafletMapLayer;
@@ -63,5 +64,10 @@ var removeLayer = ({layerKey}) => {
   delete activeLayers[layerKey]
 }
 
+var setOpacityOfLayer = ({layerKey, opacity}) => {
+  var leafletLayer = activeLayers[layerKey].leafletMapLayer
+  leafletLayer.setOpacity(opacity)
+}
+
 var reactMount = document.querySelector('#layerEditor')
-ReactDOM.render(React.createElement(layers, { putLayer, removeLayer }), reactMount)
+ReactDOM.render(React.createElement(layers, { putLayer, removeLayer, setOpacityOfLayer }), reactMount)

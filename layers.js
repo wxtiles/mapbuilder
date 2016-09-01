@@ -48,7 +48,7 @@ class layers extends React.Component {
           React.createElement('div', {className: 'btn btn-success addLayer', onClick: this.addLayerSelectionRow}, 'Add a layer')
         ),
         _.map(this.state.layers, (layerKey) =>
-          (layerKey !== undefined) && React.createElement(createTileLayer, {key: layerKey, layerKey: layerKey, putLayer: this.createLayer, removeLayer: this.removeLayer})
+          (layerKey !== undefined) && React.createElement(createTileLayer, {key: layerKey, layerKey: layerKey, putLayer: this.createLayer, removeLayer: this.removeLayer, setOpacityOfLayer: this.props.setOpacityOfLayer})
         )
       )
     )

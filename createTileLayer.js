@@ -4,6 +4,7 @@ import wxTiles from './wxtiles'
 import select from 'react-select'
 import _ from 'lodash'
 import layerLabel from './layerLabel'
+import rcSlider from 'rc-slider'
 
 class createTileLayer extends React.Component {
   constructor() {
@@ -13,7 +14,8 @@ class createTileLayer extends React.Component {
     this.state.isEditing = true
     this.state.loadingInstance = false
     this.deleteLayer = this.deleteLayer.bind(this)
-    this.edit = this.edit.bind(this);
+    this.edit = this.edit.bind(this)
+    this.setOpacity = this.setOpacity.bind(this)
   }
 
   loadLayersList() {
@@ -87,6 +89,14 @@ class createTileLayer extends React.Component {
     this.props.removeLayer({layerKey: this.props.layerKey})
   }
 
+  setOpacity(opacity) {
+    this.setState({
+      opacity
+    }, () => {
+      this.props.setOpacityOfLayer({layerKey: this.props.layerKey, opacity: this.state.opacity})
+    })
+  }
+
   render() {
     var labelForLayerLabel = 'New layer'
     if (this.state.selectedLayer) {
@@ -121,6 +131,13 @@ class createTileLayer extends React.Component {
                 value: this.state.selectedTime,
                 onChange: (thang) => this.selectTime(thang)
               }),
+              (this.state.loadingInstance == false) && React.createElement('div', {className: 'transparencyContainer'},
+                React.createElement('div', {}, 'Opacity'),
+                React.createElement(rcSlider, {
+                  defaultValue: 80,
+                  onChange: (opacity) => this.setOpacity(opacity/100)
+                })
+              ),
               this.state.loadingInstance && React.createElement('div', {}, 'loading...')
             )
           )
