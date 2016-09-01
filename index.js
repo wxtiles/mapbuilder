@@ -70,7 +70,9 @@ var setOpacityOfLayer = ({layerKey, opacity}) => {
 
   var googleMapLayer = activeLayers[layerKey].googleMapLayer
   googleMapLayer.setOpacity(opacity)
-  
+
+  var openLayersMapLayer = activeLayers[layerKey].openLayersMapLayer
+  openLayersMapLayer.setOpacity(opacity)
 }
 
 var reactMount = document.querySelector('#layerEditor')
