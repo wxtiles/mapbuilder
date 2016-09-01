@@ -9,10 +9,12 @@ class layers extends React.Component {
     this.state = {}
     this.state.layers = []
     this.state.totalLayers = 0
+    this.state.shouldShowLayerMenu = true
 
     this.addLayerSelectionRow = this.addLayerSelectionRow.bind(this)
     this.createLayer = this.createLayer.bind(this)
     this.removeLayer = this.removeLayer.bind(this)
+    this.toggleLayerMenu = this.toggleLayerMenu.bind(this)
   }
 
   componentWillMount() {
@@ -40,18 +42,34 @@ class layers extends React.Component {
     this.props.removeLayer({layerKey})
   }
 
+  toggleLayerMenu() {
+    this.setState({shouldShowLayerMenu: !this.state.shouldShowLayerMenu}, () => {
+      if (this.state.shouldShowLayerMenu)
+        document.querySelector('#layerEditor').style['max-width'] = '100%'
+      else
+        document.querySelector('#layerEditor').style['max-width'] = '50px'
+    })
+  }
+
   render() {
+    var pullyTabDirection = 'left'
+    if (this.state.shouldShowLayerMenu == false) pullyTabDirection = 'right'
     return React.createElement('div', {className: 'layers'},
-      React.createElement('div', { className: 'paddingContainer'},
-        React.createElement('img', {src:'wxtiles-logo.png'})
-      ),
-      React.createElement('ul', {},
-        React.createElement('li', {className: 'addLayerRow'},
-          React.createElement('div', {className: 'btn btn-success addLayer', onClick: this.addLayerSelectionRow}, 'Add a layer')
+      this.state.shouldShowLayerMenu && React.createElement('div', {},
+        React.createElement('div', { className: 'paddingContainer'},
+          React.createElement('img', {src:'wxtiles-logo.png'})
         ),
-        _.map(this.state.layers, (layerKey) =>
-          (layerKey !== undefined) && React.createElement(createTileLayer, {key: layerKey, layerKey: layerKey, putLayer: this.createLayer, removeLayer: this.removeLayer, setOpacityOfLayer: this.props.setOpacityOfLayer})
+        React.createElement('ul', {},
+          React.createElement('li', {className: 'addLayerRow'},
+            React.createElement('div', {className: 'btn btn-success addLayer', onClick: this.addLayerSelectionRow}, 'Add a layer')
+          ),
+          _.map(this.state.layers, (layerKey) =>
+            (layerKey !== undefined) && React.createElement(createTileLayer, {key: layerKey, layerKey: layerKey, putLayer: this.createLayer, removeLayer: this.removeLayer, setOpacityOfLayer: this.props.setOpacityOfLayer})
+          )
         )
+      ),
+      React.createElement('div', {className: 'pullyTab'},
+        React.createElement('div', {className: 'glyphicon glyphicon-menu-'+pullyTabDirection, onClick: this.toggleLayerMenu}, '')
       )
     )
   }
