@@ -60,14 +60,10 @@ class createTileLayer extends React.Component {
 
   selectTime(time) {
     this.setState({selectedTime: time}, () =>{
-      var timeValue = null
-      if (this.state.selectedTime && this.state.selectedTime.value)
-        timeValue = this.state.selectedTime.value
-
       var getTileLayerUrlOptions = {
         layerId: this.state.selectedLayer.id,
         instanceId: this.state.selectedInstance.instance.id,
-        time: timeValue,
+        time: this.state.selectedTime.value,
         level: 0,
         onSuccess: (url) => {
           this.setState({url})
@@ -133,6 +129,7 @@ class createTileLayer extends React.Component {
                 options: this.state.selectedInstance.times,
                 placeholder: 'Select a time',
                 value: this.state.selectedTime,
+                clearable: false,
                 onChange: (thang) => this.selectTime(thang)
               }),
               (this.state.loadingInstance == false) && React.createElement('div', {className: 'transparencyContainer'},
