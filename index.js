@@ -67,6 +67,10 @@ var removeLayer = ({layerKey}) => {
 var setOpacityOfLayer = ({layerKey, opacity}) => {
   var leafletLayer = activeLayers[layerKey].leafletMapLayer
   leafletLayer.setOpacity(opacity)
+
+  var googleMapLayer = activeLayers[layerKey].googleMapLayer
+  googleMapLayer.setOpacity(opacity)
+  
 }
 
 var reactMount = document.querySelector('#layerEditor')
