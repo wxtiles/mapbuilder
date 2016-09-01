@@ -53,9 +53,13 @@ class layers extends React.Component {
 
   render() {
     var pullyTabDirection = 'left'
-    if (this.state.shouldShowLayerMenu == false) pullyTabDirection = 'right'
+    var layersClassName = ''
+    if (this.state.shouldShowLayerMenu == false) {
+      pullyTabDirection = 'right'
+      layersClassName = 'shouldHide'
+    }
     return React.createElement('div', {className: 'layers'},
-      this.state.shouldShowLayerMenu && React.createElement('div', {},
+      React.createElement('div', {className: layersClassName},
         React.createElement('div', { className: 'paddingContainer'},
           React.createElement('img', {src:'wxtiles-logo.png'})
         ),
