@@ -80,6 +80,7 @@ class createTileLayer extends React.Component {
   }
 
   edit() {
+    if (this.state.selectedLayer == null) return
     this.setState({
       isEditing: !this.state.isEditing
     })
