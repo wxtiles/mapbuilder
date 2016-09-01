@@ -10,13 +10,11 @@ maps.mountLeafletMap = () => {
     attributionControl: false
   }).setView([-20, 160], 2)
 
-  // Stamen Terrain
-  var baseMap = leaflet.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/terrain-background/{z}/{x}/{y}.{ext}', {
-    attribution: 'Base map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; base map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+  var baseMap = leaflet.tileLayer('http://stamen-tiles-{s}.a.ssl.fastly.net/toner-lite/{z}/{x}/{y}.png', {
+    attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
     subdomains: 'abcd',
     minZoom: 0,
-    maxZoom: 18,
-    ext: 'png'
+    maxZoom: 20,
   }).addTo(leafletMap)
 
   //Keep a reference to the map so we can reset it after showing and hiding.
