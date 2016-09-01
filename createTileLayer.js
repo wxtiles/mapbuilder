@@ -135,7 +135,8 @@ class createTileLayer extends React.Component {
                 React.createElement('div', {}, 'Opacity'),
                 React.createElement(rcSlider, {
                   defaultValue: 80,
-                  onChange: (opacity) => this.setOpacity(opacity/100)
+                  onChange: (opacity) => this.setOpacity(opacity/100),
+                  disabled: this.state.selectedTime == null
                 })
               ),
               this.state.loadingInstance && React.createElement('div', {}, 'loading...')
