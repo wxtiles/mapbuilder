@@ -6,6 +6,7 @@ import _ from 'lodash'
 import layerLabel from './layerLabel'
 import rcSlider from 'rc-slider'
 import legend from './legend'
+import timeSelector from './timeSelector'
 
 class createTileLayer extends React.Component {
   constructor() {
@@ -128,11 +129,8 @@ class createTileLayer extends React.Component {
                 value: this.state.selectedInstance.instance.id,
                 onChange: (thing) => this.selectInstance(thing)
               }),
-              (this.state.loadingInstance == false) && React.createElement(select, {
-                options: this.state.selectedInstance.times,
-                placeholder: 'Select a time',
-                value: this.state.selectedTime,
-                clearable: false,
+              (this.state.loadingInstance == false) && React.createElement(timeSelector, {
+                times: this.state.selectedInstance.times,
                 onChange: (thang) => this.selectTime(thang)
               }),
               (this.state.loadingInstance == false) && React.createElement('div', {className: 'transparencyContainer'},
