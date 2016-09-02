@@ -17,7 +17,15 @@ class legend extends React.Component {
   }
 
   componentWillReceiveProps(props) {
-    this.setState({imageHasLoaded: false})
+    if(this.state.layerId != props.layerId && this.state.instanceId != props.instanceId) {
+      console.log('test')
+      this.setState({imageHasLoaded: false})
+    }
+    this.setState({
+      layerId: props.layerId,
+      instanceId: props.instanceId
+    })
+
     if(props.layerId && props.instanceId) {
       wxtilesjs.getLegendUrl({
         layerId: props.layerId,
