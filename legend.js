@@ -18,7 +18,6 @@ class legend extends React.Component {
 
   componentWillReceiveProps(props) {
     if(this.state.layerId != props.layerId && this.state.instanceId != props.instanceId) {
-      console.log('test')
       this.setState({imageHasLoaded: false})
     }
     this.setState({
@@ -41,7 +40,6 @@ class legend extends React.Component {
   }
 
   legendLoaded() {
-    console.log('image has loaded')
     this.setState({imageHasLoaded: true})
   }
 
