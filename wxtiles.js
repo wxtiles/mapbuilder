@@ -6,7 +6,6 @@ const server = 'https://api.wxtiles.com/v0';
 
 // /<ownerID>/layer/
 var getAllLayers = (onSuccess, onError) => {
-  console.trace()
   request
     .get(`${server}/wxtiles/layer/`)
     .end((err, res) => {
@@ -50,6 +49,12 @@ var getTileLayerUrl = ({layerId, instanceId, time, level, onSuccess, onError}) =
   onSuccess(`${server}/wxtiles/tile/${layerId}/${instanceId}/${time}/${level}/{z}/{x}/{y}.png`)
 }
 
+// https://api.wxtiles.com/v0/{ownerId}/legend/{layerId}/{instanceId}/{size}/{orientation}.png
+var getLegendUrl = ({layerId, instanceId, onSuccess, onError}) => {
+  onSuccess(`${server}/wxtiles/legend/${layerId}/${instanceId}/small/horizontal.png`)
+}
+
+
 //Call this with your url and plug the returned object into google maps.
 //E.G:
 //var mapLayer = wxTiles.google.getImageMapType(layerTilesUrl);
@@ -62,7 +67,7 @@ googleMaps.getImageMapType = (layerTilesUrl) => {
     },
     tileSize: new google.maps.Size(256, 256),
     isPng: true
-  });
+  })
 }
 
-export default {getAllLayers, getTimesForInstance, getTileLayerUrl, googleMaps, getInstance}
+export default {getAllLayers, getTimesForInstance, getTileLayerUrl, googleMaps, getInstance, getLegendUrl}

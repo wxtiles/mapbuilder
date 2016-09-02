@@ -5,6 +5,7 @@ import select from 'react-select'
 import _ from 'lodash'
 import layerLabel from './layerLabel'
 import rcSlider from 'rc-slider'
+import legend from './legend'
 
 class createTileLayer extends React.Component {
   constructor() {
@@ -109,6 +110,7 @@ class createTileLayer extends React.Component {
           React.createElement('div', {onClick: this.edit},
             React.createElement(layerLabel, {deleteLayer: this.deleteLayer, label: labelForLayerLabel, isCollapsed: this.state.isEditing})
           ),
+          React.createElement(legend, {layerId: _.get(this.state, 'selectedLayer.id', null), instanceId: _.get(this.state, 'selectedInstance.instance.id', null)}),
           this.state.isEditing && React.createElement('div', {},
             (this.state.loadedLayers == null) && React.createElement('div', null, 'Downloading layers...'),
             this.state.loadedLayers && React.createElement('div', {},
