@@ -25,7 +25,6 @@ class legend extends React.Component {
       })
     }
 
-
     if(props.layerId && props.instanceId) {
       wxtilesjs.getLegendUrl({
         layerId: props.layerId,

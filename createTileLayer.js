@@ -6,6 +6,7 @@ import _ from 'lodash'
 import layerLabel from './layerLabel'
 import rcSlider from 'rc-slider'
 import legend from './legend'
+import timeSelector from './timeSelector'
 
 class createTileLayer extends React.Component {
   constructor() {
@@ -14,6 +15,7 @@ class createTileLayer extends React.Component {
     this.state.selectedLayer = null
     this.state.isEditing = true
     this.state.loadingInstance = false
+    this.state.opacity = 0.8
     this.deleteLayer = this.deleteLayer.bind(this)
     this.edit = this.edit.bind(this)
     this.setOpacity = this.setOpacity.bind(this)
@@ -64,7 +66,7 @@ class createTileLayer extends React.Component {
       var getTileLayerUrlOptions = {
         layerId: this.state.selectedLayer.id,
         instanceId: this.state.selectedInstance.instance.id,
-        time: this.state.selectedTime.value,
+        time: this.state.selectedTime,
         level: 0,
         onSuccess: (url) => {
           this.setState({url})
@@ -104,6 +106,8 @@ class createTileLayer extends React.Component {
     if (this.state.selectedLayer) {
       labelForLayerLabel = this.state.selectedLayer.label
     }
+    var classesForControls = ' hideControls'
+    if (this.state.isEditing) classesForControls = ''
     return React.createElement('li', {className: 'createTileLayer'},
       React.createElement('div', {className: 'select-container'},
         React.createElement('div', {className: 'select-list'},
@@ -111,7 +115,7 @@ class createTileLayer extends React.Component {
             React.createElement(layerLabel, {deleteLayer: this.deleteLayer, label: labelForLayerLabel, isCollapsed: this.state.isEditing})
           ),
           React.createElement(legend, {layerId: _.get(this.state, 'selectedLayer.id', null), instanceId: _.get(this.state, 'selectedInstance.instance.id', null)}),
-          this.state.isEditing && React.createElement('div', {},
+          React.createElement('div', {className: classesForControls},
             (this.state.loadedLayers == null) && React.createElement('div', null, 'Downloading layers...'),
             this.state.loadedLayers && React.createElement('div', {},
               React.createElement(select, {
@@ -128,17 +132,15 @@ class createTileLayer extends React.Component {
                 value: this.state.selectedInstance.instance.id,
                 onChange: (thing) => this.selectInstance(thing)
               }),
-              (this.state.loadingInstance == false) && React.createElement(select, {
-                options: this.state.selectedInstance.times,
-                placeholder: 'Select a time',
-                value: this.state.selectedTime,
-                clearable: false,
-                onChange: (thang) => this.selectTime(thang)
+              (this.state.loadingInstance == false) && React.createElement(timeSelector, {
+                times: this.state.selectedInstance.times,
+                selectedTime: this.state.selectedTime,
+                updateTime: (thang) => this.selectTime(thang)
               }),
               (this.state.loadingInstance == false) && React.createElement('div', {className: 'transparencyContainer'},
                 React.createElement('div', {}, 'Opacity'),
                 React.createElement(rcSlider, {
-                  defaultValue: 80,
+                  defaultValue: this.state.opacity * 100,
                   onChange: (opacity) => this.setOpacity(opacity/100),
                   disabled: this.state.selectedTime == null
                 })

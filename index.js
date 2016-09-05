@@ -27,6 +27,10 @@ ReactDOM.render(React.createElement(mapSelector, { mapOptions: mapExamples, show
 maps.showMap(defaultMap)
 
 var putLayer = (layerKey, url) => {
+  var layerDidExist = activeLayers[layerKey] != null
+  var opacity = 0.8
+  if (layerDidExist) opacity = activeLayers[layerKey].googleMapLayer.getOpacity()
+
   removeLayer({layerKey})
   activeLayers[layerKey] = { url: url };
 
@@ -51,8 +55,7 @@ var putLayer = (layerKey, url) => {
   //We shift the layer up one level because the base map is is already a layer zero.
   openLayersMap.getLayers().insertAt(layerKey + 1, openLayersMapLayer);
 
-  var defaultOpacity = 0.8
-  setOpacityOfLayer({layerKey, opacity: defaultOpacity})
+  setOpacityOfLayer({layerKey, opacity})
 }
 
 var removeLayer = ({layerKey}) => {
