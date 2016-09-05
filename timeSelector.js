@@ -55,7 +55,7 @@ class timeSelector extends React.Component {
       this.timeSelected(+moment.utc(sortedTimes[index].value))
 
       this.doAnimationFrame()
-    }, 3000)
+    }, 350)
 
     this.setState({timeoutKey})
   }

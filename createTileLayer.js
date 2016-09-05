@@ -69,8 +69,7 @@ class createTileLayer extends React.Component {
         time: this.state.selectedTime,
         level: 0,
         onSuccess: (url) => {
-          this.setState({url})
-          this.props.putLayer({layerKey: this.props.layerKey, url: url})
+          this.props.putLayer({layerKey: this.props.layerKey, url})
         },
         onError: (err) => console.log(err),
       }
