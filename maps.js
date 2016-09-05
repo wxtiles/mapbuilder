@@ -72,6 +72,7 @@ maps.showMap = (selectedMap) => {
   //Poke the maps so they render correctly after being hidden.
   maps.leafletMap.invalidateSize()
   var center = maps.googleMap.getCenter();
+  maps.openLayersMap.updateSize()
   google.maps.event.trigger(googleMap, 'resize');
   maps.googleMap.setCenter(center);
 }
