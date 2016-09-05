@@ -93,6 +93,7 @@ var setOpacityOfLayerAndUrl = ({layerKey, url, opacity}) => {
 
 var setOpacityOfLayer = ({layerKey, opacity}) => {
   activeLayers[layerKey].opacity = opacity
+  setOpacityOfLayerAndUrl({layerKey, url: activeLayers[layerKey].activeUrl, opacity})
 }
 
 var reactMount = document.querySelector('#layerEditor')
