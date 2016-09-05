@@ -33,12 +33,12 @@ class timeSelector extends React.Component {
   }
 
   timeSelected(time) {
-    this.setState({selectedTime: time})
+    this.setState({selectedTime: time, hoveringOverTime: time})
     this.props.updateTime(moment.utc(time).format('YYYY-MM-DDTHH:mm:ss[Z]'))
   }
 
   updateHoveringOverTime(time) {
-    this.setState({hoveringOverTime: time})
+    this.setState({hoveringOverTime: time, isAnimating: false})
   }
 
   doAnimationFrame() {
