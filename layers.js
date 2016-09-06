@@ -61,7 +61,9 @@ class layers extends React.Component {
     return React.createElement('div', {className: 'layers'},
       React.createElement('div', {className: layersClassName},
         React.createElement('div', { className: 'paddingContainer'},
-          React.createElement('img', {src:'wxtiles-logo.png'})
+          React.createElement('a', {href:'https://wxtiles.com'},
+            React.createElement('img', {src:'wxtiles-logo.png'})
+          )
         ),
         React.createElement('ul', {},
           React.createElement('li', {className: 'addLayerRow'},
