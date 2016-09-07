@@ -52,19 +52,8 @@ class layers extends React.Component {
   }
 
   render() {
-    var pullyTabDirection = 'left'
-    var layersClassName = ''
-    if (this.state.shouldShowLayerMenu == false) {
-      pullyTabDirection = 'right'
-      layersClassName = 'shouldHide'
-    }
     return React.createElement('div', {className: 'layers'},
-      React.createElement('div', {className: layersClassName},
-        React.createElement('div', { className: 'paddingContainer'},
-          React.createElement('a', {href:'https://wxtiles.com'},
-            React.createElement('img', {src:'wxtiles-logo.png'})
-          )
-        ),
+      React.createElement('div', {},
         React.createElement('ul', {},
           React.createElement('li', {className: 'addLayerRow'},
             React.createElement('div', {className: 'btn btn-success addLayer', onClick: this.addLayerSelectionRow}, 'Add a layer')
@@ -73,9 +62,6 @@ class layers extends React.Component {
             (layerKey !== undefined) && React.createElement(createTileLayer, {key: layerKey, layerKey: layerKey, putLayer: this.createLayer, removeLayer: this.removeLayer, setOpacityOfLayer: this.props.setOpacityOfLayer})
           )
         )
-      ),
-      React.createElement('div', {className: 'pullyTab'},
-        React.createElement('div', {className: 'glyphicon glyphicon-menu-'+pullyTabDirection, onClick: this.toggleLayerMenu}, '')
       )
     )
   }

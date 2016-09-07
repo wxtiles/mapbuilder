@@ -15,10 +15,37 @@ body {
   overflow-y: hidden;
 }
 
+.hideOrShowLayerEditor {
+  position: absolute;
+  font-size: 15px;
+  top: 35px;
+  left: 180px;
+  z-index: 5;
+}
+
 .mapContainer {
   position: relative;
   height: 100%;
   width: 100%;
+
+  &.editorIsHidden {
+    .mapSelectorContainer {
+      margin-left:480px
+    }
+
+    .logo {
+      margin-left: 490px;
+    }
+  }
+
+  .logo {
+    position: absolute;
+    margin-left: 10px;
+    max-height: 75px;
+    img {
+      height: 100%;
+    }
+  }
   .wxtilesLogo {
     position: absolute;
     bottom: 20px;
@@ -28,8 +55,7 @@ body {
     opacity: 0.7;
   }
   .mapSelectorContainer {
-    height: 8%;
-    margin-bottom:  20px;
+    height: 85px;
   }
   .map {
     height: 90%;
