@@ -5,25 +5,9 @@
   <link rel="stylesheet" type="text/css" href="dist.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ol3/3.17.1/ol-debug.css" type="text/css">
 </head>
-
-<script>
-  var shouldShowLayerMenu = true
-  var toggleLayerEditor = function() {
-    shouldShowLayerMenu = !shouldShowLayerMenu
-    if (shouldShowLayerMenu) {
-      document.querySelector('#hideLayerEditorLink').innerText = "Hide layer editor"
-      document.querySelector('#layerEditor').style['display'] = 'block'
-      document.querySelector('.mapContainer').className = 'mapContainer'
-    } else {
-      document.querySelector('#hideLayerEditorLink').innerText = "Show layer editor"
-      document.querySelector('#layerEditor').style['display'] = 'none'
-      document.querySelector('.mapContainer').className = 'mapContainer editorIsHidden'
-    }
-  }
-</script>
 <body>
   <div id="hideLayerEditor" class="hideOrShowLayerEditor">
-    <a id="hideLayerEditorLink" href="#" onclick="toggleLayerEditor()">Hide layer editor</a>
+
   </div>
   <div id="layerEditor" class="layers-container"></div>
   <div class="mapContainer">

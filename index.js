@@ -6,6 +6,9 @@ import mapSelector from './mapSelector/mapSelector'
 import maps from './maps'
 import leaflet from 'leaflet'
 import wxTiles from './wxtiles'
+import hideLayer from './hideLayer'
+
+ReactDOM.render(React.createElement(hideLayer), document.querySelector('#hideLayerEditor'))
 
 //Prepare the maps.
 var mapExamples = [

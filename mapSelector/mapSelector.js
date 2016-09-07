@@ -18,8 +18,8 @@ class mapSelector extends React.Component {
 
   render() {
     return React.createElement('div', null,
-      React.createElement('div', { className: 'row mapSelector' }, 'Select map technology '),
-      React.createElement('div', { className: 'row btn-group col-sm-6 col-sm-offset-3' },
+      React.createElement('div', { className: 'row mapSelector col-sm 6 col-sm-offset-6' }, 'Select map technology '),
+      React.createElement('div', { className: 'row btn-group col-sm-6 col-sm-offset-6' },
         _.map(this.props.mapOptions, (mapOption) => {
           var buttonSelected = this.state.selectedMap === mapOption;
           return React.createElement(mapButton, { key: mapOption.value, mapOption: mapOption, selectMap: this.changeMap, selected: buttonSelected })

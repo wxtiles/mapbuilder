@@ -62,13 +62,7 @@ maps.mountOpenLayersMap = () => {
   return openLayersMap;
 }
 
-maps.showMap = (selectedMap) => {
-  document.getElementById('leafletMap').style.display = 'none';
-  document.getElementById('googleMap').style.display = 'none';
-  document.getElementById('openLayersMap').style.display = 'none';
-
-  document.getElementById(`${selectedMap.value}Map`).style.display = 'block';
-
+maps.poke = () => {
   //Poke the maps so they render correctly after being hidden.
   maps.leafletMap.invalidateSize()
   var center = maps.googleMap.getCenter();
@@ -76,5 +70,17 @@ maps.showMap = (selectedMap) => {
   google.maps.event.trigger(googleMap, 'resize');
   maps.googleMap.setCenter(center);
 }
+
+maps.showMap = (selectedMap) => {
+  document.getElementById('leafletMap').style.display = 'none';
+  document.getElementById('googleMap').style.display = 'none';
+  document.getElementById('openLayersMap').style.display = 'none';
+
+  document.getElementById(`${selectedMap.value}Map`).style.display = 'block';
+
+  maps.poke()
+}
+
+
 
 export default maps
