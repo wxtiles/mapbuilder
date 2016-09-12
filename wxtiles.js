@@ -1,52 +1,46 @@
-import request from 'superagent'
+//Change callbacks from the wxTiles api format:
+//  callback(error, data, response)
+//to this example's way:
+//onSuccess(data), onError(error) 
+var callbackAdapter = (onSuccess, onError) => {
+  return (error, data, response) => {
+    if(error) onError(error);
+    else onSuccess(data);
+  }
+}
 
-//const server = 'http://localhost:6060'
-const server = 'https://api.wxtiles.com/v0';
 
 
 // /<ownerID>/layer/
 var getAllLayers = (onSuccess, onError) => {
-  request
-    .get(`${server}/wxtiles/layer/`)
-    .end((err, res) => {
-      if (err) return onError(err)
-      onSuccess(JSON.parse(res.text))
-    })
+  //Make new adapter
+  var callback = callbackAdapter(onSuccess, onError);
+  wxTiles.getLayers("wxtiles", {}, callback);
 }
 
 var getInstance = ({layerId, instanceId, onSuccess, onError}) => {
-  request
-    .get(`${server}/wxtiles/layer/${layerId}/instance/${instanceId}/`)
-    .end((err, res) => {
-      if (err) return onError(err)
-      onSuccess(res.body)
-    })
+  //Make new adapter
+  var callback = callbackAdapter(onSuccess, onError);
+  wxTiles.getInstance("wxtiles", layerId, instanceId, {}, callback);
 }
 
 // /<ownerID>/layer/<layerID>/<instanceID>/times/
 var getTimesForInstance = (options) => {
-  request
-    .get(`${server}/wxtiles/layer/${options.layerId}/instance/${options.instanceId}/times/`)
-    .end((err, res) => {
-      if (err) return options.onError(err)
-      options.onSuccess(JSON.parse(res.text))
-    })
+  //Make new adapter
+  var callback = callbackAdapter(onSuccess, onError);
+  wxTiles.getTimes("wxtiles", options.layerId, options.instanceId, {}, callback);
 }
 
 // /<ownerID>/layer/<layerID>/<instanceID>/levels/
 var getLevelsForInstance = (options) => {
-  request
-    .get(`${server}/wxtiles/layer/${options.layerId}/instance/${options.instanceId}/levels/`)
-    .end((err, res) => {
-      if (err) return options.onError(err)
-      options.onSuccess(JSON.parse(res.text))
-    })
+  //Make new adapter
+  var callback = callbackAdapter(onSuccess, onError);
+  wxTiles.getLevels("wxtiles", options.layerId, options.instanceId, {}, callback);
 }
 
 // /<ownerID>/tile/<layerID>/<instanceID>/<time>/<level>/<z>/<x>/<y>.<extension>
 var getTileLayerUrl = ({layerId, instanceId, time, level, onSuccess, onError}) => {
-  level = level || 0
-  onSuccess(`${server}/wxtiles/tile/${layerId}/${instanceId}/${time}/${level}/{z}/{x}/{y}.png`)
+  onSuccess(wxTiles.getPNGTileURL("wxtiles", layerId, instanceId, time, level));
 }
 
 // https://api.wxtiles.com/v0/{ownerId}/legend/{layerId}/{instanceId}/{size}/{orientation}.png
@@ -59,15 +53,6 @@ var getLegendUrl = ({layerId, instanceId, onSuccess, onError}) => {
 //E.G:
 //var mapLayer = wxTiles.google.getImageMapType(layerTilesUrl);
 //googleMap.overlayMapTypes.setAt(layerKey, mapLayer);
-var googleMaps = {}
-googleMaps.getImageMapType = (layerTilesUrl) => {
-  return new google.maps.ImageMapType({
-    getTileUrl: (coord, zoom) => {
-      return layerTilesUrl.replace('{z}', zoom).replace('{x}', coord.x).replace('{y}', (Math.pow(2, zoom) - coord.y - 1));
-    },
-    tileSize: new google.maps.Size(256, 256),
-    isPng: true
-  })
-}
+var googleMaps = wxTiles.googleMaps;
 
-export default {getAllLayers, getTimesForInstance, getTileLayerUrl, googleMaps, getInstance, getLegendUrl}
+export default { getAllLayers, getTimesForInstance, getTileLayerUrl, googleMaps, getInstance, getLegendUrl }
