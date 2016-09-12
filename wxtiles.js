@@ -2,7 +2,6 @@ import request from 'superagent'
 
 //const server = 'http://localhost:6060'
 const server = 'https://api.wxtiles.com/v0';
-const subdomains = ['a', 'b']
 
 
 // /<ownerID>/layer/
@@ -47,18 +46,14 @@ var getLevelsForInstance = (options) => {
 // /<ownerID>/tile/<layerID>/<instanceID>/<time>/<level>/<z>/<x>/<y>.<extension>
 var getTileLayerUrl = ({layerId, instanceId, time, level, onSuccess, onError}) => {
   level = level || 0
-  onSuccess({
-    key: `layerId:${layerId}-instanceId:${instanceId}-time:${time}-level:${level}`,
-    subdomains: subdomains,
-    leafletUrl: `https://{s}-api.wxtiles.com/v0/wxtiles/tile/${layerId}/${instanceId}/${time}/${level}/{z}/{x}/{y}.png`,
-    googleMapsUrl: `https://api.wxtiles.com/v0/wxtiles/tile/${layerId}/${instanceId}/${time}/${level}/{z}/{x}/{y}.png`,
-    openLayersUrl: `https://{${subdomains[0]}-${subdomains[subdomains.length-1]}}-api.wxtiles.com/v0/wxtiles/tile/${layerId}/${instanceId}/${time}/${level}/{z}/{x}/{-y}.png`
-  })
+  onSuccess(`${server}/wxtiles/tile/${layerId}/${instanceId}/${time}/${level}/{z}/{x}/{y}.png`)
 }
 
+// https://api.wxtiles.com/v0/{ownerId}/legend/{layerId}/{instanceId}/{size}/{orientation}.png
 var getLegendUrl = ({layerId, instanceId, onSuccess, onError}) => {
   onSuccess(`${server}/wxtiles/legend/${layerId}/${instanceId}/small/horizontal.png`)
 }
+
 
 //Call this with your url and plug the returned object into google maps.
 //E.G:
