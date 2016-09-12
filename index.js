@@ -29,42 +29,42 @@ ReactDOM.render(React.createElement(mapSelector, { mapOptions: mapExamples, show
 
 maps.showMap(defaultMap)
 var counter = 1
-var putLayer = (layerKey, url) => {
+var putLayer = (layerKey, tileLayerUrls) => {
   if (!activeLayers[layerKey]) {
-    activeLayers[layerKey] = {opacity: 0.8, activeUrl: url}
+    activeLayers[layerKey] = {opacity: 0.8, tileLayerUrls: tileLayerUrls}
   }
-  var layer = activeLayers[layerKey][url]
+  var layer = activeLayers[layerKey][tileLayerUrls.key]
   var layerAlreadyExists = (layer != null)
   if(layerAlreadyExists) {
-    setOpacityOfLayerAndUrl({layerKey, url: activeLayers[layerKey].activeUrl, opacity: 0})
-    activeLayers[layerKey].activeUrl = url
-    setOpacityOfLayerAndUrl({layerKey, url: url, opacity: activeLayers[layerKey].opacity})
+    setOpacityOfLayerAndUrl({layerKey, activeTileLayerUrls: activeLayers[layerKey].tileLayerUrls, opacity: 0})
+    activeLayers[layerKey].activeTileLayerUrls = tileLayerUrls
+    setOpacityOfLayerAndUrl({layerKey, activeTileLayerUrls: tileLayerUrls, opacity: activeLayers[layerKey].opacity})
     return
   }
-  activeLayers[layerKey][url] = {}
+  activeLayers[layerKey][tileLayerUrls.key] = {}
 
   //Add this layer to the google map.
-  var googleMapLayer = wxTiles.googleMaps.getImageMapType(url);
+  var googleMapLayer = wxTiles.googleMaps.getImageMapType(tileLayerUrls.googleMapsUrl);
   googleMap.overlayMapTypes.setAt(counter, googleMapLayer);
   counter++
-  activeLayers[layerKey][url].googleMapLayer = googleMapLayer;
+  activeLayers[layerKey][tileLayerUrls.key].googleMapLayer = googleMapLayer;
 
   //Add this layer to the leaflet map.
-  var leafletMapLayer = leaflet.tileLayer(url, {
+  var leafletMapLayer = leaflet.tileLayer(tileLayerUrls.leafletUrl, {
     maxZoom: 18,
-    tms: true
+    tms: true,
+    subdomains: tileLayerUrls.subdomains
   });
   leafletMapLayer.addTo(leafletMap);
-  activeLayers[layerKey][url].leafletMapLayer = leafletMapLayer;
+  activeLayers[layerKey][tileLayerUrls.key].leafletMapLayer = leafletMapLayer;
 
   //Add this layer to the openLayers map.
   var openLayersSource = new ol.source.XYZ();
-  openLayersSource.setUrl(url.replace('{y}', '{-y}'));
+  openLayersSource.setUrl(tileLayerUrls.openLayersUrl);
   var openLayersMapLayer = new ol.layer.Tile({source: openLayersSource});
-  activeLayers[layerKey][url].openLayersMapLayer = openLayersMapLayer;
+  activeLayers[layerKey][tileLayerUrls.key].openLayersMapLayer = openLayersMapLayer;
   //We shift the layer up one level because the base map is is already a layer zero.
   openLayersMap.getLayers().insertAt(counter, openLayersMapLayer);
-
   setOpacityOfLayer({layerKey, opacity: activeLayers[layerKey].opacity})
 }
 
@@ -81,8 +81,8 @@ var removeLayer = ({layerKey, url}) => {
   delete activeLayers[layerKey]
 }
 
-var setOpacityOfLayerAndUrl = ({layerKey, url, opacity}) => {
-  var layerInQuestion = activeLayers[layerKey][url]
+var setOpacityOfLayerAndUrl = ({layerKey, activeTileLayerUrls, opacity}) => {
+  var layerInQuestion = activeLayers[layerKey][activeTileLayerUrls.key]
 
   var leafletLayer = layerInQuestion.leafletMapLayer
   leafletLayer.setOpacity(opacity)
@@ -96,7 +96,7 @@ var setOpacityOfLayerAndUrl = ({layerKey, url, opacity}) => {
 
 var setOpacityOfLayer = ({layerKey, opacity}) => {
   activeLayers[layerKey].opacity = opacity
-  setOpacityOfLayerAndUrl({layerKey, url: activeLayers[layerKey].activeUrl, opacity})
+  setOpacityOfLayerAndUrl({layerKey, activeTileLayerUrls: activeLayers[layerKey].tileLayerUrls, opacity})
 }
 
 var reactMount = document.querySelector('#layerEditor')

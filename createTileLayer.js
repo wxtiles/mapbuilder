@@ -68,8 +68,8 @@ class createTileLayer extends React.Component {
         instanceId: this.state.selectedInstance.instance.id,
         time: this.state.selectedTime,
         level: 0,
-        onSuccess: (url) => {
-          this.props.putLayer({layerKey: this.props.layerKey, url})
+        onSuccess: (tileLayerUrls) => {
+          this.props.putLayer({layerKey: this.props.layerKey, tileLayerUrls})
         },
         onError: (err) => console.log(err),
       }
