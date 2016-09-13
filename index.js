@@ -54,6 +54,21 @@ var putLayer = (layerKey, url) => {
     maxZoom: 18,
     tms: true
   });
+
+  //Leaflet does not handle tiles failing to load.
+  //This little hack will cause leaflet to reload the layer if a tile errors
+  var redrawTimeout = null
+  var queueRedraw = () => {
+    if (!redrawTimeout) {
+      redrawTimeout = setTimeout(() => {
+        leafletMapLayer.redraw()
+        redrawTimeout = null
+      }, 2000)
+    }
+  }
+  leafletMapLayer.on('tileerror', (errorObject) => {
+    queueRedraw()
+  })
   leafletMapLayer.addTo(leafletMap);
   activeLayers[layerKey][url].leafletMapLayer = leafletMapLayer;
 
