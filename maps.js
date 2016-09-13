@@ -19,7 +19,12 @@ maps.mountLeafletMap = () => {
 
   //Keep a reference to the map so we can reset it after showing and hiding.
   maps.leafletMap = leafletMap;
+  maps.leafletMap.on('moveend', () => maps.setBounds({bounds: maps.leafletMap.getBounds()}))
   return leafletMap;
+}
+
+maps.setBounds = ({center, zoom}) => {
+  maps.leafletMap.setView(center, zoom)
 }
 
 maps.mountGoogleMap = () => {
@@ -69,6 +74,10 @@ maps.poke = () => {
   maps.openLayersMap.updateSize()
   google.maps.event.trigger(googleMap, 'resize');
   maps.googleMap.setCenter(center);
+}
+
+maps.goTo = ({bounds}) => {
+  console.log(bounds)
 }
 
 maps.showMap = (selectedMap) => {
