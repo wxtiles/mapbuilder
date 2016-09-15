@@ -41,7 +41,7 @@ class createTileLayer extends React.Component {
       instance.label = instance.id
       return instance
     })
-    this.setState({selectedLayer: layer, instances: instances}, () => this.selectInstance(instances[0]))
+    this.setState({selectedLayer: layer, instances: instances, hasLegend: layer.resources.legend}, () => this.selectInstance(instances[0]))
   }
 
   selectInstance(instance) {
@@ -113,7 +113,7 @@ class createTileLayer extends React.Component {
           React.createElement('div', {onClick: this.edit},
             React.createElement(layerLabel, {deleteLayer: this.deleteLayer, label: labelForLayerLabel, isCollapsed: this.state.isEditing})
           ),
-          React.createElement(legend, {layerId: _.get(this.state, 'selectedLayer.id', null), instanceId: _.get(this.state, 'selectedInstance.instance.id', null)}),
+          this.state.hasLegend && React.createElement(legend, {layerId: _.get(this.state, 'selectedLayer.id', null), instanceId: _.get(this.state, 'selectedInstance.instance.id', null)}),
           React.createElement('div', {className: classesForControls},
             (this.state.loadedLayers == null) && React.createElement('div', null, 'Downloading layers...'),
             this.state.loadedLayers && React.createElement('div', {},
