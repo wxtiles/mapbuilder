@@ -38,9 +38,10 @@ class createTileLayer extends React.Component {
   selectLayer(layer) {
     var instances = _.map(layer.instances, (instance) => {
       instance.value = instance.id
-      instance.label = instance.id
+      instance.label = "Instance: " + instance.displayName
       return instance
     })
+    instances = _.sortBy(instances, (instance) => { return instance.displayName }).reverse(),
     this.setState({selectedLayer: layer, instances: instances}, () => this.selectInstance(instances[0]))
   }
 
@@ -126,7 +127,7 @@ class createTileLayer extends React.Component {
             ),
             this.state.selectedInstance && React.createElement('div', {},
               React.createElement(select, {
-                options: this.state.selectedLayer.instances,
+                options: _.sortBy(this.state.selectedLayer.instances, (instance) => { return instance.displayName }).reverse(),
                 placeholder: 'Select an instance',
                 value: this.state.selectedInstance.instance.id,
                 onChange: (thing) => this.selectInstance(thing)
