@@ -34,7 +34,7 @@ class urlDialog extends React.Component {
 
   render() {
     return React.createElement('div', {className: 'urlDialog'},
-      React.createElement(ModalContainer, {onClose: this.props.close},
+      React.createElement(ModalContainer, {onClose: this.props.close, zIndex: 1001},
         React.createElement(ModalDialog, {onClose: this.props.close},
           React.createElement('div', {},
           // React.createElement('div', {className: 'removey glyphicon glyphicon-remove remove-button', onClick: this.props.deleteLayer}, ''),
