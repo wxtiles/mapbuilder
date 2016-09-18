@@ -92,10 +92,8 @@ maps.updateViewPort = ({center, zoom}) => {
   maps.googleMap.setZoom(zoom)
   maps.googleMap.setCenter({lat: center.lat, lng: center.lng})
   var olView = maps.openLayersMap.getView()
-  console.log(center)
-  olView.setCenter(ol.proj.transform([center.lng, center.lat], 'EPSG:4326', 'EPSG:3857'), zoom-1)
-  // maps.openLayersMap.getView().setCenter(ol.proj.transform([180, 180], 'EPSG:4326', 'EPSG:3857'))
-  // maps.openLayersMap.getView().setCenter(ol.proj.transform([center.lat, center.lng], 'EPSG:4326', 'EPSG:3857'), zoom)
+  olView.setCenter(ol.proj.transform([center.lng, center.lat], 'EPSG:4326', 'EPSG:3857'))
+  olView.setZoom(zoom)
 }
 
 maps.onUpdateViewPort = () => {}
