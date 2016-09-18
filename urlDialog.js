@@ -33,12 +33,22 @@ class urlDialog extends React.Component {
     return React.createElement('div', {className: 'urlDialog'},
       React.createElement(ModalContainer, {onClose: this.props.close, zIndex: 1001},
         React.createElement(ModalDialog, {onClose: this.props.close},
-          React.createElement('div', {},
-            React.createElement('div', {className: 'glyphicon glyphicon-link'}),
-            !this.state.url && React.createElement('div', {},
-              React.createElement('div', {}, 'Please Enter your ApiKey: '),
-              React.createElement('input', {onChange: this.updateApiKey}),
-              React.createElement('button', {onClick: this.generateUrl, className: 'btn btn-primary'}, 'Generate Url')
+          React.createElement('div', {className: 'dialog'},
+            React.createElement('div', {className: 'glyphiconContainer'},
+              React.createElement('div', {className: 'glyphicon glyphicon-link'}),
+            ),
+            !this.state.url && React.createElement('form-horizontal', {},
+              React.createElement('div', {className: 'form-group'},
+                React.createElement('label', {className: 'col-sm-2'}, 'ApiKey'),
+                React.createElement('div', {className: 'col-sm-10'},
+                  React.createElement('input', {onChange: this.updateApiKey, className: 'form-control'}),
+                )
+              ),
+              React.createElement('div', {className: 'form-group'},
+                React.createElement('div', {className: 'col-sm-offset-2 col-sm-10'},
+                  React.createElement('button', {onClick: this.generateUrl, className: 'btn btn-primary'}, 'Generate Url')
+                )
+              )
             ),
             this.state.url && React.createElement('a', {href: this.state.url, target: '_blank'}, this.state.url)
           )
