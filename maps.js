@@ -89,6 +89,8 @@ maps.showMap = (selectedMap) => {
 
 maps.updateViewPort = ({center, zoom}) => {
   maps.leafletMap.setView([center.lat, center.lng], zoom)
+  maps.googleMap.setZoom(zoom)
+  maps.googleMap.setCenter({lat: center.lat, lng: center.lng})
 }
 
 maps.onUpdateViewPort = () => {}
