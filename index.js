@@ -7,6 +7,7 @@ import maps from './maps'
 import leaflet from 'leaflet'
 import wxTiles from './wxtiles'
 import hideLayer from './hideLayer'
+import _ from 'lodash'
 
 ReactDOM.render(React.createElement(hideLayer), document.querySelector('#hideLayerEditor'))
 
@@ -25,7 +26,13 @@ var activeLayers = [];
 var defaultMap = mapExamples[0]
 
 var mapSelectorMount = document.querySelector('#mapSelector')
-ReactDOM.render(React.createElement(mapSelector, { mapOptions: mapExamples, showMap: maps.showMap, selectedMap: defaultMap }), mapSelectorMount)
+var currentViewBounds = {center: null, zoom: null}
+maps.onUpdateViewPort = ({zoom, center}) => {
+  currentViewBounds = {zoom, center}
+  maps.updateViewPort(currentViewBounds)
+}
+
+ReactDOM.render(React.createElement(mapSelector, {mapOptions: mapExamples, showMap: maps.showMap, selectedMap: defaultMap }), mapSelectorMount)
 
 maps.showMap(defaultMap)
 var counter = 1

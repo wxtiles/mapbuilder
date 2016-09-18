@@ -9,6 +9,13 @@ maps.mountLeafletMap = () => {
     zoom: 5,
     attributionControl: false
   }).setView([-20, 160], 2)
+  leafletMap.on('moveend', (e) => {
+    var centerPoint = {
+      lat: leafletMap.getCenter().lat,
+      lng: leafletMap.getCenter().lng
+    }
+    maps.onUpdateViewPort({zoom: leafletMap.getZoom(), center: centerPoint})
+  })
 
   var baseMap = leaflet.tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
     attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
@@ -77,10 +84,14 @@ maps.showMap = (selectedMap) => {
   document.getElementById('openLayersMap').style.display = 'none';
 
   document.getElementById(`${selectedMap.value}Map`).style.display = 'block';
-
   maps.poke()
 }
 
+maps.updateViewPort = ({center, zoom}) => {
+  maps.leafletMap.setView([center.lat, center.lng], zoom)
+}
+
+maps.onUpdateViewPort = () => {}
 
 
 export default maps
