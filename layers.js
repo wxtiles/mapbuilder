@@ -2,6 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import _ from 'lodash'
 import createTileLayer from './createTileLayer'
+import urlDialog from './urlDialog'
 
 class layers extends React.Component {
   constructor() {
@@ -10,11 +11,15 @@ class layers extends React.Component {
     this.state.layers = []
     this.state.totalLayers = 0
     this.state.shouldShowLayerMenu = true
+    this.state.allLayerIds = []
+    this.state.isMakingUrl = false
 
     this.addLayerSelectionRow = this.addLayerSelectionRow.bind(this)
     this.createLayer = this.createLayer.bind(this)
     this.removeLayer = this.removeLayer.bind(this)
     this.toggleLayerMenu = this.toggleLayerMenu.bind(this)
+    this.makeUrl = this.makeUrl.bind(this)
+    this.stopMakingUrl = this.stopMakingUrl.bind(this)
   }
 
   componentWillMount() {
@@ -31,7 +36,12 @@ class layers extends React.Component {
 
   //This is called when the use selects a time value for the layer.
   //This also happens once when the slayer selection row is first loaded, the 0th time value is auto selected for the user.
-  createLayer({layerKey, url}) {
+  createLayer({layerKey, url, layerId}) {
+    var layerIds = this.state.allLayerIds
+    layerIds.push(layerId)
+    this.setState({
+      allLayerIds: layerIds
+    })
     this.props.putLayer(layerKey, url)
   }
 
@@ -51,10 +61,22 @@ class layers extends React.Component {
     })
   }
 
+  makeUrl() {
+    this.setState({isMakingUrl: true})
+  }
+
+  stopMakingUrl() {
+    this.setState({isMakingUrl: false})
+  }
+
   render() {
     return React.createElement('div', {className: 'layers'},
+      this.state.isMakingUrl && React.createElement(urlDialog, {close: this.stopMakingUrl, layerIds: this.state.allLayerIds}),
       React.createElement('div', {},
         React.createElement('ul', {},
+          React.createElement('li', {className: 'addLayerRow'},
+            React.createElement('div', {className: 'btn btn-primary addLayer', onClick: this.makeUrl}, 'Get Url for map')
+          ),
           React.createElement('li', {className: 'addLayerRow'},
             React.createElement('div', {className: 'btn btn-success addLayer', onClick: this.addLayerSelectionRow}, 'Add a layer')
           ),
