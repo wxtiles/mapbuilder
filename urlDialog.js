@@ -21,9 +21,6 @@ class urlDialog extends React.Component {
   }
 
   generateUrl() {
-    console.log('generate url')
-    console.log(this.state.apiKey)
-    console.log(this.props.layerIds)
     var jsonStringified = JSON.stringify({
       apiKey: this.state.apiKey,
       layerIds: this.props.layerIds
@@ -37,14 +34,13 @@ class urlDialog extends React.Component {
       React.createElement(ModalContainer, {onClose: this.props.close, zIndex: 1001},
         React.createElement(ModalDialog, {onClose: this.props.close},
           React.createElement('div', {},
-          // React.createElement('div', {className: 'removey glyphicon glyphicon-remove remove-button', onClick: this.props.deleteLayer}, ''),
             React.createElement('div', {className: 'glyphicon glyphicon-link'}),
             !this.state.url && React.createElement('div', {},
               React.createElement('div', {}, 'Please Enter your ApiKey: '),
               React.createElement('input', {onChange: this.updateApiKey}),
               React.createElement('button', {onClick: this.generateUrl, className: 'btn btn-primary'}, 'Generate Url')
             ),
-            this.state.url && React.createElement('a', {}, this.state.url)
+            this.state.url && React.createElement('a', {href: this.state.url, target: '_blank'}, this.state.url)
           )
         )
       )
