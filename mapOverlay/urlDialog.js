@@ -27,11 +27,11 @@ class urlDialog extends React.Component {
     })
     console.log(jsonStringified)
     var base64EncodedDatums = btoa(jsonStringified)
+    console.log(base64EncodedDatums)
     this.setState({url: 'https://wxtiles.github.io/wxtiles-map/?datums=' + base64EncodedDatums})
   }
 
   render() {
-    console.log(this.props.getMapDatums())
     return React.createElement('div', {className: 'urlDialog'},
       React.createElement(ModalContainer, {onClose: this.props.close, zIndex: 1001},
         React.createElement(ModalDialog, {onClose: this.props.close},

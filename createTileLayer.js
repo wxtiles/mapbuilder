@@ -109,7 +109,6 @@ class createTileLayer extends React.Component {
         layerObject: {
           id: this.state.selectedLayer.id,
           opacity: this.state.opacity,
-          timeSeries: this.state.selectedInstance.times,
           hasLegend: this.state.hasLegend
         }
       })
