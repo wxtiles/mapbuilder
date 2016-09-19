@@ -20,6 +20,7 @@ class layers extends React.Component {
     this.toggleLayerMenu = this.toggleLayerMenu.bind(this)
     this.makeUrl = this.makeUrl.bind(this)
     this.stopMakingUrl = this.stopMakingUrl.bind(this)
+    this.setOpacityOfLayer = this.setOpacityOfLayer.bind(this)
   }
 
   componentWillMount() {
@@ -61,6 +62,11 @@ class layers extends React.Component {
     })
   }
 
+  setOpacityOfLayer({layerKey, opacity}) {
+    console.log(layerKey)
+    console.log(opacity)
+  }
+
   makeUrl() {
     this.setState({isMakingUrl: true})
   }
@@ -81,7 +87,7 @@ class layers extends React.Component {
             React.createElement('div', {className: 'btn btn-success addLayer', onClick: this.addLayerSelectionRow}, 'Add a layer')
           ),
           _.map(this.state.layers, (layerKey) =>
-            (layerKey !== undefined) && React.createElement(createTileLayer, {key: layerKey, layerKey: layerKey, putLayer: this.createLayer, removeLayer: this.removeLayer, setOpacityOfLayer: this.props.setOpacityOfLayer})
+            (layerKey !== undefined) && React.createElement(createTileLayer, {key: layerKey, layerKey: layerKey, putLayer: this.createLayer, removeLayer: this.removeLayer, setOpacityOfLayer: this.setOpacityOfLayer})
           )
         )
       )
