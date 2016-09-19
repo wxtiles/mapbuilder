@@ -8,6 +8,7 @@ import leaflet from 'leaflet'
 import wxTiles from './wxtiles'
 import hideLayer from './hideLayer'
 import _ from 'lodash'
+import root from './root'
 
 ReactDOM.render(React.createElement(hideLayer), document.querySelector('#hideLayerEditor'))
 
@@ -122,4 +123,10 @@ var setOpacityOfLayer = ({layerKey, opacity}) => {
 }
 
 var reactMount = document.querySelector('#layerEditor')
-ReactDOM.render(React.createElement(layers, { putLayer, removeLayer, setOpacityOfLayer }), reactMount)
+ReactDOM.render(React.createElement(root, {putLayer, removeLayer, setOpacityOfLayer}), reactMount)
+
+import mapControls from './mapControls'
+var mapControlsMount = document.querySelector('#mapSibling')
+ReactDOM.render(React.createElement('div', {className: 'mapControlsContainer'},
+  React.createElement(mapControls)
+), mapControlsMount)
