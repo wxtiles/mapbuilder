@@ -2,7 +2,6 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import _ from 'lodash'
 import createTileLayer from './createTileLayer'
-import urlDialog from './urlDialog'
 
 class layers extends React.Component {
   constructor() {
@@ -18,8 +17,6 @@ class layers extends React.Component {
     this.createLayer = this.createLayer.bind(this)
     this.removeLayer = this.removeLayer.bind(this)
     this.toggleLayerMenu = this.toggleLayerMenu.bind(this)
-    this.makeUrl = this.makeUrl.bind(this)
-    this.stopMakingUrl = this.stopMakingUrl.bind(this)
     this.setOpacityOfLayer = this.setOpacityOfLayer.bind(this)
   }
 
@@ -62,27 +59,15 @@ class layers extends React.Component {
     })
   }
 
-  setOpacityOfLayer({layerKey, opacity}) {
-    console.log(layerKey)
-    console.log(opacity)
-  }
-
-  makeUrl() {
-    this.setState({isMakingUrl: true})
-  }
-
-  stopMakingUrl() {
-    this.setState({isMakingUrl: false})
+  setOpacityOfLayer({layerKey, layerObject}) {
+    this.props.setOpacityOfLayer({layerKey, opacity: layerObject.opacity})
+    this.props.updateLayers({layerKey, layerObject})
   }
 
   render() {
     return React.createElement('div', {className: 'layers'},
-      this.state.isMakingUrl && React.createElement(urlDialog, {close: this.stopMakingUrl, layerIds: this.state.allLayerIds}),
       React.createElement('div', {},
         React.createElement('ul', {},
-          React.createElement('li', {className: 'addLayerRow'},
-            React.createElement('div', {className: 'btn btn-primary addLayer', onClick: this.makeUrl}, 'Get Url for map')
-          ),
           React.createElement('li', {className: 'addLayerRow'},
             React.createElement('div', {className: 'btn btn-success addLayer', onClick: this.addLayerSelectionRow}, 'Add a layer')
           ),

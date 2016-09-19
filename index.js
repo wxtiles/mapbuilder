@@ -121,8 +121,8 @@ var setOpacityOfLayer = ({layerKey, opacity}) => {
   setOpacityOfLayerAndUrl({layerKey, url: activeLayers[layerKey].activeUrl, opacity})
 }
 
-var updateLayers = ({layers}) => {
-  console.log(layers)
+var updateLayers = ({layerKey, layerObject}) => {
+  activeLayers[layerKey].layerObject = layerObject
 }
 
 var reactMount = document.querySelector('#layerEditor')
@@ -131,5 +131,5 @@ ReactDOM.render(React.createElement(layers, {putLayer, removeLayer, setOpacityOf
 import mapControls from './mapControls'
 var mapControlsMount = document.querySelector('#mapSibling')
 ReactDOM.render(React.createElement('div', {className: 'mapControlsContainer'},
-  React.createElement(mapControls)
+  React.createElement(mapControls, {})
 ), mapControlsMount)
