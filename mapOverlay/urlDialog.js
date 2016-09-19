@@ -23,13 +23,15 @@ class urlDialog extends React.Component {
   generateUrl() {
     var jsonStringified = JSON.stringify({
       apiKey: this.state.apiKey,
-      layerIds: this.props.layerIds
+      mapDatums: this.props.getMapDatums()
     })
+    console.log(jsonStringified)
     var base64EncodedDatums = btoa(jsonStringified)
     this.setState({url: 'https://wxtiles.github.io/wxtiles-map/?datums=' + base64EncodedDatums})
   }
 
   render() {
+    console.log(this.props.getMapDatums())
     return React.createElement('div', {className: 'urlDialog'},
       React.createElement(ModalContainer, {onClose: this.props.close, zIndex: 1001},
         React.createElement(ModalDialog, {onClose: this.props.close},

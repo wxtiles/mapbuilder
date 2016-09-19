@@ -128,8 +128,19 @@ var updateLayers = ({layerKey, layerObject}) => {
 var reactMount = document.querySelector('#layerEditor')
 ReactDOM.render(React.createElement(layers, {putLayer, removeLayer, setOpacityOfLayer, updateLayers}), reactMount)
 
+var getMapDatums = () => {
+  var layersForStandaloneMap = activeLayers
+  layersForStandaloneMap = _.filter(layersForStandaloneMap, (layer) => layer != null)
+  layersForStandaloneMap = _.map(layersForStandaloneMap, (layer) => layer.layerObject)
+  return {
+    layers: layersForStandaloneMap,
+    center: [1, 2],
+    zoom: 1
+  }
+}
+
 import mapControls from './mapControls'
 var mapControlsMount = document.querySelector('#mapSibling')
 ReactDOM.render(React.createElement('div', {className: 'mapControlsContainer'},
-  React.createElement(mapControls, {})
+  React.createElement(mapControls, {getMapDatums})
 ), mapControlsMount)

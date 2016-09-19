@@ -41,12 +41,14 @@ class layers extends React.Component {
       allLayerIds: layerIds
     })
     this.props.putLayer(layerKey, url)
+    this.props.updateLayers({layerKey, layerObject: {opacity: 0.8, id: layerId}})
   }
 
   removeLayer({layerKey}) {
     var allLayers = this.state.layers;
     allLayers.splice(allLayers.indexOf(layerKey), 1)
     this.setState({layers: allLayers});
+    this.props.updateLayers({layerKey, layerObject: undefined})
     this.props.removeLayer({layerKey})
   }
 
