@@ -139,8 +139,8 @@ var getMapDatums = () => {
   layersForStandaloneMap = _.map(layersForStandaloneMap, (layer) => layer.layerObject)
   return {
     layers: layersForStandaloneMap,
-    center: [1, 2],
-    zoom: 1
+    center: currentViewBounds.center,
+    zoom: currentViewBounds.zoom
   }
 }
 
