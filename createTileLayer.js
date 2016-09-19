@@ -130,12 +130,6 @@ class createTileLayer extends React.Component {
               })
             ),
             this.state.selectedInstance && React.createElement('div', {},
-              React.createElement(select, {
-                options: _.sortBy(this.state.selectedLayer.instances, (instance) => { return instance.displayName }).reverse(),
-                placeholder: 'Select an instance',
-                value: this.state.selectedInstance.instance.id,
-                onChange: (thing) => this.selectInstance(thing)
-              }),
               (this.state.loadingInstance == false) && React.createElement(timeSelector, {
                 times: this.state.selectedInstance.times,
                 selectedTime: this.state.selectedTime,
