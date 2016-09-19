@@ -92,12 +92,16 @@ var putLayer = (layerKey, url) => {
 
 var removeLayer = ({layerKey, url}) => {
   if(activeLayers[layerKey] === undefined) return;
-
   Object.keys(activeLayers[layerKey]).forEach((key) => {
-    //This will error if the user clicks the removal button before the data has loaded. So we check if the map layers have been added before trying to remove them.
-    if (googleMap.overlayMapTypes.getAt(layerKey) !== undefined) googleMap.overlayMapTypes.removeAt(layerKey);
-    if (leafletMap.hasLayer(activeLayers[layerKey][key].leafletMapLayer)) leafletMap.removeLayer(activeLayers[layerKey][key].leafletMapLayer);
-    openLayersMap.getLayers().remove(activeLayers[layerKey][key].openLayersMapLayer);
+    //Horrible hack, please fix this someone.
+    //activeLayers is becoming an overloaded global variable, such is the life of all the global variables.
+    //activeLayers is including keys like 'opacity' and 'layerObject' and not just urls because urls aren't enough.
+    if(_.includes(key, 'https://')) {
+      //This will error if the user clicks the removal button before the data has loaded. So we check if the map layers have been added before trying to remove them.
+      if (googleMap.overlayMapTypes.getAt(layerKey) !== undefined) googleMap.overlayMapTypes.removeAt(layerKey);
+      if (leafletMap.hasLayer(activeLayers[layerKey][key].leafletMapLayer)) leafletMap.removeLayer(activeLayers[layerKey][key].leafletMapLayer);
+      openLayersMap.getLayers().remove(activeLayers[layerKey][key].openLayersMapLayer);
+    }
   })
 
   delete activeLayers[layerKey]
@@ -122,6 +126,7 @@ var setOpacityOfLayer = ({layerKey, opacity}) => {
 }
 
 var updateLayers = ({layerKey, layerObject}) => {
+  console.log(layerKey)
   activeLayers[layerKey].layerObject = layerObject
 }
 
