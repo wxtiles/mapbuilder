@@ -7,7 +7,8 @@ maps.googleMap = null;
 maps.mountLeafletMap = () => {
   var leafletMap = leaflet.map('leafletMap', {
     zoom: 5,
-    attributionControl: false
+    attributionControl: false,
+    zoomControl: false
   }).setView([-20, 160], 2)
   leafletMap.on('moveend', (e) => {
     var centerPoint = {
