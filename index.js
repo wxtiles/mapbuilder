@@ -38,7 +38,7 @@ ReactDOM.render(React.createElement(mapSelector, {mapOptions: mapExamples, showM
 
 maps.showMap(defaultMap)
 var counter = 1
-var putLayer = (layerKey, url) => {
+var putLayer = (layerKey, url, layerOrder) => {
   if (!activeLayers[layerKey]) {
     activeLayers[layerKey] = {opacity: 0.8, activeUrl: url}
   }
@@ -61,7 +61,8 @@ var putLayer = (layerKey, url) => {
   //Add this layer to the leaflet map.
   var leafletMapLayer = leaflet.tileLayer(url, {
     maxZoom: 18,
-    tms: true
+    tms: true,
+    zIndex: layerOrder
   });
 
   //Leaflet does not handle tiles failing to load.
