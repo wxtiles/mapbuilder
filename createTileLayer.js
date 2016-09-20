@@ -105,7 +105,8 @@ class createTileLayer extends React.Component {
         layerKey: this.props.layerKey,
         layerObject: {
           id: this.state.selectedLayer.id,
-          opacity: this.state.opacity
+          opacity: this.state.opacity,
+          legendUrl: this.state.selectedLayer.resources.legend
         }
       })
     })

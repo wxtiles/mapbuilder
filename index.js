@@ -8,6 +8,7 @@ import leaflet from 'leaflet'
 import wxTiles from './wxtiles'
 import hideLayer from './hideLayer'
 import _ from 'lodash'
+import mapControls from './mapControls'
 
 ReactDOM.render(React.createElement(hideLayer), document.querySelector('#hideLayerEditor'))
 
@@ -127,6 +128,12 @@ var setOpacityOfLayer = ({layerKey, opacity}) => {
 
 var updateLayers = ({layerKey, layerObject}) => {
   activeLayers[layerKey].layerObject = layerObject
+
+  var mapControlsMount = document.querySelector('#mapSibling')
+  var layers = getMapDatums()
+  ReactDOM.render(React.createElement('div', {className: 'mapControlsContainer'},
+    React.createElement(mapControls, {layers})
+  ), mapControlsMount)
 }
 
 var reactMount = document.querySelector('#layerEditor')
@@ -142,9 +149,3 @@ var getMapDatums = () => {
     zoom: currentViewBounds.zoom
   }
 }
-
-import mapControls from './mapControls'
-var mapControlsMount = document.querySelector('#mapSibling')
-ReactDOM.render(React.createElement('div', {className: 'mapControlsContainer'},
-  React.createElement(mapControls, {getMapDatums})
-), mapControlsMount)

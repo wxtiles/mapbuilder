@@ -16,7 +16,7 @@ class mapControls extends React.Component {
   render() {
     return React.createElement('div', {className: 'mapControls'},
       React.createElement(wxtilesTag),
-      React.createElement(generateUrl, {getMapDatums: this.props.getMapDatums}),
+      React.createElement(generateUrl, {layers: this.props.layers}),
       React.createElement(legends)
     )
   }
