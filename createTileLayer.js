@@ -8,8 +8,8 @@ import rcSlider from 'rc-slider'
 import legend from './legend'
 import timeSelector from './timeSelector'
 
-var createLayerObject = (id, label, opacity, legendUrl) => {
-  return {id, label, opacity, legendUrl}
+var createLayerObject = (id, label, opacity, legendUrl, instanceId) => {
+  return {id, label, opacity, legendUrl, instanceId}
 }
 
 class createTileLayer extends React.Component {
@@ -74,11 +74,12 @@ class createTileLayer extends React.Component {
         time: this.state.selectedTime,
         level: 0,
         onSuccess: (url) => {
+          console.log(this.state.selectedInstance.instance.id)
           var layer = this.state.selectedLayer
           this.props.putLayer({
             layerKey: this.props.layerKey,
             url,
-            layerObject: createLayerObject(layer.id, layer.label, this.state.opacity, layer.resources.legend)
+            layerObject: createLayerObject(layer.id, layer.label, this.state.opacity, layer.resources.legend, this.state.selectedInstance.instance.id)
           })
         },
         onError: (err) => console.log(err),
@@ -109,7 +110,7 @@ class createTileLayer extends React.Component {
       var layer = this.state.selectedLayer
       this.props.setOpacityOfLayer({
         layerKey: this.props.layerKey,
-        layerObject: createLayerObject(layer.id, layer.displayName, this.state.opacity, layer.resources.legend)
+        layerObject: createLayerObject(layer.id, layer.displayName, this.state.opacity, layer.resources.legend, this.state.selectedInstance.instance.id)
       })
     })
   }
@@ -127,7 +128,6 @@ class createTileLayer extends React.Component {
           React.createElement('div', {onClick: this.edit},
             React.createElement(layerLabel, {deleteLayer: this.deleteLayer, label: labelForLayerLabel, isCollapsed: this.state.isEditing})
           ),
-          this.state.hasLegend && React.createElement(legend, {layerId: _.get(this.state, 'selectedLayer.id', null), instanceId: _.get(this.state, 'selectedInstance.instance.id', null)}),
           React.createElement('div', {className: classesForControls},
             (this.state.loadedLayers == null) && React.createElement('div', null, 'Downloading layers...'),
             this.state.loadedLayers && React.createElement('div', {},

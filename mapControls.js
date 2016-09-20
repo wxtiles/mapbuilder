@@ -21,10 +21,11 @@ class mapControls extends React.Component {
     var legendsDatums = _.map(layers, (layer) => {
       return {
         label: layer.label,
-        url: layer.legendUrl
+        url: layer.legendUrl,
+        layerId: layer.id,
+        instanceId: layer.instanceId
       }
     })
-    console.log(legendsDatums)
     var generateUrlDatums = _.map(layers, (layer) => {
       return {
         id: layer.id,

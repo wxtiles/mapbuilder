@@ -1,6 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import _ from 'lodash'
+import legend from '../legend'
 
 class legends extends React.Component {
   constructor() {
@@ -13,10 +14,13 @@ class legends extends React.Component {
 
   render() {
     return React.createElement('div', {className: 'legends'},
-      _.map(this.props.legends, (legend) => {
-        return React.createElement('div', {key: legend.url},
-          React.createElement('div', {}, legend.label),
-          React.createElement('div', {}, legend.url)
+      _.map(this.props.legends, (legendDatums) => {
+        return React.createElement('div', {key: legendDatums.instanceId},
+          React.createElement(legend, {
+            layerId: legendDatums.layerId,
+            instanceId: legendDatums.instanceId,
+            label: legendDatums.label
+          })
         )
       })
     )
