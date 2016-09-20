@@ -31,6 +31,7 @@ var currentViewBounds = {center: null, zoom: null}
 maps.onUpdateViewPort = ({zoom, center}) => {
   currentViewBounds = {zoom, center}
   maps.updateViewPort(currentViewBounds)
+  updateLayerObjects()
 }
 
 ReactDOM.render(React.createElement(mapSelector, {mapOptions: mapExamples, showMap: maps.showMap, selectedMap: defaultMap }), mapSelectorMount)
@@ -128,7 +129,10 @@ var setOpacityOfLayer = ({layerKey, opacity}) => {
 
 var updateLayers = ({layerKey, layerObject}) => {
   activeLayers[layerKey].layerObject = layerObject
+  updateLayerObjects()
+}
 
+var updateLayerObjects = () => {
   var mapControlsMount = document.querySelector('#mapSibling')
   var layers = getMapDatums()
   ReactDOM.render(React.createElement('div', {className: 'mapControlsContainer'},
@@ -149,3 +153,5 @@ var getMapDatums = () => {
     zoom: currentViewBounds.zoom
   }
 }
+
+updateLayerObjects()
