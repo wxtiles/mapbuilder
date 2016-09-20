@@ -8,8 +8,8 @@ import rcSlider from 'rc-slider'
 import legend from './legend'
 import timeSelector from './timeSelector'
 
-var createLayerObject = (id, label, opacity, legendUrl, instanceId) => {
-  return {id, label, opacity, legendUrl, instanceId}
+var createLayerObject = (id, key, label, opacity, legendUrl, instanceId) => {
+  return {id, key, label, opacity, legendUrl, instanceId}
 }
 
 class createTileLayer extends React.Component {
@@ -20,6 +20,7 @@ class createTileLayer extends React.Component {
     this.state.isEditing = true
     this.state.loadingInstance = false
     this.state.opacity = 0.8
+    this.selectLayer = this.selectLayer.bind(this)
     this.deleteLayer = this.deleteLayer.bind(this)
     this.edit = this.edit.bind(this)
     this.setOpacity = this.setOpacity.bind(this)
@@ -78,7 +79,7 @@ class createTileLayer extends React.Component {
           this.props.putLayer({
             layerKey: this.props.layerKey,
             url,
-            layerObject: createLayerObject(layer.id, layer.label, this.state.opacity, layer.resources.legend, this.state.selectedInstance.instance.id)
+            layerObject: createLayerObject(layer.id, this.props.layerKey, layer.label, this.state.opacity, layer.resources.legend, this.state.selectedInstance.instance.id)
           })
         },
         onError: (err) => console.log(err),
@@ -109,7 +110,7 @@ class createTileLayer extends React.Component {
       var layer = this.state.selectedLayer
       this.props.setOpacityOfLayer({
         layerKey: this.props.layerKey,
-        layerObject: createLayerObject(layer.id, layer.displayName, this.state.opacity, layer.resources.legend, this.state.selectedInstance.instance.id)
+        layerObject: createLayerObject(layer.id, this.props.layerKey, layer.displayName, this.state.opacity, layer.resources.legend, this.state.selectedInstance.instance.id)
       })
     })
   }
@@ -134,7 +135,7 @@ class createTileLayer extends React.Component {
                 options: this.state.loadedLayers,
                 placeholder: 'Select a layer...',
                 value: this.state.selectedLayer,
-                onChange: (thing) => this.selectLayer(thing)
+                onChange: this.selectLayer
               })
             ),
             this.state.selectedInstance && React.createElement('div', {},

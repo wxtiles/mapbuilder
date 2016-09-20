@@ -2,6 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import _ from 'lodash'
 import createTileLayer from './createTileLayer'
+import reactDrag from 'react-dnd'
 
 class layers extends React.Component {
   constructor() {
@@ -27,7 +28,9 @@ class layers extends React.Component {
   //This is called when the user clicks the button to add a new layer.
   addLayerSelectionRow() {
     var allLayers = this.state.layers
-    allLayers.unshift(this.state.totalLayers+1)
+    allLayers[this.state.totalLayers] = {
+      key: this.state.totalLayers
+    }
     this.setState({layers: allLayers, totalLayers: this.state.totalLayers+1})
     //createLayer will be called at the end of this chain, after all the data has come back from the server.
   }
@@ -37,18 +40,18 @@ class layers extends React.Component {
   createLayer({layerKey, url, layerObject}) {
     var allLayerIds = this.state.allLayerIds
     allLayerIds.push(layerObject.id)
-    this.setState({
-      allLayerIds: allLayerIds
-    })
+    var layers = this.state.layers
+    layers[layerKey] = layerObject
+    this.setState({allLayerIds, layers})
     var layerOrder = _.findIndex(this.state.allLayerIds, (id) => id == layerObject.id)
     this.props.putLayer(layerKey, url, layerOrder)
     this.props.updateLayers({layerKey, layerObject})
   }
 
   removeLayer({layerKey}) {
-    var allLayers = this.state.layers;
-    allLayers.splice(allLayers.indexOf(layerKey), 1)
-    this.setState({layers: allLayers});
+    var layers = this.state.layers;
+    layers[layerKey] = null
+    this.setState({layers: layers});
     this.props.updateLayers({layerKey, layerObject: undefined})
     this.props.removeLayer({layerKey})
   }
@@ -74,8 +77,8 @@ class layers extends React.Component {
           React.createElement('li', {className: 'addLayerRow'},
             React.createElement('div', {className: 'btn btn-success addLayer', onClick: this.addLayerSelectionRow}, 'Add a layer')
           ),
-          _.map(this.state.layers, (layerKey) =>
-            (layerKey !== undefined) && React.createElement(createTileLayer, {key: layerKey, layerKey: layerKey, putLayer: this.createLayer, removeLayer: this.removeLayer, setOpacityOfLayer: this.setOpacityOfLayer})
+          _.map(this.state.layers, (layer) =>
+            layer && React.createElement(createTileLayer, {key: layer.key, layerKey: layer.key, putLayer: this.createLayer, removeLayer: this.removeLayer, setOpacityOfLayer: this.setOpacityOfLayer})
           )
         )
       )
