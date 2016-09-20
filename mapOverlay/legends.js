@@ -7,14 +7,25 @@ class legends extends React.Component {
   constructor() {
     super()
     this.state = {}
+    this.state.showLegends = true
+    this.showLegends = this.showLegends.bind(this)
+    this.hideLegends = this.hideLegends.bind(this)
   }
 
   componentWillMount() {
   }
 
+  showLegends() {
+    this.setState({showLegends: true})
+  }
+
+  hideLegends() {
+    this.setState({showLegends: false})
+  }
+
   render() {
-    return React.createElement('div', {className: 'legends'},
-      _.map(this.props.legends, (legendDatums) => {
+    return this.props.legends.length > 0 && React.createElement('div', {className: 'legends'},
+      this.state.showLegends && _.map(this.props.legends, (legendDatums) => {
         return React.createElement('div', {key: legendDatums.instanceId},
           React.createElement(legend, {
             layerId: legendDatums.layerId,
@@ -22,7 +33,11 @@ class legends extends React.Component {
             label: legendDatums.label
           })
         )
-      })
+      }),
+      React.createElement('div', {className: 'legends-control'},
+        !this.state.showLegends && React.createElement('a', {href: '#', onClick: this.showLegends}, 'Show legends'),
+        this.state.showLegends && React.createElement('a', {href: '#', onClick: this.hideLegends}, 'Hide legends')
+      )
     )
   }
 }
