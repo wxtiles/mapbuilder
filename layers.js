@@ -2,7 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import _ from 'lodash'
 import createTileLayer from './createTileLayer'
-import reactDrag from 'react-dnd'
+import dragula from 'react-dragula';
 
 class layers extends React.Component {
   constructor() {
@@ -25,6 +25,10 @@ class layers extends React.Component {
     this.addLayerSelectionRow()
   }
 
+  componentDidMount() {
+    dragula([document.querySelector('#testIdizzle')])
+  }
+
   //This is called when the user clicks the button to add a new layer.
   addLayerSelectionRow() {
     var allLayers = this.state.layers
@@ -32,6 +36,9 @@ class layers extends React.Component {
       key: this.state.totalLayers
     }
     this.setState({layers: allLayers, totalLayers: this.state.totalLayers+1})
+    console.log('doing drag on ')
+    console.log(document.querySelector('#testIdizzle'))
+
     //createLayer will be called at the end of this chain, after all the data has come back from the server.
   }
 
@@ -73,12 +80,14 @@ class layers extends React.Component {
   render() {
     return React.createElement('div', {className: 'layers'},
       React.createElement('div', {},
-        React.createElement('ul', {},
-          React.createElement('li', {className: 'addLayerRow'},
+        React.createElement('div', {id: 'testIdizzle'},
+          React.createElement('div', {className: 'addLayerRow'},
             React.createElement('div', {className: 'btn btn-success addLayer', onClick: this.addLayerSelectionRow}, 'Add a layer')
           ),
           _.map(this.state.layers, (layer) =>
-            layer && React.createElement(createTileLayer, {key: layer.key, layerKey: layer.key, putLayer: this.createLayer, removeLayer: this.removeLayer, setOpacityOfLayer: this.setOpacityOfLayer})
+            layer && React.createElement('div', {className: 'layerContainer', key: layer.key},
+              React.createElement(createTileLayer, {layerKey: layer.key, putLayer: this.createLayer, removeLayer: this.removeLayer, setOpacityOfLayer: this.setOpacityOfLayer})
+            )
           )
         )
       )

@@ -122,7 +122,7 @@ class createTileLayer extends React.Component {
     }
     var classesForControls = ' hideControls'
     if (this.state.isEditing) classesForControls = ''
-    return React.createElement('li', {className: 'createTileLayer'},
+    return React.createElement('div', {className: 'createTileLayer'},
       React.createElement('div', {className: 'select-container'},
         React.createElement('div', {className: 'select-list'},
           React.createElement('div', {onClick: this.edit},
