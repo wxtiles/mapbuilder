@@ -26,7 +26,7 @@ class legends extends React.Component {
   render() {
     return this.props.legends.length > 0 && React.createElement('div', {className: 'legends'},
       this.state.showLegends && _.map(this.props.legends, (legendDatums) => {
-        return React.createElement('div', {key: legendDatums.instanceId},
+        return React.createElement('div', {key: legendDatums.layerId + ' ' + legendDatums.instanceId},
           React.createElement(legend, {
             layerId: legendDatums.layerId,
             instanceId: legendDatums.instanceId,
