@@ -1,6 +1,5 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import wxtilesTag from './mapOverlay/wxtilesTag'
 import generateUrl from './mapOverlay/generateUrl'
 import legends from './mapOverlay/legends'
 import _ from 'lodash'
@@ -26,15 +25,18 @@ class mapControls extends React.Component {
         instanceId: layer.instanceId
       }
     })
-    var generateUrlDatums = _.map(layers, (layer) => {
-      return {
-        id: layer.id,
-        opacity: layer.opacity
-      }
-    })
+    var generateUrlDatums = {
+      zoom: this.props.mapDatums.zoom,
+      center: this.props.mapDatums.center,
+      layers: _.map(layers, (layer) => {
+        return {
+          id: layer.id,
+          opacity: layer.opacity
+        }
+      })
+    }
     return React.createElement('div', {className: 'mapControls'},
-      React.createElement(wxtilesTag),
-      React.createElement(generateUrl, {layers: generateUrlDatums}),
+      React.createElement(generateUrl, {urlDatums: generateUrlDatums}),
       React.createElement(legends, {legends: legendsDatums})
     )
   }

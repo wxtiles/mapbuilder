@@ -23,8 +23,9 @@ class urlDialog extends React.Component {
   generateUrl() {
     var jsonStringified = JSON.stringify({
       apiKey: this.state.apiKey,
-      mapDatums: this.props.layers
+      mapDatums: this.props.urlDatums
     })
+    console.log(jsonStringified)
     var base64EncodedDatums = btoa(jsonStringified)
     this.setState({url: 'https://wxtiles.github.io/wxtiles-map/?datums=' + base64EncodedDatums})
   }
