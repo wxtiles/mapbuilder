@@ -34,14 +34,14 @@ class layers extends React.Component {
 
   //This is called when the use selects a time value for the layer.
   //This also happens once when the slayer selection row is first loaded, the 0th time value is auto selected for the user.
-  createLayer({layerKey, url, layerId}) {
+  createLayer({layerKey, url, layerObject}) {
     var layerIds = this.state.allLayerIds
-    layerIds.push(layerId)
+    layerIds.push(layerObject.id)
     this.setState({
       allLayerIds: layerIds
     })
     this.props.putLayer(layerKey, url)
-    this.props.updateLayers({layerKey, layerObject: {opacity: 0.8, id: layerId}})
+    this.props.updateLayers({layerKey, layerObject})
   }
 
   removeLayer({layerKey}) {

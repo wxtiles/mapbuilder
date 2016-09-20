@@ -8,6 +8,10 @@ import rcSlider from 'rc-slider'
 import legend from './legend'
 import timeSelector from './timeSelector'
 
+var createLayerObject = (id, label, opacity, legendUrl) => {
+  return {id, label, opacity, legendUrl}
+}
+
 class createTileLayer extends React.Component {
   constructor() {
     super()
@@ -70,10 +74,12 @@ class createTileLayer extends React.Component {
         time: this.state.selectedTime,
         level: 0,
         onSuccess: (url) => {
+          var layer = this.state.selectedLayer
+          console.log(layer)
           this.props.putLayer({
             layerKey: this.props.layerKey,
             url,
-            layerId: this.state.selectedLayer.id
+            layerObject: createLayerObject(layer.id, layer.label, this.state.opacity, layer.resources.legend)
           })
         },
         onError: (err) => console.log(err),
@@ -101,13 +107,10 @@ class createTileLayer extends React.Component {
     this.setState({
       opacity
     }, () => {
+      var layer = this.state.selectedLayer
       this.props.setOpacityOfLayer({
         layerKey: this.props.layerKey,
-        layerObject: {
-          id: this.state.selectedLayer.id,
-          opacity: this.state.opacity,
-          legendUrl: this.state.selectedLayer.resources.legend
-        }
+        layerObject: createLayerObject(layer.id, layer.displayName, this.state.opacity, layer.resources.legend)
       })
     })
   }
