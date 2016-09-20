@@ -51,7 +51,9 @@ class urlDialog extends React.Component {
                 )
               )
             ),
-            this.state.url && React.createElement('a', {href: this.state.url, target: '_blank'}, this.state.url)
+            this.state.url && React.createElement('div', {className: 'url'},
+              React.createElement('a', {href: this.state.url, target: '_blank'}, 'Click here for the map')
+            )
           )
         )
       )
