@@ -101,15 +101,11 @@ class createTileLayer extends React.Component {
     this.setState({
       opacity
     }, () => {
-      var layerObject = {
-
-      }
       this.props.setOpacityOfLayer({
         layerKey: this.props.layerKey,
         layerObject: {
           id: this.state.selectedLayer.id,
-          opacity: this.state.opacity,
-          hasLegend: this.state.hasLegend
+          opacity: this.state.opacity
         }
       })
     })

@@ -126,7 +126,6 @@ var setOpacityOfLayer = ({layerKey, opacity}) => {
 }
 
 var updateLayers = ({layerKey, layerObject}) => {
-  console.log(layerKey)
   activeLayers[layerKey].layerObject = layerObject
 }
 
