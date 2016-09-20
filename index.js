@@ -134,9 +134,9 @@ var updateLayers = ({layerKey, layerObject}) => {
 
 var updateLayerObjects = () => {
   var mapControlsMount = document.querySelector('#mapSibling')
-  var layers = getMapDatums()
+  var mapDatums = getMapDatums()
   ReactDOM.render(React.createElement('div', {className: 'mapControlsContainer'},
-    React.createElement(mapControls, {layers})
+    React.createElement(mapControls, {mapDatums})
   ), mapControlsMount)
 }
 

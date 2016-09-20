@@ -15,17 +15,26 @@ class mapControls extends React.Component {
   }
 
   render() {
-    // console.log(this.props.layers)
-    // var legendDatums = _.map(this.props.layers, (layer) => {
-    //   return {
-    //     layerDisplayName: layer.id
-    //
-    //   }
-    // })
+    var layers = this.props.mapDatums.layers
+    layers = _.filter(layers, (layer) => layer != null)
+
+    var legendsDatums = _.map(layers, (layer) => {
+      return {
+        label: layer.label,
+        url: layer.legendUrl
+      }
+    })
+    console.log(legendsDatums)
+    var generateUrlDatums = _.map(layers, (layer) => {
+      return {
+        id: layer.id,
+        opacity: layer.opacity
+      }
+    })
     return React.createElement('div', {className: 'mapControls'},
       React.createElement(wxtilesTag),
-      React.createElement(generateUrl, {layers: this.props.layers}),
-      React.createElement(legends)
+      React.createElement(generateUrl, {layers: generateUrlDatums}),
+      React.createElement(legends, {legends: legendsDatums})
     )
   }
 }
