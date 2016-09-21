@@ -52,12 +52,13 @@ class layers extends React.Component {
 
   //This is called when the user clicks the button to add a new layer.
   addLayerSelectionRow() {
-    var allLayers = this.state.layers
-    allLayers[this.state.totalLayers] = {
+    var layers = this.state.layers
+    layers[this.state.totalLayers] = {
       key: this.state.totalLayers,
-      zIndex: this.state.totalLayers
+      zIndex: 100 - this.state.totalLayers
     }
-    this.setState({layers: allLayers, totalLayers: this.state.totalLayers+1})
+    layers = _.sortBy(layers, (layer) => layer.zIndex)
+    this.setState({layers, totalLayers: this.state.totalLayers+1})
     //createLayer will be called at the end of this chain, after all the data has come back from the server.
   }
 
