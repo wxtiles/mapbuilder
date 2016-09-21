@@ -26,12 +26,23 @@ class layers extends React.Component {
   }
 
   componentDidMount() {
-    dragula([document.querySelector('#testIdizzle')], {
+    var drake = dragula([document.querySelector('#testIdizzle')], {
       moves: (el, source, handle, sibling) => {
         console.log('inside moves')
         return handle.classList.contains('glyphicon-move');
       }
     })
+
+    drake.on('drop', (el, target, source, sibling) => {
+      console.log('something was dropped')
+      console.log(el)
+      console.log(target)
+      console.log(source)
+      console.log(sibling)
+      console.log(this.state.layers)
+      console.log(drake)
+    })
+    console.log(drake)
   }
 
   //This is called when the user clicks the button to add a new layer.
@@ -41,9 +52,6 @@ class layers extends React.Component {
       key: this.state.totalLayers
     }
     this.setState({layers: allLayers, totalLayers: this.state.totalLayers+1})
-    console.log('doing drag on ')
-    console.log(document.querySelector('#testIdizzle'))
-
     //createLayer will be called at the end of this chain, after all the data has come back from the server.
   }
 
@@ -90,7 +98,7 @@ class layers extends React.Component {
         ),
         React.createElement('div', {id: 'testIdizzle'},
           _.map(this.state.layers, (layer) =>
-            layer && React.createElement('div', {className: 'layerContainer', key: layer.key},
+            layer && React.createElement('div', {className: 'layerContainer', key: layer.key, 'data-key': layer.key},
               React.createElement(createTileLayer, {layerKey: layer.key, putLayer: this.createLayer, removeLayer: this.removeLayer, setOpacityOfLayer: this.setOpacityOfLayer})
             )
           )
