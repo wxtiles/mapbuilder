@@ -6,6 +6,8 @@
   text-align: center;
   cursor: pointer;
   border-top: 1px solid #ddd;
+  background-color: #176097;
+  color: white;
 
   -webkit-user-select: none; /* Chrome/Safari */
   -moz-user-select: none; /* Firefox */
@@ -16,15 +18,13 @@
   user-select: none;
   position: relative;
   .layerLabel-text {
-    padding-top: 10px;
+    font-weight: bold;
+    padding-top: 7px;
     padding-left: 40px;
     padding-right: 40px;
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow-x: hidden;
-  }
-  &:hover {
-    background-color: #EEE;
   }
   .removey {
     float: left;
@@ -34,11 +34,11 @@
     height: 100%;
     position: absolute;
     padding-top: 10px;
-    color: #666;
-    background-color: rgba(230, 20, 20, 0.6);
+    background-color: #ba1414;
   }
 
   .glyphicon-move {
+    font-size: 17px;
     height: 100%;
     padding-top: 10px;
     border-left: 1px solid #999;
@@ -47,5 +47,9 @@
     position: absolute;
     right: 0;
     float: right;
+    &:hover {
+      color: #176097;
+      background-color: white;
+    }
   }
 }
