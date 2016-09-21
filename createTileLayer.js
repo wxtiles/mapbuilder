@@ -122,7 +122,8 @@ class createTileLayer extends React.Component {
                 options: this.state.loadedLayers,
                 placeholder: 'Select a layer...',
                 value: this.state.selectedLayer,
-                onChange: this.selectLayer
+                onChange: this.selectLayer,
+                clearable: false
               })
             ),
             this.state.selectedInstance && React.createElement('div', {},
