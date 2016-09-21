@@ -34,15 +34,16 @@ class layers extends React.Component {
     })
 
     drake.on('drop', (el, target, source, sibling) => {
-      console.log('something was dropped')
-      console.log(el)
-      console.log(target)
-      console.log(source)
-      console.log(sibling)
-      console.log(this.state.layers)
-      console.log(drake)
+      var layersInDom = drake.containers[0].children
+      var layers = _.map(this.state.layers, (layer) => {
+        var indexOfLayer = _.findIndex(layersInDom, (layerDom) => {
+          return layerDom.attributes[1].nodeValue == layer.key
+        })
+        layer.zIndex = indexOfLayer
+        return layer
+      })
+      this.setState({layers: layers})
     })
-    console.log(drake)
   }
 
   //This is called when the user clicks the button to add a new layer.
