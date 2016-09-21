@@ -131,7 +131,8 @@ var setOpacityOfLayer = ({layerKey, opacity}) => {
 var updateLayers = ({layerKey, layerObject}) => {
   if (activeLayers[layerKey]) {
       activeLayers[layerKey].layerObject = layerObject
-      setZIndex({layerKey, zIndex: layerObject.zIndex})
+      if (activeLayers[layerKey].layerObject)
+        setZIndex({layerKey, zIndex: layerObject.zIndex})
   }
   updateLayerObjects()
 }

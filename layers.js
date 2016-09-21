@@ -35,14 +35,16 @@ class layers extends React.Component {
     drake.on('drop', (el, target, source, sibling) => {
       var layersInDom = drake.containers[0].children
       var layers = _.map(this.state.layers, (layer) => {
+        if(!layer) return undefined
         var indexOfLayer = _.findIndex(layersInDom, (layerDom) => {
           return layerDom.attributes[1].nodeValue == layer.key
         })
-        layer.zIndex = indexOfLayer
+        layer.zIndex = (100 - indexOfLayer)
         return layer
       })
       this.setState({layers: layers})
       layers.forEach((layer) => {
+        if (!layer) return
         this.props.updateLayers({layerKey: layer.key, layerObject: layer})
       })
     })
@@ -66,6 +68,7 @@ class layers extends React.Component {
     allLayerIds.push(layerObject.id)
     var layers = this.state.layers
     layerObject.zIndex = layers[layerKey].zIndex
+    if (!layerObject.zIndex) layerObject.zIndex = (100 - layerKey)
     layers[layerKey] = layerObject
     this.setState({allLayerIds, layers})
     this.props.putLayer(layerKey, url, layerObject.zIndex)
