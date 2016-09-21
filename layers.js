@@ -28,7 +28,6 @@ class layers extends React.Component {
   componentDidMount() {
     var drake = dragula([document.querySelector('#testIdizzle')], {
       moves: (el, source, handle, sibling) => {
-        console.log('inside moves')
         return handle.classList.contains('glyphicon-move');
       }
     })
@@ -50,7 +49,8 @@ class layers extends React.Component {
   addLayerSelectionRow() {
     var allLayers = this.state.layers
     allLayers[this.state.totalLayers] = {
-      key: this.state.totalLayers
+      key: this.state.totalLayers,
+      zIndex: this.state.totalLayers
     }
     this.setState({layers: allLayers, totalLayers: this.state.totalLayers+1})
     //createLayer will be called at the end of this chain, after all the data has come back from the server.
@@ -62,10 +62,10 @@ class layers extends React.Component {
     var allLayerIds = this.state.allLayerIds
     allLayerIds.push(layerObject.id)
     var layers = this.state.layers
+    layerObject.zIndex = layers[layerKey].zIndex
     layers[layerKey] = layerObject
     this.setState({allLayerIds, layers})
-    var layerOrder = _.findIndex(this.state.allLayerIds, (id) => id == layerObject.id)
-    this.props.putLayer(layerKey, url, layerOrder)
+    this.props.putLayer(layerKey, url, layerObject.zIndex)
     this.props.updateLayers({layerKey, layerObject})
   }
 
