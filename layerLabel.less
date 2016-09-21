@@ -19,12 +19,48 @@
   position: relative;
   .layerLabel-text {
     font-weight: bold;
-    padding-top: 7px;
-    padding-left: 40px;
-    padding-right: 40px;
+    padding-left: 35px;
+    padding-right: 43px;
     white-space: nowrap;
     text-overflow: ellipsis;
-    overflow-x: hidden;
+    text-align: left;
+    &:hover {
+      cursor: pointer;
+    }
+    .loadingLayers {
+      margin-top: 7px;
+      margin-left: 10px;
+      font-weight: normal;
+    }
+    .Select {
+      overflow: visible;
+      text-align: left;
+      .Select-control {
+        border-top: 0;
+        border-bottom: 0;
+        background-color: rgba(0, 0, 0, 0);
+        .Select-arrow {
+          border-color: white transparent transparent;
+        }
+        .Select-value {
+          .Select-value-label {
+            color: white;
+          }
+          &:hover {
+            cursor: pointer;
+          }
+        }
+        .Select-input {
+          color: white;
+        }
+        .Select-placeholder {
+          color: white;
+          &:hover {
+            cursor: pointer;
+          }
+        }
+      }
+    }
   }
   .removey {
     float: left;

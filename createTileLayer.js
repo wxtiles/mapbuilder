@@ -114,18 +114,13 @@ class createTileLayer extends React.Component {
     return React.createElement('div', {className: 'createTileLayer'},
       React.createElement('div', {className: 'select-container'},
         React.createElement('div', {className: 'select-list'},
-          React.createElement(layerLabel, {deleteLayer: this.deleteLayer, label: labelForLayerLabel}),
+          React.createElement(layerLabel, {
+            deleteLayer: this.deleteLayer,
+            layers: this.state.loadedLayers,
+            selectLayer: this.selectLayer,
+            selectedLayer: this.state.selectedLayer
+          }),
           React.createElement('div', {className: 'controls'},
-            (this.state.loadedLayers == null) && React.createElement('div', null, 'Downloading layers...'),
-            this.state.loadedLayers && React.createElement('div', {},
-              React.createElement(select, {
-                options: this.state.loadedLayers,
-                placeholder: 'Select a layer...',
-                value: this.state.selectedLayer,
-                onChange: this.selectLayer,
-                clearable: false
-              })
-            ),
             this.state.selectedInstance && React.createElement('div', {},
               (this.state.loadingInstance == false) && React.createElement(timeSelector, {
                 times: this.state.selectedInstance.times,
