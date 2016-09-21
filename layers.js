@@ -42,6 +42,9 @@ class layers extends React.Component {
         return layer
       })
       this.setState({layers: layers})
+      layers.forEach((layer) => {
+        this.props.updateLayers({layerKey: layer.key, layerObject: layer})
+      })
     })
   }
 

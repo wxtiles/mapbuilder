@@ -131,8 +131,16 @@ var setOpacityOfLayer = ({layerKey, opacity}) => {
 var updateLayers = ({layerKey, layerObject}) => {
   if (activeLayers[layerKey]) {
       activeLayers[layerKey].layerObject = layerObject
+      setZIndex({layerKey, zIndex: layerObject.zIndex})
   }
   updateLayerObjects()
+}
+
+var setZIndex = ({layerKey, zIndex}) => {
+  var url = activeLayers[layerKey].activeUrl
+  if (activeLayers[layerKey][url].leafletMapLayer) {
+    activeLayers[layerKey][url].leafletMapLayer.setZIndex(zIndex)
+  }
 }
 
 var updateLayerObjects = () => {
