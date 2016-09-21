@@ -85,10 +85,10 @@ class layers extends React.Component {
   render() {
     return React.createElement('div', {className: 'layers'},
       React.createElement('div', {},
+        React.createElement('div', {className: 'addLayerRow'},
+          React.createElement('div', {className: 'btn btn-success addLayer', onClick: this.addLayerSelectionRow}, 'Add a layer')
+        ),
         React.createElement('div', {id: 'testIdizzle'},
-          React.createElement('div', {className: 'addLayerRow'},
-            React.createElement('div', {className: 'btn btn-success addLayer', onClick: this.addLayerSelectionRow}, 'Add a layer')
-          ),
           _.map(this.state.layers, (layer) =>
             layer && React.createElement('div', {className: 'layerContainer', key: layer.key},
               React.createElement(createTileLayer, {layerKey: layer.key, putLayer: this.createLayer, removeLayer: this.removeLayer, setOpacityOfLayer: this.setOpacityOfLayer})
