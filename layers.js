@@ -26,7 +26,12 @@ class layers extends React.Component {
   }
 
   componentDidMount() {
-    dragula([document.querySelector('#testIdizzle')])
+    dragula([document.querySelector('#testIdizzle')], {
+      moves: (el, source, handle, sibling) => {
+        console.log('inside moves')
+        return handle.classList.contains('glyphicon-move');
+      }
+    })
   }
 
   //This is called when the user clicks the button to add a new layer.

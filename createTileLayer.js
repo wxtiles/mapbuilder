@@ -17,12 +17,10 @@ class createTileLayer extends React.Component {
     super()
     this.state = {}
     this.state.selectedLayer = null
-    this.state.isEditing = true
     this.state.loadingInstance = false
     this.state.opacity = 0.8
     this.selectLayer = this.selectLayer.bind(this)
     this.deleteLayer = this.deleteLayer.bind(this)
-    this.edit = this.edit.bind(this)
     this.setOpacity = this.setOpacity.bind(this)
   }
 
@@ -92,13 +90,6 @@ class createTileLayer extends React.Component {
     this.loadLayersList()
   }
 
-  edit() {
-    if (this.state.selectedLayer == null) return
-    this.setState({
-      isEditing: !this.state.isEditing
-    })
-  }
-
   deleteLayer() {
     this.props.removeLayer({layerKey: this.props.layerKey})
   }
@@ -120,15 +111,11 @@ class createTileLayer extends React.Component {
     if (this.state.selectedLayer) {
       labelForLayerLabel = this.state.selectedLayer.label
     }
-    var classesForControls = ' hideControls'
-    if (this.state.isEditing) classesForControls = ''
     return React.createElement('div', {className: 'createTileLayer'},
       React.createElement('div', {className: 'select-container'},
         React.createElement('div', {className: 'select-list'},
-          React.createElement('div', {onClick: this.edit},
-            React.createElement(layerLabel, {deleteLayer: this.deleteLayer, label: labelForLayerLabel, isCollapsed: this.state.isEditing})
-          ),
-          React.createElement('div', {className: classesForControls},
+          React.createElement(layerLabel, {deleteLayer: this.deleteLayer, label: labelForLayerLabel}),
+          React.createElement('div', {className: 'controls'},
             (this.state.loadedLayers == null) && React.createElement('div', null, 'Downloading layers...'),
             this.state.loadedLayers && React.createElement('div', {},
               React.createElement(select, {

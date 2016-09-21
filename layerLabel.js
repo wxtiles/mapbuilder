@@ -12,16 +12,12 @@ class layerLabel extends React.Component {
   }
 
   render() {
-    var chevron = 'glyphicon-chevron-down'
-    if(this.props.isCollapsed) {
-      chevron = 'glyphicon-chevron-up'
-    }
     return React.createElement('div', {className: 'layerLabel'},
       React.createElement('div', {className: 'removey glyphicon glyphicon-remove remove-button', onClick: this.props.deleteLayer}, ''),
       React.createElement('div', {className: 'layerLabel-text'},
         React.createElement('span', {}, this.props.label)
       ),
-      React.createElement('span', {className: 'chevy glyphicon ' + chevron}, '')
+      React.createElement('span', {className: 'chevy glyphicon glyphicon-move'}, '')
     )
   }
 }
