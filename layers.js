@@ -64,25 +64,26 @@ class layers extends React.Component {
 
   //This is called when the use selects a time value for the layer.
   //This also happens once when the slayer selection row is first loaded, the 0th time value is auto selected for the user.
-  createLayer({layerKey, url, layerObject}) {
+  createLayer({url, layerObject}) {
     var layers = this.state.layers
     var index = _.findIndex(layers, (layer) => layer.key == layerObject.key)
     layerObject.zIndex = layers[index].zIndex
     layers[index] = layerObject
     this.setState({layers: layers})
-    this.props.putLayer(layerKey, url, layerObject.zIndex)
+    this.props.putLayer(layerObject.key, url, layerObject.zIndex)
+    this.props.updateLayers({layerKey: layerObject.key, layerObject: layerObject})
   }
 
-  removeLayer({layerKey}) {
+  removeLayer({key}) {
     var layers = this.state.layers;
     var index = _.findIndex(layers, (layer) => {
       if (!layer) return false
-      return (layer.key == layerKey)
+      return (layer.key == key)
     })
     layers[index] = null
     this.setState({layers: layers});
-    this.props.updateLayers({layerKey, layerObject: undefined})
-    this.props.removeLayer({layerKey})
+    this.props.updateLayers({layerKey: key, layerObject: undefined})
+    this.props.removeLayer({layerKey: key})
   }
 
   toggleLayerMenu() {
@@ -94,9 +95,9 @@ class layers extends React.Component {
     })
   }
 
-  setOpacityOfLayer({layerKey, layerObject}) {
-    this.props.setOpacityOfLayer({layerKey, opacity: layerObject.opacity})
-    this.props.updateLayers({layerKey, layerObject})
+  setOpacityOfLayer({layerObject}) {
+    this.props.setOpacityOfLayer({layerKey: layerObject.key, opacity: layerObject.opacity})
+    this.props.updateLayers({layerKey: layerObject.key, layerObject})
   }
 
   render() {
