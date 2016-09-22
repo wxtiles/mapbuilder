@@ -66,7 +66,10 @@ class layers extends React.Component {
   //This also happens once when the slayer selection row is first loaded, the 0th time value is auto selected for the user.
   createLayer({url, layerObject}) {
     var layers = this.state.layers
-    var index = _.findIndex(layers, (layer) => layer.key == layerObject.key)
+    var index = _.findIndex(layers, (layer) => {
+      if (!layer) return false
+      return (layer.key == layerObject.key)
+    })
     layerObject.zIndex = layers[index].zIndex
     layers[index] = layerObject
     this.setState({layers: layers})
