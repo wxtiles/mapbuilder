@@ -128,19 +128,19 @@ var setOpacityOfLayer = ({layerKey, opacity}) => {
   setOpacityOfLayerAndUrl({layerKey, url: activeLayers[layerKey].activeUrl, opacity})
 }
 
-var updateLayers = ({layerKey, layerObject}) => {
-  if (activeLayers[layerKey]) {
-      activeLayers[layerKey].layerObject = layerObject
-      if (activeLayers[layerKey].layerObject)
-        setZIndex({layerKey, zIndex: layerObject.zIndex})
+var updateLayers = ({layerObject}) => {
+  if (activeLayers[layerObject.key]) {
+      activeLayers[layerObject.key].layerObject = layerObject
+      if (activeLayers[layerObject.key].layerObject)
+        setZIndex({layerObject})
   }
   updateLayerObjects()
 }
 
-var setZIndex = ({layerKey, zIndex}) => {
-  var url = activeLayers[layerKey].activeUrl
-  if (activeLayers[layerKey][url].leafletMapLayer) {
-    activeLayers[layerKey][url].leafletMapLayer.setZIndex(zIndex)
+var setZIndex = ({layerObject}) => {
+  var url = activeLayers[layerObject.key].activeUrl
+  if (activeLayers[layerObject.key][url].leafletMapLayer) {
+    activeLayers[layerObject.key][url].leafletMapLayer.setZIndex(layerObject.zIndex)
   }
 }
 

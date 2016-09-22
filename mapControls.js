@@ -31,17 +31,6 @@ class mapControls extends React.Component {
         instanceId: layer.instanceId
       }
     })
-    var generateUrlDatums = {
-      zoom: this.props.mapDatums.zoom,
-      center: this.props.mapDatums.center,
-      layers: _.map(layers, (layer) => {
-        return {
-          id: layer.id,
-          opacity: layer.opacity,
-          zIndex: layer.zIndex
-        }
-      })
-    }
 
     var now = moment.utc()
     var twoDaysAgo = now.clone().add(-2, 'day',)
@@ -54,7 +43,34 @@ class mapControls extends React.Component {
     })
     times = _.flatten(times)
     times = _.union(times, hardcodedTimes)
-    var timeSliderDatums = {times}
+    var selectTime = ({time}) => {
+      _.forEach(layers, (layer) => {
+        var allTimesForLayer = _.map(layer.times, (time) => moment.utc(time.value))
+        allTimesForLayer = _.sortBy(allTimesForLayer, (time) => +time)
+        var timeIsOutsideOfLayerRange = time.isAfter(_.first(allTimesForLayer)) && time.isBefore(_.last(allTimesForLayer))
+        if (timeIsOutsideOfLayerRange) return layer.time = null
+        var timeToSelect = null
+        _.forEach(allTimesForLayer, (timeForLayer, key) => {
+          if (timeToSelect) return
+          if (timeForLayer.isBefore(time) && allTimesForLayer[key+1].isAfter(time)) return timeForLayer
+        })
+        layer.time = timeToSelect
+      })
+    }
+    var timeSliderDatums = {times, selectTime}
+
+    var generateUrlDatums = {
+      zoom: this.props.mapDatums.zoom,
+      center: this.props.mapDatums.center,
+      layers: _.map(layers, (layer) => {
+        return {
+          id: layer.id,
+          opacity: layer.opacity,
+          zIndex: layer.zIndex,
+          time: layer.time
+        }
+      })
+    }
 
     return React.createElement('div', {className: 'mapControls'},
       React.createElement(generateUrl, {urlDatums: generateUrlDatums}),
