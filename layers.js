@@ -75,7 +75,11 @@ class layers extends React.Component {
 
   removeLayer({layerKey}) {
     var layers = this.state.layers;
-    layers[layerKey] = null
+    var index = _.findIndex(layers, (layer) => {
+      if (!layer) return false
+      return (layer.key == layerKey)
+    })
+    layers[index] = null
     this.setState({layers: layers});
     this.props.updateLayers({layerKey, layerObject: undefined})
     this.props.removeLayer({layerKey})
