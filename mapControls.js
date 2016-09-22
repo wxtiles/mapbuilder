@@ -15,7 +15,6 @@ class mapControls extends React.Component {
 
   render() {
     var layers = this.props.mapDatums.layers
-    console.log(layers)
     layers = _.filter(layers, (layer) => layer != null)
 
     var legendsDatums = _.map(layers, (layer) => {
