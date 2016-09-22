@@ -8,8 +8,8 @@ import rcSlider from 'rc-slider'
 import legend from './legend'
 import timeSelector from './timeSelector'
 
-var createLayerObject = (id, key, label, opacity, legendUrl, instanceId) => {
-  return {id, key, label, opacity, legendUrl, instanceId}
+var createLayerObject = (id, key, label, opacity, legendUrl, instanceId, times) => {
+  return {id, key, label, opacity, legendUrl, instanceId, times}
 }
 
 class createTileLayer extends React.Component {
@@ -77,7 +77,7 @@ class createTileLayer extends React.Component {
           this.props.putLayer({
             layerKey: this.props.layerKey,
             url,
-            layerObject: createLayerObject(layer.id, this.props.layerKey, layer.label, this.state.opacity, layer.resources.legend, this.state.selectedInstance.instance.id)
+            layerObject: createLayerObject(layer.id, this.props.layerKey, layer.label, this.state.opacity, layer.resources.legend, this.state.selectedInstance.instance.id, this.state.selectedInstance.times)
           })
         },
         onError: (err) => console.log(err),
@@ -101,7 +101,7 @@ class createTileLayer extends React.Component {
       var layer = this.state.selectedLayer
       this.props.setOpacityOfLayer({
         layerKey: this.props.layerKey,
-        layerObject: createLayerObject(layer.id, this.props.layerKey, layer.displayName, this.state.opacity, layer.resources.legend, this.state.selectedInstance.instance.id)
+        layerObject: createLayerObject(layer.id, this.props.layerKey, layer.displayName, this.state.opacity, layer.resources.legend, this.state.selectedInstance.instance.id, this.state.selectedInstance.times)
       })
     })
   }

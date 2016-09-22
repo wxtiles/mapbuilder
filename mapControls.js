@@ -4,6 +4,7 @@ import generateUrl from './mapOverlay/generateUrl'
 import legends from './mapOverlay/legends'
 import _ from 'lodash'
 import timeSlider from './mapOverlay/timeSlider'
+import moment from 'moment'
 
 class mapControls extends React.Component {
   constructor() {
@@ -12,6 +13,10 @@ class mapControls extends React.Component {
   }
 
   componentWillMount() {
+  }
+
+  selectTime(time) {
+
   }
 
   render() {
@@ -37,12 +42,26 @@ class mapControls extends React.Component {
         }
       })
     }
+
+    var now = moment.utc()
+    var twoDaysAgo = now.clone().add(-2, 'day',)
+    var sevenDaysAhead = now.clone().add(7, 'day')
+    var hardcodedTimes = [twoDaysAgo, now, sevenDaysAhead]
+    var times = _.map(layers, (layer) => {
+      return _.map(layer.times, (time) => {
+        return moment.utc(time.value)
+      })
+    })
+    times = _.flatten(times)
+    times = _.union(times, hardcodedTimes)
+    var timeSliderDatums = {times}
+
     return React.createElement('div', {className: 'mapControls'},
       React.createElement(generateUrl, {urlDatums: generateUrlDatums}),
       React.createElement(legends, {legends: legendsDatums}),
       React.createElement('div', {className: 'timeSliderContainer'},
         React.createElement('div', {className: 'timeSliderWrapper'},
-          React.createElement(timeSlider, {})
+          React.createElement(timeSlider, timeSliderDatums)
         )
       )
     )

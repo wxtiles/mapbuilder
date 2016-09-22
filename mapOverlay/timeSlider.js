@@ -7,7 +7,7 @@ class timeSlider extends React.Component {
   constructor() {
     super()
     this.state = {}
-    this.state.times = []
+    this.state.hardcodedTimes = []
     this.updateHoveringOverTime = this.updateHoveringOverTime.bind(this)
     this.selectTime = this.selectTime.bind(this)
   }
@@ -17,7 +17,7 @@ class timeSlider extends React.Component {
     var twoDaysAgo = now.clone().add(-2, 'day',)
     var sevenDaysAhead = now.clone().add(7, 'day')
 
-    this.setState({times: [twoDaysAgo, now, sevenDaysAhead]})
+    this.setState({hardcodedTimes: [twoDaysAgo, now, sevenDaysAhead]})
   }
 
   updateHoveringOverTime(time) {
@@ -31,7 +31,10 @@ class timeSlider extends React.Component {
   }
 
   render() {
-    var times = _.map(this.state.times, (time) => +time)
+    var times = this.props.times
+    if (!times) times = []
+
+    times = _.map(times, (time) => +time)
     times = _.sortBy(times)
 
     var earliestTime = _.first(times)
@@ -44,12 +47,11 @@ class timeSlider extends React.Component {
 
     return React.createElement('div', {className: 'timeSlider'},
       React.createElement(rcSlider, {
-        included: false,
         min: earliestTime,
         max: latestTime,
         defaultValue: earliestTime,
-        step: null,
         marks: marks,
+        tipFormatter: (tick) => moment.utc(tick).format('YYYY MMM DD - hh:mm a'),
         onChange: this.updateHoveringOverTime,
         onAfterChange: this.selectTime
       })
