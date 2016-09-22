@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom'
 import generateUrl from './mapOverlay/generateUrl'
 import legends from './mapOverlay/legends'
 import _ from 'lodash'
+import timeSlider from './mapOverlay/timeSlider'
 
 class mapControls extends React.Component {
   constructor() {
@@ -39,6 +40,11 @@ class mapControls extends React.Component {
     return React.createElement('div', {className: 'mapControls'},
       React.createElement(generateUrl, {urlDatums: generateUrlDatums}),
       React.createElement(legends, {legends: legendsDatums}),
+      React.createElement('div', {className: 'timeSliderContainer'},
+        React.createElement('div', {className: 'timeSliderWrapper'},
+          React.createElement(timeSlider, {})
+        )
+      )
     )
   }
 }
