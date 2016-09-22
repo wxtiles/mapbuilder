@@ -47,6 +47,7 @@ class timeSlider extends React.Component {
 
     return React.createElement('div', {className: 'timeSlider'},
       React.createElement(rcSlider, {
+        included: false,
         min: earliestTime,
         max: latestTime,
         defaultValue: earliestTime,
