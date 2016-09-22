@@ -73,7 +73,7 @@ class layers extends React.Component {
     layerObject.zIndex = layers[index].zIndex
     layers[index] = layerObject
     this.setState({layers: layers})
-    this.props.putLayer(layerObject.key, url, layerObject.zIndex)
+    this.props.putLayer({layerObject, url})
     this.props.updateLayers({layerKey: layerObject.key, layerObject: layerObject})
   }
 
@@ -85,8 +85,8 @@ class layers extends React.Component {
     })
     layers[index] = null
     this.setState({layers: layers});
-    this.props.updateLayers({layerKey: key, layerObject: undefined})
     this.props.removeLayer({layerKey: key})
+    this.props.updateLayers({layerObject: null})
   }
 
   toggleLayerMenu() {
@@ -99,8 +99,8 @@ class layers extends React.Component {
   }
 
   setOpacityOfLayer({layerObject}) {
-    this.props.setOpacityOfLayer({layerKey: layerObject.key, opacity: layerObject.opacity})
-    this.props.updateLayers({layerKey: layerObject.key, layerObject})
+    this.props.setOpacityOfLayer({layerObject})
+    this.props.updateLayers({layerObject})
   }
 
   render() {

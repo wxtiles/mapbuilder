@@ -38,31 +38,31 @@ ReactDOM.render(React.createElement(mapSelector, {mapOptions: mapExamples, showM
 
 maps.showMap(defaultMap)
 var counter = 1
-var putLayer = (layerKey, url, layerOrder) => {
-  if (!activeLayers[layerKey]) {
-    activeLayers[layerKey] = {opacity: 0.8, activeUrl: url}
+var putLayer = ({layerObject, url}) => {
+  if (!activeLayers[layerObject.key]) {
+    activeLayers[layerObject.key] = {opacity: 0.8, activeUrl: url}
   }
-  var layer = activeLayers[layerKey][url]
+  var layer = activeLayers[layerObject.key][url]
   var layerAlreadyExists = (layer != null)
   if(layerAlreadyExists) {
-    setOpacityOfLayerAndUrl({layerKey, url: activeLayers[layerKey].activeUrl, opacity: 0})
-    activeLayers[layerKey].activeUrl = url
-    setOpacityOfLayerAndUrl({layerKey, url: url, opacity: activeLayers[layerKey].opacity})
+    setOpacityOfLayerAndUrl({layerObject, url: activeLayers[layerObject.key].activeUrl})
+    activeLayers[layerObject.key].activeUrl = url
+    setOpacityOfLayerAndUrl({layerObject, url: url})
     return
   }
-  activeLayers[layerKey][url] = {}
+  activeLayers[layerObject.key][url] = {}
 
   //Add this layer to the google map.
   var googleMapLayer = wxTiles.googleMaps.getImageMapType(url);
   googleMap.overlayMapTypes.setAt(counter, googleMapLayer);
   counter++
-  activeLayers[layerKey][url].googleMapLayer = googleMapLayer;
+  activeLayers[layerObject.key][url].googleMapLayer = googleMapLayer;
 
   //Add this layer to the leaflet map.
   var leafletMapLayer = leaflet.tileLayer(url, {
     maxZoom: 18,
     tms: true,
-    zIndex: layerOrder
+    zIndex: layerObject.zIndex
   });
 
   //Leaflet does not handle tiles failing to load.
@@ -80,17 +80,17 @@ var putLayer = (layerKey, url, layerOrder) => {
     queueRedraw()
   })
   leafletMapLayer.addTo(leafletMap);
-  activeLayers[layerKey][url].leafletMapLayer = leafletMapLayer;
+  activeLayers[layerObject.key][url].leafletMapLayer = leafletMapLayer;
 
   //Add this layer to the openLayers map.
   var openLayersSource = new ol.source.XYZ();
   openLayersSource.setUrl(url.replace('{y}', '{-y}'));
   var openLayersMapLayer = new ol.layer.Tile({source: openLayersSource});
-  activeLayers[layerKey][url].openLayersMapLayer = openLayersMapLayer;
+  activeLayers[layerObject.key][url].openLayersMapLayer = openLayersMapLayer;
   //We shift the layer up one level because the base map is is already a layer zero.
   openLayersMap.getLayers().insertAt(counter, openLayersMapLayer);
 
-  setOpacityOfLayer({layerKey, opacity: activeLayers[layerKey].opacity})
+  setOpacityOfLayer({layerObject})
 }
 
 var removeLayer = ({layerKey, url}) => {
@@ -110,26 +110,26 @@ var removeLayer = ({layerKey, url}) => {
   delete activeLayers[layerKey]
 }
 
-var setOpacityOfLayerAndUrl = ({layerKey, url, opacity}) => {
-  var layerInQuestion = activeLayers[layerKey][url]
+var setOpacityOfLayerAndUrl = ({layerObject, url}) => {
+  var layerInQuestion = activeLayers[layerObject.key][url]
 
   var leafletLayer = layerInQuestion.leafletMapLayer
-  leafletLayer.setOpacity(opacity)
+  leafletLayer.setOpacity(layerObject.opacity)
 
   var googleMapLayer = layerInQuestion.googleMapLayer
-  googleMapLayer.setOpacity(opacity)
+  googleMapLayer.setOpacity(layerObject.opacity)
 
   var openLayersMapLayer = layerInQuestion.openLayersMapLayer
-  openLayersMapLayer.setOpacity(opacity)
+  openLayersMapLayer.setOpacity(layerObject.opacity)
 }
 
-var setOpacityOfLayer = ({layerKey, opacity}) => {
-  activeLayers[layerKey].opacity = opacity
-  setOpacityOfLayerAndUrl({layerKey, url: activeLayers[layerKey].activeUrl, opacity})
+var setOpacityOfLayer = ({layerObject}) => {
+  activeLayers[layerObject.key].opacity = layerObject.opacity
+  setOpacityOfLayerAndUrl({layerObject, url: activeLayers[layerObject.key].activeUrl})
 }
 
 var updateLayers = ({layerObject}) => {
-  if (activeLayers[layerObject.key]) {
+  if (layerObject && activeLayers[layerObject.key]) {
       activeLayers[layerObject.key].layerObject = layerObject
       if (activeLayers[layerObject.key].layerObject)
         setZIndex({layerObject})
