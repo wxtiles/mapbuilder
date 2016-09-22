@@ -15,6 +15,7 @@ class mapControls extends React.Component {
 
   render() {
     var layers = this.props.mapDatums.layers
+    console.log(layers)
     layers = _.filter(layers, (layer) => layer != null)
 
     var legendsDatums = _.map(layers, (layer) => {
@@ -31,13 +32,14 @@ class mapControls extends React.Component {
       layers: _.map(layers, (layer) => {
         return {
           id: layer.id,
-          opacity: layer.opacity
+          opacity: layer.opacity,
+          zIndex: layer.zIndex
         }
       })
     }
     return React.createElement('div', {className: 'mapControls'},
       React.createElement(generateUrl, {urlDatums: generateUrlDatums}),
-      React.createElement(legends, {legends: legendsDatums})
+      React.createElement(legends, {legends: legendsDatums}),
     )
   }
 }
