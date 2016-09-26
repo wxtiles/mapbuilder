@@ -20,9 +20,9 @@ class mapWrapper extends React.Component {
     var position = [this.state.lat, this.state.lng]
     var zoom = this.state.zoom
 
-    var wxtilesLayers = this.props.layers
+    var wxtilesLayers = _.cloneDeep(this.props.layers)
     wxtilesLayers = _.filter(wxtilesLayers, (wxtileLayer) => wxtileLayer.visibleUrl)
-    var mapOptions = this.props.mapOptions
+    var mapOptions = _.cloneDeep(this.props.mapOptions)
     var tileLayers = []
     if (mapOptions.isAnimating) {
       tileLayers = _.map(wxtilesLayers, (wxtilesLayer) => {

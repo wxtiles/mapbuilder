@@ -7,30 +7,29 @@ class timeSlider extends React.Component {
   constructor() {
     super()
     this.state = {}
-    this.state.time = null
-    this.state.defaultTime = null
-    this.state.displayTime = 'Select a time'
-    this.updateHoveringOverTime = this.updateHoveringOverTime.bind(this)
     this.selectTime = this.selectTime.bind(this)
     this.toggleAnimating = this.toggleAnimating.bind(this)
+    this.doAnimationFrame = this.doAnimationFrame.bind(this)
   }
 
   componentWillMount() {
-    var now = moment.utc()
-    var twoDaysAgo = now.clone().add(-2, 'day',)
-    var sevenDaysAhead = now.clone().add(7, 'day')
-
-    this.setState({time: now, displayTime: now, defaultTime: now})
+    setInterval(this.doAnimationFrame, 350)
   }
 
-  updateHoveringOverTime(displayTime) {
-    this.setState({displayTime})
+  doAnimationFrame() {
+    if(this.props.mapOptions.isAnimating) {
+      var time = moment.utc(this.props.mapOptions.time)
+      time.add(30, 'minute')
+      this.selectTime(+time)
+    }
   }
 
   selectTime(time) {
-    this.setState({time, displayTime: time}, () => {
-      this.props.selectTime({time: moment.utc(this.state.time)})
-    })
+    var mapOptions = _.cloneDeep(this.props.mapOptions)
+    mapOptions.time = time
+    mapOptions.displayTime = time
+    this.props.updateMapOptions({mapOptions})
+    this.props.selectTime({time})
   }
 
   toggleAnimating() {
@@ -53,25 +52,24 @@ class timeSlider extends React.Component {
     _.forEach(times, (time) => {
       marks[time] = ''
     })
-
+    var mapOptions = _.cloneDeep(this.props.mapOptions)
     return React.createElement('div', {className: 'timeSlider'},
       React.createElement('div', {},
-        !this.props.mapOptions.isAnimating && React.createElement('div', {onClick: this.toggleAnimating, className: 'glyphicon glyphicon-play'}),
-        this.props.mapOptions.isAnimating && React.createElement('div', {onClick: this.toggleAnimating, className: 'glyphicon glyphicon-pause'}),
+        !mapOptions.isAnimating && React.createElement('div', {onClick: this.toggleAnimating, className: 'glyphicon glyphicon-play'}),
+        mapOptions.isAnimating && React.createElement('div', {onClick: this.toggleAnimating, className: 'glyphicon glyphicon-pause'}),
         React.createElement('div', {className: 'reactSliderContainer'},
           React.createElement(rcSlider, {
             included: false,
             min: earliestTime,
             max: latestTime,
-            defaultValue: this.state.defaultTime,
+            value: mapOptions.time,
             marks: marks,
             tipFormatter: null,
-            onChange: this.updateHoveringOverTime,
-            onAfterChange: this.selectTime
+            onChange: this.selectTime
           })
         )
       ),
-      React.createElement('div', {}, moment.utc(this.state.displayTime).local().format('MMM DD - hh:mm a'))
+      React.createElement('div', {}, moment.utc(mapOptions.displayTime).local().format('MMM DD - hh:mm a'))
     )
   }
 }

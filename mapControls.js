@@ -8,6 +8,7 @@ import moment from 'moment'
 import wxtiles from './wxtiles'
 
 var findBestTimeStepsForEachLayer = ({layers, time}) => {
+  time = moment.utc(time)
   return _.map(layers, (layer) => {
     var allTimesForLayer = _.map(layer.times, (t) => moment.utc(t, 'YYYY-MM-DDTHH:mm:ss[Z]'))
     allTimesForLayer = _.sortBy(allTimesForLayer, (t) => +t)
