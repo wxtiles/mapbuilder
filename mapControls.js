@@ -83,7 +83,7 @@ class mapControls extends React.Component {
       React.createElement(legends, {legends: legendsDatums}),
       React.createElement('div', {className: 'timeSliderContainer'},
         React.createElement('div', {className: 'timeSliderWrapper'},
-          // React.createElement(timeSlider, timeSliderDatums)
+          React.createElement(timeSlider, timeSliderDatums)
         )
       )
     )

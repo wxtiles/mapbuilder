@@ -72,7 +72,6 @@ class createTileLayer extends React.Component {
   }
 
   componentWillMount() {
-    console.log(this.props)
   }
 
   deleteLayer() {
@@ -87,7 +86,6 @@ class createTileLayer extends React.Component {
 
   render() {
     var layer = _.cloneDeep(this.props.layer)
-    console.log(layer)
     return React.createElement('div', {className: 'createTileLayer'},
       React.createElement('div', {className: 'select-container'},
         React.createElement('div', {className: 'select-list'},

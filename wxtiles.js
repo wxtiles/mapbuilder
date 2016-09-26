@@ -10,8 +10,6 @@ var getAllLayers = ({onSuccess, onError}) => {
   request
     .get(`${server}/wxtiles/layer/`)
     .end((err, res) => {
-      console.log(err)
-      console.log(res)
       if (err) return onError(err)
       onSuccess(JSON.parse(res.text))
     })

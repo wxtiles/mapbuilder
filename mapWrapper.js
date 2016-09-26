@@ -21,22 +21,41 @@ class mapWrapper extends React.Component {
     var zoom = this.state.zoom
 
     var wxtilesLayers = this.props.layers
-    console.log(wxtilesLayers)
+    wxtilesLayers = _.filter(wxtilesLayers, (wxtileLayer) => wxtileLayer.visibleUrl)
+    var mapOptions = this.props.mapOptions
+    var tileLayers = []
+    if (mapOptions.isAnimating) {
+      tileLayers = _.map(wxtilesLayers, (wxtilesLayer) => {
+        return _.map(wxtilesLayer.urls, (url) => {
+          return {
+            url: url,
+            key: wxtilesLayer.key + ' ' + url,
+            zIndex: wxtilesLayer.zIndex,
+            opacity: wxtilesLayer.opacity
+          }
+        })
+      })
+    }
+    if (!mapOptions.isAnimating) {
+      tileLayers = _.map(wxtilesLayers, (wxtilesLayer) => {
+        return {
+          url: wxtilesLayer.visibleUrl,
+          key: wxtilesLayer.key + ' ' + wxtilesLayer.visibleUrl,
+          zIndex: wxtilesLayer.zIndex,
+          opacity: wxtilesLayer.opacity
+        }
+      })
+    }
 
     return React.createElement('div', {className: 'mapWrapper'},
       React.createElement(Map, {center: position, zoom: zoom, style: {height: '100%'}},
-        _.map(wxtilesLayers, (layer) => {
-          if (!layer.urls) return null
-          return _.map(layer.urls, (url) => {
-            var opacity = 0
-            if (url == layer.visibleUrl) opacity = layer.opacity
-            return React.createElement(TileLayer, {
-              url,
-              key: layer.key + ' ' + url,
-              tms: true,
-              zIndex: layer.zIndex,
-              opacity
-            })
+        _.map(tileLayers, (tileLayer) => {
+          return React.createElement(TileLayer, {
+            url: tileLayer.url,
+            key: tileLayer.key,
+            tms: true,
+            zIndex: tileLayer.zIndex,
+            opacity: tileLayer.opacity
           })
         }),
         React.createElement(TileLayer, {

@@ -24,18 +24,27 @@ var putLayer = () => {}
 
 var removeLayer = () => {}
 
+var oldLayers = null
 var updateLayers = ({layers}) => {
   updateMap({layers})
   updateLayerEditor({layers})
   mapControlsRenderer({layers})
 }
 
-var updateMap = ({layers}) => {
-  var reactMount = document.querySelector('#leafletMap')
-  ReactDOM.render(React.createElement(mapWrapper, {layers}), reactMount)
+var updateMapOptions = ({mapOptions}) => {
+  updateMap({mapOptions})
 }
 
-var oldLayers = null
+var oldMapOptions = {}
+var updateMap = ({layers, mapOptions}) => {
+  layers = layers || oldLayers
+  oldLayers = layers
+  mapOptions = mapOptions || oldMapOptions
+  oldMapOptions = mapOptions
+  var reactMount = document.querySelector('#leafletMap')
+  ReactDOM.render(React.createElement(mapWrapper, {layers, mapOptions}), reactMount)
+}
+
 var oldLayerOptions = null
 var updateLayerEditor = ({layers, layerOptions}) => {
   layers = layers || oldLayers
@@ -44,10 +53,6 @@ var updateLayerEditor = ({layers, layerOptions}) => {
   oldLayerOptions = layerOptions
   var reactMount = document.querySelector('#layerEditor')
   ReactDOM.render(React.createElement(layersEditor, {layers, layerOptions, updateLayers}), reactMount)
-}
-
-var updateAllLayers = () => {
-
 }
 
 var mapControlsRenderer = ({layers}) => {
