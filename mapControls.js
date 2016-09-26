@@ -19,14 +19,18 @@ var findBestTimeStepsForEachLayer = ({layers, time}) => {
       if (time.isAfter(allTimesForLayer[key+1])) return
       timeToSelect = timeForLayer
     })
-    layer.time = timeToSelect.format('YYYY-MM-DDTHH:mm:ss[Z]')
+    layer.time = null
+    if(timeToSelect) layer.time = timeToSelect.format('YYYY-MM-DDTHH:mm:ss[Z]')
     return layer
   })
 }
 
 var updateVisibleUrls = ({layers, onSuccess}) => {
-  Promise.all(_.map(layers, (layer) => {
+  var scopedLayers = _.cloneDeep(layers)
+  Promise.all(_.map(scopedLayers, (layer) => {
     return new Promise((resolve, reject) => {
+      layer.visibleUrl = null
+      if (!layer.time) return resolve(layer)
       wxtiles.getTileLayerUrl({
         layerId: layer.id,
         instanceId: layer.instanceId,
