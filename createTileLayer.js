@@ -8,8 +8,8 @@ import rcSlider from 'rc-slider'
 import legend from './legend'
 import timeSelector from './timeSelector'
 
-var createLayerObject = (id, key, label, opacity, legendUrl, instanceId, times) => {
-  return {id, key, label, opacity, legendUrl, instanceId, times}
+var createLayerObject = (id, key, label, opacity, legendUrl, instanceId, times, urls, visibleUrl) => {
+  return {id, key, label, opacity, legendUrl, instanceId, times, urls, visibleUrl}
 }
 
 class createTileLayer extends React.Component {
@@ -70,19 +70,31 @@ class createTileLayer extends React.Component {
       var getTileLayerUrlOptions = {
         layerId: this.state.selectedLayer.id,
         instanceId: this.state.selectedInstance.instance.id,
-        time: this.state.selectedTime,
+        times: _.map(this.state.selectedInstance.times, 'value'),
         level: 0,
-        onSuccess: (url) => {
+        onSuccess: (urls) => {
           var layer = this.state.selectedLayer
-          this.props.putLayer({
-            layerKey: this.props.layerKey,
-            url,
-            layerObject: createLayerObject(layer.id, this.props.layerKey, layer.label, this.state.opacity, layer.resources.legend, this.state.selectedInstance.instance.id, this.state.selectedInstance.times)
-          })
+          getTileLayerUrlOptions.onSuccess = (visibleUrl) => {
+            this.props.putLayer({
+              layerObject: createLayerObject(
+                layer.id,
+                this.props.layerKey,
+                layer.label,
+                this.state.opacity,
+                layer.resources.legend,
+                this.state.selectedInstance.instance.id,
+                this.state.selectedInstance.times,
+                urls,
+                visibleUrl
+              )
+            })
+          }
+          getTileLayerUrlOptions.time = this.state.selectedTime
+          wxTiles.getTileLayerUrl(getTileLayerUrlOptions)
         },
         onError: (err) => console.log(err),
       }
-      wxTiles.getTileLayerUrl(getTileLayerUrlOptions)
+      wxTiles.getAllTileLayerUrls(getTileLayerUrlOptions)
     })
   }
 

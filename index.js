@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import layers from './layers'
+import layersEditor from './layersEditor'
 import createTileLayer from './createTileLayer'
 import mapSelector from './mapSelector/mapSelector'
 import maps from './maps'
@@ -10,82 +10,52 @@ import hideLayer from './hideLayer'
 import _ from 'lodash'
 import mapControls from './mapControls'
 import moment from 'moment'
+import mapWrapper from './mapWrapper'
 
 ReactDOM.render(React.createElement(hideLayer), document.querySelector('#hideLayerEditor'))
 
-//Prepare the maps.
-var mapExamples = [
-  { label: 'Leaflet', value: 'leaflet' },
-  { label: 'Google Maps', value: 'google' },
-  { label: 'Open Layers 3', value: 'openLayers' },
-]
-
-var leafletMap = maps.mountLeafletMap();
-var googleMap = maps.mountGoogleMap();
-var openLayersMap = maps.mountOpenLayersMap();
-var activeLayers = [{
-  key: 0,
-  opacity: 0.8
-}];
-
-var defaultMap = mapExamples[0]
-
 var mapSelectorMount = document.querySelector('#mapSelector')
 var currentViewBounds = {center: null, zoom: null}
-maps.onUpdateViewPort = ({zoom, center}) => {
+var onUpdateViewPort = ({zoom, center}) => {
   currentViewBounds = {zoom, center}
-  maps.updateViewPort(currentViewBounds)
-  updateLayerObjects()
 }
-
-ReactDOM.render(React.createElement(mapSelector, {mapOptions: mapExamples, showMap: maps.showMap, selectedMap: defaultMap }), mapSelectorMount)
-maps.showMap(defaultMap)
 
 var putLayer = () => {}
 
 var removeLayer = () => {}
 
-var updateLayer = ({layerObject}) => {
-  activeLayers[layerObject.key].layerObject = layerObject
-  updateLayerEditor()
-  updateLayerObjects()
-}
-
 var updateLayers = ({layers}) => {
-  activeLayers = layers
-  updateLayerEditor()
-  updateLayerObjects()
+  updateMap({layers})
+  updateLayerEditor({layers})
+  mapControlsRenderer({layers})
 }
 
-var updateLayerEditor = () => {
+var updateMap = ({layers}) => {
+  var reactMount = document.querySelector('#leafletMap')
+  ReactDOM.render(React.createElement(mapWrapper, {layers}), reactMount)
+}
+
+var updateLayerEditor = ({layers}) => {
   var reactMount = document.querySelector('#layerEditor')
-  ReactDOM.render(React.createElement(layers, {layers: activeLayers, updateLayer, updateLayers}), reactMount)
+  ReactDOM.render(React.createElement(layersEditor, {layers, updateLayers}), reactMount)
 }
 
 var updateAllLayers = () => {
 
 }
 
-var updateLayerObjects = () => {
+var mapControlsRenderer = ({layers}) => {
+  layers = _.filter(layers, (layer) => layer != null)
+  layers = _.map(layers, (layer) => layer.layerObject)
+  var mapDatums = {
+    layers,
+    center: currentViewBounds.center,
+    zoom: currentViewBounds.zoom
+  }
+
   var mapControlsMount = document.querySelector('#mapSibling')
-  var mapDatums = getMapDatums()
   ReactDOM.render(React.createElement('div', {className: 'mapControlsContainer'},
     React.createElement(mapControls, {mapDatums, updateAllLayers})
   ), mapControlsMount)
 }
-
-
-
-var getMapDatums = () => {
-  var layersForStandaloneMap = activeLayers
-  layersForStandaloneMap = _.filter(layersForStandaloneMap, (layer) => layer != null)
-  layersForStandaloneMap = _.map(layersForStandaloneMap, (layer) => layer.layerObject)
-  return {
-    layers: layersForStandaloneMap,
-    center: currentViewBounds.center,
-    zoom: currentViewBounds.zoom
-  }
-}
-
-updateLayerEditor()
-updateLayerObjects()
+updateLayers({layers: [{key: 0, opacity:0.8}]})

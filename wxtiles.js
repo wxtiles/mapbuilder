@@ -1,4 +1,5 @@
 import request from 'superagent'
+import _ from 'lodash'
 
 //const server = 'http://localhost:6060'
 const server = 'https://api.wxtiles.com/v0';
@@ -43,6 +44,20 @@ var getLevelsForInstance = (options) => {
     })
 }
 
+var getAllTileLayerUrls = ({layerId, instanceId, times, level, onSuccess, onError}) => {
+  var urls = []
+  Promise.all(_.map(times, (time) => {
+    return new Promise((resolve, reject) => {
+      var scopedSuccess = (url) => {
+        resolve(url)
+      }
+      getTileLayerUrl({layerId, instanceId, time, level, onSuccess: scopedSuccess, onError})
+    })
+  })).then((urls) => {
+    onSuccess(urls)
+  })
+}
+
 // /<ownerID>/tile/<layerID>/<instanceID>/<time>/<level>/<z>/<x>/<y>.<extension>
 var getTileLayerUrl = ({layerId, instanceId, time, level, onSuccess, onError}) => {
   level = level || 0
@@ -70,4 +85,4 @@ googleMaps.getImageMapType = (layerTilesUrl) => {
   })
 }
 
-export default {getAllLayers, getTimesForInstance, getTileLayerUrl, googleMaps, getInstance, getLegendUrl}
+export default {getAllLayers, getTimesForInstance, getTileLayerUrl, googleMaps, getInstance, getLegendUrl, getAllTileLayerUrls}
