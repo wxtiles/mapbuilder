@@ -48,16 +48,21 @@ class timeSlider extends React.Component {
     })
 
     return React.createElement('div', {className: 'timeSlider'},
-      React.createElement(rcSlider, {
-        included: false,
-        min: earliestTime,
-        max: latestTime,
-        defaultValue: this.state.defaultTime,
-        marks: marks,
-        tipFormatter: null,
-        onChange: this.updateHoveringOverTime,
-        onAfterChange: this.selectTime
-      }),
+      React.createElement('div', {},
+        React.createElement('div', {className: 'glyphicon glyphicon-play'}),
+        React.createElement('div', {className: 'reactSliderContainer'},
+          React.createElement(rcSlider, {
+            included: false,
+            min: earliestTime,
+            max: latestTime,
+            defaultValue: this.state.defaultTime,
+            marks: marks,
+            tipFormatter: null,
+            onChange: this.updateHoveringOverTime,
+            onAfterChange: this.selectTime
+          })
+        )
+      ),
       React.createElement('div', {}, moment.utc(this.state.displayTime).local().format('MMM DD - hh:mm a'))
     )
   }
