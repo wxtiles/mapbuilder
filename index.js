@@ -6,13 +6,11 @@ import mapSelector from './mapSelector/mapSelector'
 import maps from './maps'
 import leaflet from 'leaflet'
 import wxTiles from './wxtiles'
-import hideLayer from './hideLayer'
 import _ from 'lodash'
 import mapControls from './mapControls'
 import moment from 'moment'
 import mapWrapper from './mapWrapper'
-
-ReactDOM.render(React.createElement(hideLayer), document.querySelector('#hideLayerEditor'))
+import root from './root'
 
 var mapSelectorMount = document.querySelector('#mapSelector')
 var currentViewBounds = {center: null, zoom: null}
@@ -24,12 +22,6 @@ var putLayer = () => {}
 
 var removeLayer = () => {}
 
-var oldLayers = null
-var updateLayers = ({layers}) => {
-  updateMap({layers})
-  updateLayerEditor({layers})
-  mapControlsRenderer({layers})
-}
 
 var updateMapOptions = ({mapOptions}) => {
   updateMap({mapOptions})
@@ -73,20 +65,4 @@ var mapControlsRenderer = ({layers, mapOptions}) => {
   ), mapControlsMount)
 }
 
-updateLayers({layers: [{
-  label: 'New layer',
-  key: 0,
-  opacity:0.8,
-  zIndex: 0
-}]})
-
-wxTiles.getAllLayers({
-  onSuccess: (layerOptions) => {
-    console.log(layerOptions)
-    _.forEach(layerOptions, (layerOption, key) => {
-      layerOption.value = layerOption.id
-      layerOption.label = layerOption.meta.name
-    })
-    updateLayerEditor({layerOptions})
-  }
-})
+ReactDOM.render(React.createElement(root), document.querySelector('#root'))

@@ -50,7 +50,7 @@ class mapWrapper extends React.Component {
     }
 
     return React.createElement('div', {className: 'mapWrapper'},
-      React.createElement(Map, {center: position, zoom: zoom, style: {height: '100%'}},
+      React.createElement(Map, {center: position, zoom: zoom, zoomControl: false, style: {height: '100%'}},
         _.map(tileLayers, (tileLayer) => {
           return React.createElement(TileLayer, {
             url: tileLayer.url,

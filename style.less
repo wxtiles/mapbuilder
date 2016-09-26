@@ -22,6 +22,11 @@ body {
   overflow-y: hidden;
 }
 
+.root {
+  width: 100%;
+  height: 100%;
+}
+
 .hideOrShowLayerEditor {
   position: absolute;
   font-size: 15px;
@@ -73,11 +78,20 @@ body {
 }
 
 .layers-container {
-  flex: 0 0 480px;
-  margin-top: 85px;
+  min-width: 480px;
+  z-index: 10;
+  float: left;
+  position: absolute;
+  background-color: rgba(240, 240, 240, 0.9);
   height: 100%;
   overflow-y: scroll;
   overflow-x: hidden;
+  a {
+    margin-left: 35px;
+  }
+  .layers {
+    margin-top: 20px;
+  }
 }
 
 h1 {
