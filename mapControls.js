@@ -86,7 +86,14 @@ class mapControls extends React.Component {
         }
       })
     }
-    var timeSliderDatums = {times, selectTime, defaultTime: +now}
+
+    var timeSliderDatums = {
+      times,
+      selectTime,
+      updateMapOptions: this.props.updateMapOptions,
+      mapOptions: this.props.mapOptions,
+      defaultTime: +now
+    }
 
     var generateUrlDatums = {
       zoom: this.props.mapDatums.zoom,

@@ -12,6 +12,7 @@ class timeSlider extends React.Component {
     this.state.displayTime = 'Select a time'
     this.updateHoveringOverTime = this.updateHoveringOverTime.bind(this)
     this.selectTime = this.selectTime.bind(this)
+    this.toggleAnimating = this.toggleAnimating.bind(this)
   }
 
   componentWillMount() {
@@ -32,6 +33,12 @@ class timeSlider extends React.Component {
     })
   }
 
+  toggleAnimating() {
+    var mapOptions = _.cloneDeep(this.props.mapOptions)
+    mapOptions.isAnimating = !mapOptions.isAnimating
+    this.props.updateMapOptions({mapOptions})
+  }
+
   render() {
     var times = this.props.times
     if (!times) times = []
@@ -49,7 +56,8 @@ class timeSlider extends React.Component {
 
     return React.createElement('div', {className: 'timeSlider'},
       React.createElement('div', {},
-        React.createElement('div', {className: 'glyphicon glyphicon-play'}),
+        !this.props.mapOptions.isAnimating && React.createElement('div', {onClick: this.toggleAnimating, className: 'glyphicon glyphicon-play'}),
+        this.props.mapOptions.isAnimating && React.createElement('div', {onClick: this.toggleAnimating, className: 'glyphicon glyphicon-pause'}),
         React.createElement('div', {className: 'reactSliderContainer'},
           React.createElement(rcSlider, {
             included: false,

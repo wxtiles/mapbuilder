@@ -27,14 +27,16 @@ class mapWrapper extends React.Component {
     if (mapOptions.isAnimating) {
       tileLayers = _.map(wxtilesLayers, (wxtilesLayer) => {
         return _.map(wxtilesLayer.urls, (url) => {
+          var isVisibleUrl = wxtilesLayer.visibleUrl == url
           return {
             url: url,
             key: wxtilesLayer.key + ' ' + url,
             zIndex: wxtilesLayer.zIndex,
-            opacity: wxtilesLayer.opacity
+            opacity: isVisibleUrl ? wxtilesLayer.opacity : 0
           }
         })
       })
+      tileLayers = _.flatten(tileLayers)
     }
     if (!mapOptions.isAnimating) {
       tileLayers = _.map(wxtilesLayers, (wxtilesLayer) => {

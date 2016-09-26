@@ -33,6 +33,7 @@ var updateLayers = ({layers}) => {
 
 var updateMapOptions = ({mapOptions}) => {
   updateMap({mapOptions})
+  mapControlsRenderer({mapOptions})
 }
 
 var oldMapOptions = {}
@@ -55,7 +56,11 @@ var updateLayerEditor = ({layers, layerOptions}) => {
   ReactDOM.render(React.createElement(layersEditor, {layers, layerOptions, updateLayers}), reactMount)
 }
 
-var mapControlsRenderer = ({layers}) => {
+var mapControlsRenderer = ({layers, mapOptions}) => {
+  layers = layers || oldLayers
+  oldLayers = layers
+  mapOptions = mapOptions || oldMapOptions
+  oldMapOptions = mapOptions
   layers = _.filter(layers, (layer) => layer != null)
   var mapDatums = {
     layers,
@@ -64,14 +69,15 @@ var mapControlsRenderer = ({layers}) => {
   }
   var mapControlsMount = document.querySelector('#mapSibling')
   ReactDOM.render(React.createElement('div', {className: 'mapControlsContainer'},
-    React.createElement(mapControls, {mapDatums, updateLayers})
+    React.createElement(mapControls, {mapDatums, updateLayers, mapOptions, updateMapOptions})
   ), mapControlsMount)
 }
 
 updateLayers({layers: [{
   label: 'New layer',
   key: 0,
-  opacity:0.8
+  opacity:0.8,
+  zIndex: 0
 }]})
 
 wxTiles.getAllLayers({
