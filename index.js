@@ -76,10 +76,10 @@ updateLayers({layers: [{
 
 wxTiles.getAllLayers({
   onSuccess: (layerOptions) => {
-
+    console.log(layerOptions)
     _.forEach(layerOptions, (layerOption, key) => {
       layerOption.value = layerOption.id
-      layerOption.label = layerOption.id
+      layerOption.label = layerOption.meta.name
     })
     updateLayerEditor({layerOptions})
   }

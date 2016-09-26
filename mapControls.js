@@ -5,10 +5,11 @@ import legends from './mapOverlay/legends'
 import _ from 'lodash'
 import timeSlider from './mapOverlay/timeSlider'
 import moment from 'moment'
+import wxtiles from './wxtiles'
 
 var findBestTimeStepsForEachLayer = ({layers, time}) => {
   return _.map(layers, (layer) => {
-    var allTimesForLayer = _.map(layer.times, (t) => moment.utc(t.value))
+    var allTimesForLayer = _.map(layer.times, (t) => moment.utc(t, 'YYYY-MM-DDTHH:mm:ss[Z]'))
     allTimesForLayer = _.sortBy(allTimesForLayer, (t) => +t)
 
     var timeToSelect = null
@@ -18,9 +19,26 @@ var findBestTimeStepsForEachLayer = ({layers, time}) => {
       if (time.isAfter(allTimesForLayer[key+1])) return
       timeToSelect = timeForLayer
     })
-    layer.time = timeToSelect
+    layer.time = timeToSelect.format('YYYY-MM-DDTHH:mm:ss[Z]')
     return layer
   })
+}
+
+var updateVisibleUrls = ({layers, onSuccess}) => {
+  Promise.all(_.map(layers, (layer) => {
+    return new Promise((resolve, reject) => {
+      wxtiles.getTileLayerUrl({
+        layerId: layer.id,
+        instanceId: layer.instanceId,
+        time: layer.time,
+        level: 0,
+        onSuccess: (url) => {
+          layer.visibleUrl = url
+          resolve(layer)
+        }
+      })
+    })
+  })).then(onSuccess)
 }
 
 class mapControls extends React.Component {
@@ -30,10 +48,6 @@ class mapControls extends React.Component {
   }
 
   componentWillMount() {
-  }
-
-  selectTime(time) {
-
   }
 
   render() {
@@ -61,7 +75,12 @@ class mapControls extends React.Component {
     times = _.union(times, hardcodedTimes)
     var selectTime = ({time}) => {
       var layersWithTime = findBestTimeStepsForEachLayer({layers, time})
-      this.props.updateLayers({layers: layersWithTime})
+      updateVisibleUrls({
+        layers: layersWithTime,
+        onSuccess: (layers) => {
+          this.props.updateLayers({layers})
+        }
+      })
     }
     var timeSliderDatums = {times, selectTime, defaultTime: +now}
 
