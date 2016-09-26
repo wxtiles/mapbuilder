@@ -75,7 +75,7 @@ class createTileLayer extends React.Component {
   }
 
   deleteLayer() {
-    this.props.removeLayer({key: this.props.layerKey})
+    this.props.removeLayer({key: this.props.layer.key})
   }
 
   setOpacity(opacity) {

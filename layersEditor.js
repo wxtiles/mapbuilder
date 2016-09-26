@@ -71,11 +71,7 @@ class layersEditor extends React.Component {
 
   removeLayer({key}) {
     var layers = _.cloneDeep(this.props.layers)
-    var layerIndex = _.findIndex(layers, (layer) => {
-      if (!layer) return false
-      return (layer.key == key)
-    })
-    layers.splice(layerIndex)
+    layers = _.remove(layers, (layer) => layer.key != key)
     this.props.updateLayers({layers})
   }
 
