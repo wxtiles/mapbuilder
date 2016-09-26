@@ -21,7 +21,7 @@ class layerLabel extends React.Component {
           React.createElement(select, {
             options: this.props.layers,
             placeholder: 'Select a layer...',
-            value: this.props.selectedLayer,
+            value: this.props.layer,
             onChange: this.props.selectLayer,
             clearable: false
           })

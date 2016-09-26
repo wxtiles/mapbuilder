@@ -17,7 +17,6 @@ class layersEditor extends React.Component {
     this.createLayer = this.createLayer.bind(this)
     this.removeLayer = this.removeLayer.bind(this)
     this.toggleLayerMenu = this.toggleLayerMenu.bind(this)
-    this.setOpacityOfLayer = this.setOpacityOfLayer.bind(this)
   }
 
   componentDidMount() {
@@ -49,7 +48,8 @@ class layersEditor extends React.Component {
     var layers = _.cloneDeep(this.props.layers)
     layers.unshift({
       key: this.state.totalLayers,
-      zIndex: this.state.totalLayers
+      zIndex: this.state.totalLayers,
+      opacity: 0.8
     })
     this.setState({totalLayers: this.state.totalLayers+1}, () => {
       this.props.updateLayers({layers})
@@ -97,7 +97,7 @@ class layersEditor extends React.Component {
         React.createElement('div', {id: 'testIdizzle'},
           _.map(this.props.layers, (layer) =>
             layer && React.createElement('div', {className: 'layerContainer', key: layer.key, 'data-key': layer.key},
-              React.createElement(createTileLayer, {layerKey: layer.key, putLayer: this.createLayer, removeLayer: this.removeLayer, setOpacityOfLayer: this.createLayer})
+              React.createElement(createTileLayer, {layer, layerOptions: this.props.layerOptions, updateLayer: this.createLayer, removeLayer: this.removeLayer})
             )
           )
         )

@@ -18,88 +18,61 @@ class createTileLayer extends React.Component {
     this.state = {}
     this.state.selectedLayer = null
     this.state.loadingInstance = false
-    this.state.opacity = 0.8
     this.selectLayer = this.selectLayer.bind(this)
     this.deleteLayer = this.deleteLayer.bind(this)
     this.setOpacity = this.setOpacity.bind(this)
   }
 
-  loadLayersList() {
-    this.setState({loadedLayers: null})
-    var onSuccess = (layers) => {
-      layers = _.map(layers, (layer) => {
-        layer.value = layer.id
-        layer.label = layer.meta.name
-        return layer
-      })
-      this.setState({loadedLayers: layers})
-    }
-    var onError = (err) => console.log(err)
-    wxTiles.getAllLayers(onSuccess, onError)
-  }
-
-  selectLayer(layer) {
-    var instances = _.map(layer.instances, (instance) => {
+  selectLayer(selectingLayer) {
+    var instances = _.map(selectingLayer.instances, (instance) => {
       instance.value = instance.id
       instance.label = "Instance: " + instance.displayName
       return instance
     })
-    instances = _.sortBy(instances, (instance) => { return instance.displayName }).reverse(),
-    this.setState({selectedLayer: layer, instances: instances, hasLegend: layer.resources.legend}, () => this.selectInstance(instances[0]))
-  }
-
-  selectInstance(instance) {
-    var options = {
-      layerId: this.state.selectedLayer.id,
-      instanceId: instance.id,
-      onSuccess: (instance) => {
-        instance.times = _.map(instance.times, (time) => {
-          return {value: time, label: time}
-        })
-        instance.times.reverse()
-        this.setState({selectedInstance: instance, loadingInstance: false, selectedTime: null})
-      },
-      onError: (error) => console.log(error),
-    }
-    wxTiles.getInstance(options)
-    this.setState({loadingInstance: true})
-  }
-
-  selectTime(time) {
-    this.setState({selectedTime: time}, () =>{
-      var getTileLayerUrlOptions = {
-        layerId: this.state.selectedLayer.id,
-        instanceId: this.state.selectedInstance.instance.id,
-        times: _.map(this.state.selectedInstance.times, 'value'),
-        level: 0,
-        onSuccess: (urls) => {
-          var layer = this.state.selectedLayer
-          getTileLayerUrlOptions.onSuccess = (visibleUrl) => {
-            this.props.putLayer({
-              layerObject: createLayerObject(
-                layer.id,
-                this.props.layerKey,
-                layer.label,
-                this.state.opacity,
-                layer.resources.legend,
-                this.state.selectedInstance.instance.id,
-                this.state.selectedInstance.times,
-                urls,
-                visibleUrl
-              )
+    instances = _.sortBy(instances, (instance) => { return instance.displayName }).reverse()
+    var layer = _.cloneDeep(this.props.layer)
+    layer.id = selectingLayer.id
+    layer.instances = instances
+    layer.instanceId = instances[0].id
+    layer.label = selectingLayer.label
+    wxTiles.getInstance({
+      layerId: layer.id,
+      instanceId: layer.instanceId,
+      onSuccess: (instanceObject) => {
+        layer.times = instanceObject.times
+        layer.time = instanceObject.times[2]
+        wxTiles.getAllTileLayerUrls({
+          layerId: layer.id,
+          instanceId: layer.instanceId,
+          times: layer.times,
+          level: 0,
+          onSuccess: (urls) => {
+            layer.urls = urls
+            wxTiles.getTileLayerUrl({
+              layerId: layer.id,
+              instanceId: layer.instanceId,
+              time: layer.time,
+              level: 0,
+              onSuccess: (visibleUrl) => {
+                layer.visibleUrl = visibleUrl
+                this.props.updateLayer({layerObject: layer})
+              }
             })
           }
-          getTileLayerUrlOptions.time = this.state.selectedTime
-          wxTiles.getTileLayerUrl(getTileLayerUrlOptions)
-        },
-        onError: (err) => console.log(err),
+        })
+      },
+      onError: (error) => {
+        console.log(error)
       }
-      wxTiles.getAllTileLayerUrls(getTileLayerUrlOptions)
     })
   }
 
+  selectInstance(instance) {
+    var layer = _.cloneDeep(this.props.layer)
+  }
+
   componentWillMount() {
-    this.loadLayersList()
+    console.log(this.props)
   }
 
   deleteLayer() {
@@ -107,46 +80,30 @@ class createTileLayer extends React.Component {
   }
 
   setOpacity(opacity) {
-    this.setState({
-      opacity
-    }, () => {
-      var layer = this.state.selectedLayer
-      this.props.setOpacityOfLayer({
-        layerObject: createLayerObject(layer.id, this.props.layerKey, layer.displayName, this.state.opacity, layer.resources.legend, this.state.selectedInstance.instance.id, this.state.selectedInstance.times)
-      })
-    })
+    var layerObject = _.cloneDeep(this.props.layer)
+    layerObject.opacity = opacity
+    this.props.updateLayer({layerObject})
   }
 
   render() {
-    var labelForLayerLabel = 'New layer'
-    if (this.state.selectedLayer) {
-      labelForLayerLabel = this.state.selectedLayer.label
-    }
+    var layer = _.cloneDeep(this.props.layer)
+    console.log(layer)
     return React.createElement('div', {className: 'createTileLayer'},
       React.createElement('div', {className: 'select-container'},
         React.createElement('div', {className: 'select-list'},
           React.createElement(layerLabel, {
             deleteLayer: this.deleteLayer,
-            layers: this.state.loadedLayers,
+            layers: this.props.layerOptions,
             selectLayer: this.selectLayer,
-            selectedLayer: this.state.selectedLayer
+            layer: layer.id
           }),
           React.createElement('div', {className: 'controls'},
-            this.state.selectedInstance && React.createElement('div', {},
-              (this.state.loadingInstance == false) && React.createElement(timeSelector, {
-                times: this.state.selectedInstance.times,
-                selectedTime: this.state.selectedTime,
-                updateTime: (thang) => this.selectTime(thang)
-              }),
-              (this.state.loadingInstance == false) && React.createElement('div', {className: 'transparencyContainer'},
-                React.createElement('div', {}, 'Opacity'),
-                React.createElement(rcSlider, {
-                  defaultValue: this.state.opacity * 100,
-                  onChange: (opacity) => this.setOpacity(opacity/100),
-                  disabled: this.state.selectedTime == null
-                })
-              ),
-              this.state.loadingInstance && React.createElement('div', {}, 'loading...')
+            React.createElement('div', {className: 'transparencyContainer'},
+              React.createElement('div', {}, 'Opacity'),
+              React.createElement(rcSlider, {
+                defaultValue: layer.opacity * 100,
+                onChange: (opacity) => this.setOpacity(opacity/100)
+              })
             )
           )
         )

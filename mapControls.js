@@ -39,8 +39,7 @@ class mapControls extends React.Component {
   render() {
     var layers = this.props.mapDatums.layers
     layers = _.filter(layers, (layer) => layer != null)
-
-    var legendsDatums = _.map(layers, (layer) => {
+    var legendsDatums = _.map(legendsDatums, (layer) => {
       return {
         label: layer.label,
         url: layer.legendUrl,
@@ -55,14 +54,14 @@ class mapControls extends React.Component {
     var hardcodedTimes = [now]
     var times = _.map(layers, (layer) => {
       return _.map(layer.times, (time) => {
-        return moment.utc(time.value)
+        return moment.utc(time)
       })
     })
     times = _.flatten(times)
     times = _.union(times, hardcodedTimes)
     var selectTime = ({time}) => {
       var layersWithTime = findBestTimeStepsForEachLayer({layers, time})
-      this.props.updateAllLayers({layers: layersWithTime})
+      this.props.updateLayers({layers: layersWithTime})
     }
     var timeSliderDatums = {times, selectTime, defaultTime: +now}
 
@@ -84,7 +83,7 @@ class mapControls extends React.Component {
       React.createElement(legends, {legends: legendsDatums}),
       React.createElement('div', {className: 'timeSliderContainer'},
         React.createElement('div', {className: 'timeSliderWrapper'},
-          React.createElement(timeSlider, timeSliderDatums)
+          // React.createElement(timeSlider, timeSliderDatums)
         )
       )
     )

@@ -21,6 +21,7 @@ class mapWrapper extends React.Component {
     var zoom = this.state.zoom
 
     var wxtilesLayers = this.props.layers
+    console.log(wxtilesLayers)
 
     return React.createElement('div', {className: 'mapWrapper'},
       React.createElement(Map, {center: position, zoom: zoom, style: {height: '100%'}},
@@ -33,7 +34,7 @@ class mapWrapper extends React.Component {
               url,
               key: layer.key + ' ' + url,
               tms: true,
-              zIndex: 100,
+              zIndex: layer.zIndex,
               opacity
             })
           })

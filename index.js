@@ -35,9 +35,15 @@ var updateMap = ({layers}) => {
   ReactDOM.render(React.createElement(mapWrapper, {layers}), reactMount)
 }
 
-var updateLayerEditor = ({layers}) => {
+var oldLayers = null
+var oldLayerOptions = null
+var updateLayerEditor = ({layers, layerOptions}) => {
+  layers = layers || oldLayers
+  oldLayers = layers
+  layerOptions = layerOptions || oldLayerOptions
+  oldLayerOptions = layerOptions
   var reactMount = document.querySelector('#layerEditor')
-  ReactDOM.render(React.createElement(layersEditor, {layers, updateLayers}), reactMount)
+  ReactDOM.render(React.createElement(layersEditor, {layers, layerOptions, updateLayers}), reactMount)
 }
 
 var updateAllLayers = () => {
@@ -46,16 +52,30 @@ var updateAllLayers = () => {
 
 var mapControlsRenderer = ({layers}) => {
   layers = _.filter(layers, (layer) => layer != null)
-  layers = _.map(layers, (layer) => layer.layerObject)
   var mapDatums = {
     layers,
     center: currentViewBounds.center,
     zoom: currentViewBounds.zoom
   }
-
   var mapControlsMount = document.querySelector('#mapSibling')
   ReactDOM.render(React.createElement('div', {className: 'mapControlsContainer'},
-    React.createElement(mapControls, {mapDatums, updateAllLayers})
+    React.createElement(mapControls, {mapDatums, updateLayers})
   ), mapControlsMount)
 }
-updateLayers({layers: [{key: 0, opacity:0.8}]})
+
+updateLayers({layers: [{
+  label: 'New layer',
+  key: 0,
+  opacity:0.8
+}]})
+
+wxTiles.getAllLayers({
+  onSuccess: (layerOptions) => {
+
+    _.forEach(layerOptions, (layerOption, key) => {
+      layerOption.value = layerOption.id
+      layerOption.label = layerOption.id
+    })
+    updateLayerEditor({layerOptions})
+  }
+})
