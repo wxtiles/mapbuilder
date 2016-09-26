@@ -27,8 +27,9 @@ class timeSlider extends React.Component {
   }
 
   selectTime(time) {
-    
-    this.setState({time, displayTime: time})
+    this.setState({time, displayTime: time}, () => {
+      this.props.selectTime({time: moment.utc(this.state.time)})
+    })
   }
 
   render() {

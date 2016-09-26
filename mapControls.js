@@ -6,6 +6,23 @@ import _ from 'lodash'
 import timeSlider from './mapOverlay/timeSlider'
 import moment from 'moment'
 
+var findBestTimeStepsForEachLayer = ({layers, time}) => {
+  return _.map(layers, (layer) => {
+    var allTimesForLayer = _.map(layer.times, (t) => moment.utc(t.value))
+    allTimesForLayer = _.sortBy(allTimesForLayer, (t) => +t)
+
+    var timeToSelect = null
+    _.forEach(allTimesForLayer, (timeForLayer, key) => {
+      if(timeToSelect) return
+      if (time.isBefore(timeForLayer)) return
+      if (time.isAfter(allTimesForLayer[key+1])) return
+      timeToSelect = timeForLayer
+    })
+    layer.time = timeToSelect
+    return layer
+  })
+}
+
 class mapControls extends React.Component {
   constructor() {
     super()
@@ -35,7 +52,7 @@ class mapControls extends React.Component {
     var now = moment.utc()
     var twoDaysAgo = now.clone().add(-2, 'day',)
     var sevenDaysAhead = now.clone().add(7, 'day')
-    var hardcodedTimes = [twoDaysAgo, now, sevenDaysAhead]
+    var hardcodedTimes = [now]
     var times = _.map(layers, (layer) => {
       return _.map(layer.times, (time) => {
         return moment.utc(time.value)
@@ -44,20 +61,10 @@ class mapControls extends React.Component {
     times = _.flatten(times)
     times = _.union(times, hardcodedTimes)
     var selectTime = ({time}) => {
-      _.forEach(layers, (layer) => {
-        var allTimesForLayer = _.map(layer.times, (time) => moment.utc(time.value))
-        allTimesForLayer = _.sortBy(allTimesForLayer, (time) => +time)
-        var timeIsOutsideOfLayerRange = time.isAfter(_.first(allTimesForLayer)) && time.isBefore(_.last(allTimesForLayer))
-        if (timeIsOutsideOfLayerRange) return layer.time = null
-        var timeToSelect = null
-        _.forEach(allTimesForLayer, (timeForLayer, key) => {
-          if (timeToSelect) return
-          if (timeForLayer.isBefore(time) && allTimesForLayer[key+1].isAfter(time)) return timeForLayer
-        })
-        layer.time = timeToSelect
-      })
+      var layersWithTime = findBestTimeStepsForEachLayer({layers, time})
+      this.props.updateAllLayers({layers: layersWithTime})
     }
-    var timeSliderDatums = {times, selectTime}
+    var timeSliderDatums = {times, selectTime, defaultTime: +now}
 
     var generateUrlDatums = {
       zoom: this.props.mapDatums.zoom,

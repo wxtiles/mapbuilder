@@ -8,8 +8,7 @@ class layers extends React.Component {
   constructor() {
     super()
     this.state = {}
-    this.state.layers = []
-    this.state.totalLayers = 0
+    this.state.totalLayers = 1
     this.state.shouldShowLayerMenu = true
     this.state.isMakingUrl = false
     this.drake = null
@@ -30,8 +29,8 @@ class layers extends React.Component {
 
     drake.on('drop', (el, target, source, sibling) => {
       var layersInDom = drake.containers[0].children
-      var layersState = this.state.layers
-      var layers = _.map(this.state.layers, (layer) => {
+      var layersState = this.props.layers
+      var layers = _.map(this.props.layers, (layer) => {
         if(!layer) return undefined
         var indexOfLayer = _.findIndex(layersInDom, (layerDom) => {
           return layerDom.attributes[1].nodeValue == layer.key
@@ -39,54 +38,45 @@ class layers extends React.Component {
         layer.zIndex = layersInDom.length - indexOfLayer
         return layer
       })
-      this.setState({layers: layers})
-      layers.forEach((layer) => {
-        if (!layer) return
-        this.props.updateLayers({layerKey: layer.key, layerObject: layer})
-      })
+      this.props.updateLayers({layers})
     })
     this.setState({drake}, () => {
-      this.addLayerSelectionRow()
     })
   }
 
   //This is called when the user clicks the button to add a new layer.
   addLayerSelectionRow() {
-    var allLayers = this.state.layers
-    allLayers.unshift({
+    var layers = this.props.layers
+    layers.unshift({
       key: this.state.totalLayers,
       zIndex: this.state.totalLayers
     })
-
-    this.setState({layers: allLayers, totalLayers: this.state.totalLayers+1})
+    this.setState({totalLayers: this.state.totalLayers+1}, () => {
+      this.props.updateLayers({layers})
+    })
     //createLayer will be called at the end of this chain, after all the data has come back from the server.
   }
 
   //This is called when the use selects a time value for the layer.
   //This also happens once when the slayer selection row is first loaded, the 0th time value is auto selected for the user.
   createLayer({url, layerObject}) {
-    var layers = this.state.layers
+    var layers = this.props.layers
     var index = _.findIndex(layers, (layer) => {
       if (!layer) return false
       return (layer.key == layerObject.key)
     })
     layerObject.zIndex = layers[index].zIndex
     layers[index] = layerObject
-    this.setState({layers: layers})
-    this.props.putLayer({layerObject, url})
-    this.props.updateLayers({layerKey: layerObject.key, layerObject: layerObject})
+    this.props.updateLayer({layerObject})
   }
 
   removeLayer({key}) {
-    var layers = this.state.layers;
-    var index = _.findIndex(layers, (layer) => {
+    var layers = this.props.layers;
+    var layerObject = _.find(layers, (layer) => {
       if (!layer) return false
       return (layer.key == key)
     })
-    layers[index] = null
-    this.setState({layers: layers});
-    this.props.removeLayer({layerKey: key})
-    this.props.updateLayers({layerObject: null})
+    this.props.removeLayer({layerObject})
   }
 
   toggleLayerMenu() {
@@ -99,8 +89,7 @@ class layers extends React.Component {
   }
 
   setOpacityOfLayer({layerObject}) {
-    this.props.setOpacityOfLayer({layerObject})
-    this.props.updateLayers({layerObject})
+    this.props.updateLayer({layerObject})
   }
 
   render() {
@@ -110,7 +99,7 @@ class layers extends React.Component {
           React.createElement('div', {className: 'btn btn-success addLayer', onClick: this.addLayerSelectionRow}, 'Add a layer')
         ),
         React.createElement('div', {id: 'testIdizzle'},
-          _.map(this.state.layers, (layer) =>
+          _.map(this.props.layers, (layer) =>
             layer && React.createElement('div', {className: 'layerContainer', key: layer.key, 'data-key': layer.key},
               React.createElement(createTileLayer, {layerKey: layer.key, putLayer: this.createLayer, removeLayer: this.removeLayer, setOpacityOfLayer: this.setOpacityOfLayer})
             )
