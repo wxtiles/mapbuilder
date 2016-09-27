@@ -30,10 +30,10 @@ class mapWrapper extends React.Component {
         var bufferedTimeUrls = wxtilesLayer.timeUrls
         bufferedTimeUrls = _.filter(bufferedTimeUrls, (timeUrl) => {
           var timeOfTileLayer = timeUrl.time.clone()
-          var threeHoursBeforeMapTime = mapTime.clone().add(-6, 'hours')
-          var oneDayAfterMapTime = mapTime.clone().add(4, 'hour')
-          if(timeOfTileLayer.isBefore(threeHoursBeforeMapTime)) return false
-          if(timeOfTileLayer.isAfter(oneDayAfterMapTime)) return false
+          var startOfBuffer = mapTime.clone().add(-6, 'hours')
+          var endOfBuffer = mapTime.clone().add(4, 'hour')
+          if(timeOfTileLayer.isBefore(startOfBuffer)) return false
+          if(timeOfTileLayer.isAfter(endOfBuffer)) return false
           return true
         })
         return _.map(bufferedTimeUrls, (timeUrl) => {

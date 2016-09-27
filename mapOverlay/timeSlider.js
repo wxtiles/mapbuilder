@@ -1,6 +1,6 @@
 import React from 'react'
 import rcSlider from 'rc-slider'
-import moment from 'moment'
+import moment from 'moment-timezone'
 import _ from 'lodash'
 
 class timeSlider extends React.Component {
@@ -66,7 +66,7 @@ class timeSlider extends React.Component {
           })
         )
       ),
-      React.createElement('div', {}, mapOptions.displayTime.local().format('MMM DD - hh:mm a z'))
+      React.createElement('div', {}, mapOptions.displayTime.local().format('MMM DD - hh:mm a') + ' ' + moment.tz(moment.tz.guess()).format('z'))
     )
   }
 }
