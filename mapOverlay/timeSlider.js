@@ -33,7 +33,9 @@ class timeSlider extends React.Component {
 
   toggleAnimating() {
     var mapOptions = _.cloneDeep(this.props.mapOptions)
-    mapOptions.isAnimating = !mapOptions.isAnimating
+    if (mapOptions.earliestTime && mapOptions.latestTime) {
+      mapOptions.isAnimating = !mapOptions.isAnimating
+    }
     this.props.updateMapOptions({mapOptions})
   }
 
