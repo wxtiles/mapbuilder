@@ -32,6 +32,13 @@ class createTileLayer extends React.Component {
     layer.instances = instances
     layer.instanceId = instances[0].id
     layer.label = selectingLayer.meta.name
+    if(selectingLayer.resources.legend) {
+      layer.legendUrl = selectingLayer.resources.legend
+        .replace('<instance>', instances[0].id)
+        .replace('<size>', 'small')
+        .replace('<orientation>', 'horizontal')
+    }
+
     wxTiles.getInstance({
       layerId: layer.id,
       instanceId: layer.instanceId,

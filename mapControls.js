@@ -64,12 +64,13 @@ class mapControls extends React.Component {
     var mapOptions = _.cloneDeep(this.props.mapOptions)
     var layers = mapOptions.layers
 
-    var legendsDatums = _.map(layers, (layer) => {
+    var legendsDatums = _.filter(layers, (layer) => layer.legendUrl)
+    legendsDatums = _.map(legendsDatums, (layer) => {
       return {
         label: layer.label,
         url: layer.legendUrl,
         layerId: layer.id,
-        instanceId: layer.instanceId
+        instanceId: layer.instanceId,
       }
     })
 
