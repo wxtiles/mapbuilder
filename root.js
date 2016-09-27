@@ -33,17 +33,18 @@ class root extends React.Component {
       onError: (error) => console.log(error)
     })
 
-    this.setState({layers: [{
+    var layers = [{
       label: 'New layer',
       key: 0,
       opacity:0.8,
       zIndex: 0
-    }]})
-
+    }]
     this.setState({
+      layers,
       mapOptions: {
         time: this.props.now,
-        displayTime: this.props.now
+        displayTime: this.props.now,
+        layers
       }
     })
   }
@@ -66,7 +67,6 @@ class root extends React.Component {
   }
 
   updateMapOptions({mapOptions}) {
-    // console.log('updating mapOptions')
     var layers = _.cloneDeep(this.state.layers)
     layers = mapOptions.layers
     this.setState({mapOptions, layers})
@@ -87,7 +87,8 @@ class root extends React.Component {
       React.createElement('div', {className: 'mapContainer'},
         React.createElement(mapWrapper, {
           layers: this.state.layers,
-          mapOptions: this.state.mapOptions
+          mapOptions: this.state.mapOptions,
+          updateMapOptions: this.updateMapOptions
         })
       ),
       React.createElement('div', {className: 'mapControlsContainer'},

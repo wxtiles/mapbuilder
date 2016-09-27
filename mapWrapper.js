@@ -60,8 +60,24 @@ class mapWrapper extends React.Component {
       })
     }
 
+    var mapParams = {
+      center: position,
+      zoom: zoom,
+      zoomControl: false,
+      style: {height: '100%'},
+      onMoveend: (e) => {
+        var target = e.target
+        mapOptions = _.cloneDeep(this.props.mapOptions)
+        mapOptions.zoom = target.getZoom()
+        mapOptions.center = {
+          lat: target.getCenter().lat,
+          lng: target.getCenter().lng,
+        }
+        this.props.updateMapOptions({mapOptions})
+      }
+    }
     return React.createElement('div', {className: 'mapWrapper'},
-      React.createElement(Map, {center: position, zoom: zoom, zoomControl: false, style: {height: '100%'}},
+      React.createElement(Map, mapParams,
         _.map(tileLayers, (tileLayer) => {
           return React.createElement(TileLayer, {
             url: tileLayer.url,
