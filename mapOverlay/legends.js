@@ -24,7 +24,7 @@ class legends extends React.Component {
   }
 
   render() {
-    return this.props.legends.length > 0 && React.createElement('div', {className: 'legends'},
+    return React.createElement('div', {className: 'legends'},
       React.createElement('div', {className: 'legends-control'},
         !this.state.showLegends && React.createElement('a', {href: '#', onClick: this.showLegends}, 'Show legends'),
         this.state.showLegends && React.createElement('a', {href: '#', onClick: this.hideLegends}, 'Hide legends')

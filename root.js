@@ -49,7 +49,6 @@ class root extends React.Component {
   }
 
   updateLayers({layers}) {
-    // console.log('updating layer')
     var mapOptions = _.cloneDeep(this.state.mapOptions)
     mapOptions.layers = layers
     var times = _.map(layers, (layer) => {

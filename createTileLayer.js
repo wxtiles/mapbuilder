@@ -31,6 +31,7 @@ class createTileLayer extends React.Component {
     layer.id = selectingLayer.id
     layer.instances = instances
     layer.instanceId = instances[0].id
+    layer.label = selectingLayer.meta.name
     wxTiles.getInstance({
       layerId: layer.id,
       instanceId: layer.instanceId,

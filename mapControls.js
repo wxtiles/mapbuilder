@@ -61,11 +61,10 @@ class mapControls extends React.Component {
   }
 
   render() {
-    var layers = this.props.mapOptions.layers
-    var mapOptions = this.props.mapOptions
+    var mapOptions = _.cloneDeep(this.props.mapOptions)
+    var layers = mapOptions.layers
 
-    layers = _.filter(layers, (layer) => layer != null)
-    var legendsDatums = _.map(legendsDatums, (layer) => {
+    var legendsDatums = _.map(layers, (layer) => {
       return {
         label: layer.label,
         url: layer.legendUrl,
