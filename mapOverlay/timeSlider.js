@@ -20,6 +20,9 @@ class timeSlider extends React.Component {
     if(this.props.mapOptions.isAnimating) {
       var time = this.props.mapOptions.time
       time.add(30, 'minute')
+      if(time.isAfter(this.props.mapOptions.latestTime)) {
+        time = this.props.mapOptions.earliestTime
+      }
       this.selectTime(+time)
     }
   }
@@ -35,15 +38,18 @@ class timeSlider extends React.Component {
   }
 
   render() {
-    var times = this.props.times
-    var earliestTime = this.props.earliestTime
-    var latestTime = this.props.latestTime
+    var mapOptions = _.cloneDeep(this.props.mapOptions)
+    var times = mapOptions.times
+    var earliestTime = mapOptions.earliestTime
+    if (!earliestTime) earliestTime = 1
+    var latestTime = mapOptions.latestTime
+    if (!latestTime) latestTime = 1
 
     var marks = {}
     _.forEach(times, (time) => {
       marks[+time] = ''
     })
-    var mapOptions = _.cloneDeep(this.props.mapOptions)
+
     return React.createElement('div', {className: 'timeSlider'},
       React.createElement('div', {},
         !mapOptions.isAnimating && React.createElement('div', {onClick: this.toggleAnimating, className: 'glyphicon glyphicon-play'}),
@@ -60,7 +66,7 @@ class timeSlider extends React.Component {
           })
         )
       ),
-      React.createElement('div', {}, moment.utc(mapOptions.displayTime).local().format('MMM DD - hh:mm a'))
+      React.createElement('div', {}, mapOptions.displayTime.local().format('MMM DD - hh:mm a z'))
     )
   }
 }

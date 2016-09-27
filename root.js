@@ -5,6 +5,7 @@ import _ from 'lodash'
 import layersEditor from './layersEditor'
 import mapWrapper from './mapWrapper'
 import mapControls from './mapControls'
+import moment from 'moment'
 
 class root extends React.Component {
   constructor() {
@@ -41,7 +42,8 @@ class root extends React.Component {
 
     this.setState({
       mapOptions: {
-        hardCodedTimes: [this.props.now]
+        time: this.props.now,
+        displayTime: this.props.now
       }
     })
   }
@@ -50,6 +52,17 @@ class root extends React.Component {
     // console.log('updating layer')
     var mapOptions = _.cloneDeep(this.state.mapOptions)
     mapOptions.layers = layers
+    var times = _.map(layers, (layer) => {
+      return _.map(layer.times, (time) => {
+        return moment.utc(time)
+      })
+    })
+    times = _.flatten(times)
+    times.push(this.props.now)
+    times = _.sortBy(times, (time) => +time)
+    mapOptions.times = times
+    mapOptions.earliestTime = _.first(times)
+    mapOptions.latestTime = _.last(times)
     this.setState({layers, mapOptions})
   }
 

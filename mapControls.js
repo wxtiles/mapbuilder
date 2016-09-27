@@ -62,6 +62,8 @@ class mapControls extends React.Component {
 
   render() {
     var layers = this.props.mapOptions.layers
+    var mapOptions = this.props.mapOptions
+
     layers = _.filter(layers, (layer) => layer != null)
     var legendsDatums = _.map(legendsDatums, (layer) => {
       return {
@@ -73,8 +75,8 @@ class mapControls extends React.Component {
     })
 
     var selectTime = ({time}) => {
-      var mapOptions = this.props.mapOptions
       mapOptions.time = time
+      mapOptions.displayTime = time
       this.props.updateMapOptions({mapOptions})
       var layersWithTime = findBestTimeStepsForEachLayer({layers, time})
       updateVisibleUrls({
@@ -85,26 +87,10 @@ class mapControls extends React.Component {
       })
     }
 
-    var hardCodedTimes = this.props.mapOptions.hardCodedTimes
-    var now = hardCodedTimes[0]
-    var times = _.map(layers, (layer) => {
-      return _.map(layer.times, (time) => {
-        return moment.utc(time)
-      })
-    })
-    times = _.flatten(times)
-    times.push(now)
-    times = _.sortBy(times, (time) => +time)
-    var earliestTime = _.first(times)
-    var latestTime = _.last(times)
     var timeSliderDatums = {
-      times,
-      earliestTime,
-      latestTime,
       selectTime,
       updateMapOptions: this.updateMapOptions,
-      mapOptions: this.props.mapOptions,
-      defaultTime: +now
+      mapOptions: this.props.mapOptions
     }
 
     var generateUrlDatums = {
