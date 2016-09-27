@@ -31,7 +31,7 @@ class mapWrapper extends React.Component {
         bufferedTimeUrls = _.filter(bufferedTimeUrls, (timeUrl) => {
           var timeOfTileLayer = timeUrl.time.clone()
           var threeHoursBeforeMapTime = mapTime.clone().add(-6, 'hours')
-          var oneDayAfterMapTime = mapTime.clone().add(1, 'day')
+          var oneDayAfterMapTime = mapTime.clone().add(4, 'hour')
           if(timeOfTileLayer.isBefore(threeHoursBeforeMapTime)) return false
           if(timeOfTileLayer.isAfter(oneDayAfterMapTime)) return false
           return true
