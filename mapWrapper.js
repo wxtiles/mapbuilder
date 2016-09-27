@@ -23,10 +23,21 @@ class mapWrapper extends React.Component {
     var wxtilesLayers = _.cloneDeep(this.props.layers)
     wxtilesLayers = _.filter(wxtilesLayers, (wxtileLayer) => wxtileLayer.visibleUrl)
     var mapOptions = _.cloneDeep(this.props.mapOptions)
+    var mapTime = mapOptions.time.clone()
     var tileLayers = []
     if (mapOptions.isAnimating) {
       tileLayers = _.map(wxtilesLayers, (wxtilesLayer) => {
-        return _.map(wxtilesLayer.urls, (url) => {
+        var bufferedTimeUrls = wxtilesLayer.timeUrls
+        bufferedTimeUrls = _.filter(bufferedTimeUrls, (timeUrl) => {
+          var timeOfTileLayer = timeUrl.time.clone()
+          var threeHoursBeforeMapTime = mapTime.clone().add(-6, 'hours')
+          var oneDayAfterMapTime = mapTime.clone().add(1, 'day')
+          if(timeOfTileLayer.isBefore(threeHoursBeforeMapTime)) return false
+          if(timeOfTileLayer.isAfter(oneDayAfterMapTime)) return false
+          return true
+        })
+        return _.map(bufferedTimeUrls, (timeUrl) => {
+          var url = timeUrl.url
           var isVisibleUrl = wxtilesLayer.visibleUrl == url
           return {
             url: url,

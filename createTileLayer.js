@@ -7,10 +7,7 @@ import layerLabel from './layerLabel'
 import rcSlider from 'rc-slider'
 import legend from './legend'
 import timeSelector from './timeSelector'
-
-var createLayerObject = (id, key, label, opacity, legendUrl, instanceId, times, urls, visibleUrl) => {
-  return {id, key, label, opacity, legendUrl, instanceId, times, urls, visibleUrl}
-}
+import moment from 'moment'
 
 class createTileLayer extends React.Component {
   constructor() {
@@ -45,8 +42,12 @@ class createTileLayer extends React.Component {
           instanceId: layer.instanceId,
           times: layer.times,
           level: 0,
-          onSuccess: (urls) => {
-            layer.urls = urls
+          onSuccess: (timeUrls) => {
+            var timeUrls = _.map(timeUrls, (timeUrl) => {
+              timeUrl.time = moment.utc(timeUrl.time, 'YYYY-MM-DDTHH:mm:ss[Z]')
+              return timeUrl
+            })
+            layer.timeUrls = timeUrls
             wxTiles.getTileLayerUrl({
               layerId: layer.id,
               instanceId: layer.instanceId,

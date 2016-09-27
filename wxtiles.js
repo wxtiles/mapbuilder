@@ -49,12 +49,12 @@ var getAllTileLayerUrls = ({layerId, instanceId, times, level, onSuccess, onErro
   Promise.all(_.map(times, (time) => {
     return new Promise((resolve, reject) => {
       var scopedSuccess = (url) => {
-        resolve(url)
+        resolve({time, url})
       }
       getTileLayerUrl({layerId, instanceId, time, level, onSuccess: scopedSuccess, onError})
     })
-  })).then((urls) => {
-    onSuccess(urls)
+  })).then((timeUrls) => {
+    onSuccess(timeUrls)
   })
 }
 

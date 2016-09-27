@@ -13,7 +13,7 @@ class timeSlider extends React.Component {
   }
 
   componentWillMount() {
-    setInterval(this.doAnimationFrame, 100)
+    setInterval(this.doAnimationFrame, 200)
   }
 
   doAnimationFrame() {
