@@ -99,8 +99,7 @@ class mapControls extends React.Component {
         return {
           id: layer.id,
           opacity: layer.opacity,
-          zIndex: layer.zIndex,
-          time: layer.time
+          zIndex: layer.zIndex
         }
       })
     }
