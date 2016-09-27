@@ -72,15 +72,6 @@ class mapControls extends React.Component {
       }
     })
 
-    var hardCodedTimes = this.props.mapOptions.hardCodedTimes
-    var now = hardCodedTimes[0]
-    var times = _.map(layers, (layer) => {
-      return _.map(layer.times, (time) => {
-        return moment.utc(time)
-      })
-    })
-    times = _.flatten(times)
-    times = _.union(times, hardCodedTimes)
     var selectTime = ({time}) => {
       var mapOptions = this.props.mapOptions
       mapOptions.time = time
@@ -94,8 +85,22 @@ class mapControls extends React.Component {
       })
     }
 
+    var hardCodedTimes = this.props.mapOptions.hardCodedTimes
+    var now = hardCodedTimes[0]
+    var times = _.map(layers, (layer) => {
+      return _.map(layer.times, (time) => {
+        return moment.utc(time)
+      })
+    })
+    times = _.flatten(times)
+    times.push(now)
+    times = _.sortBy(times, (time) => +time)
+    var earliestTime = _.first(times)
+    var latestTime = _.last(times)
     var timeSliderDatums = {
       times,
+      earliestTime,
+      latestTime,
       selectTime,
       updateMapOptions: this.updateMapOptions,
       mapOptions: this.props.mapOptions,

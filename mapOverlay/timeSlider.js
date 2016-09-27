@@ -13,19 +13,19 @@ class timeSlider extends React.Component {
   }
 
   componentWillMount() {
-    setInterval(this.doAnimationFrame, 50)
+    setInterval(this.doAnimationFrame, 100)
   }
 
   doAnimationFrame() {
     if(this.props.mapOptions.isAnimating) {
-      var time = moment.utc(this.props.mapOptions.time)
+      var time = this.props.mapOptions.time
       time.add(30, 'minute')
       this.selectTime(+time)
     }
   }
 
   selectTime(time) {
-    this.props.selectTime({time})
+    this.props.selectTime({time: moment.utc(time)})
   }
 
   toggleAnimating() {
@@ -36,17 +36,12 @@ class timeSlider extends React.Component {
 
   render() {
     var times = this.props.times
-    if (!times) times = []
-
-    times = _.map(times, (time) => +time)
-    times = _.sortBy(times)
-
-    var earliestTime = _.first(times)
-    var latestTime = _.last(times)
+    var earliestTime = this.props.earliestTime
+    var latestTime = this.props.latestTime
 
     var marks = {}
     _.forEach(times, (time) => {
-      marks[time] = ''
+      marks[+time] = ''
     })
     var mapOptions = _.cloneDeep(this.props.mapOptions)
     return React.createElement('div', {className: 'timeSlider'},
@@ -56,8 +51,8 @@ class timeSlider extends React.Component {
         React.createElement('div', {className: 'reactSliderContainer'},
           React.createElement(rcSlider, {
             included: false,
-            min: earliestTime,
-            max: latestTime,
+            min: +earliestTime,
+            max: +latestTime,
             value: mapOptions.time,
             marks: marks,
             tipFormatter: null,
