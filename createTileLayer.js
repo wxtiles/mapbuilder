@@ -36,8 +36,12 @@ class createTileLayer extends React.Component {
       layerId: layer.id,
       instanceId: layer.instanceId,
       onSuccess: (instanceObject) => {
-        layer.times = instanceObject.times
-        layer.time = instanceObject.times[2]
+        var times = instanceObject.times
+        while(times.length > 100) {
+          times = _.remove(times, (time, key) => key % 2 == 0)
+        }
+        layer.times = times
+        layer.time = times[2]
         wxTiles.getAllTileLayerUrls({
           layerId: layer.id,
           instanceId: layer.instanceId,
