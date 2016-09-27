@@ -13,7 +13,7 @@ class timeSlider extends React.Component {
   }
 
   componentWillMount() {
-    setInterval(this.doAnimationFrame, 350)
+    setInterval(this.doAnimationFrame, 50)
   }
 
   doAnimationFrame() {
@@ -25,10 +25,6 @@ class timeSlider extends React.Component {
   }
 
   selectTime(time) {
-    var mapOptions = _.cloneDeep(this.props.mapOptions)
-    mapOptions.time = time
-    mapOptions.displayTime = time
-    this.props.updateMapOptions({mapOptions})
     this.props.selectTime({time})
   }
 

@@ -4,6 +4,7 @@ import wxTiles from './wxtiles'
 import _ from 'lodash'
 import layersEditor from './layersEditor'
 import mapWrapper from './mapWrapper'
+import mapControls from './mapControls'
 
 class root extends React.Component {
   constructor() {
@@ -11,9 +12,11 @@ class root extends React.Component {
     this.state = {
       layers: [],
       mapOptions: {},
-      layerOptions: []
+      layerOptions: [],
+      now: null
     }
     this.updateLayers = this.updateLayers.bind(this)
+    this.updateMapOptions = this.updateMapOptions.bind(this)
   }
 
   componentWillMount() {
@@ -35,10 +38,26 @@ class root extends React.Component {
       opacity:0.8,
       zIndex: 0
     }]})
+
+    this.setState({
+      mapOptions: {
+        hardCodedTimes: [this.props.now]
+      }
+    })
   }
 
   updateLayers({layers}) {
-    this.setState({layers})
+    // console.log('updating layer')
+    var mapOptions = _.cloneDeep(this.state.mapOptions)
+    mapOptions.layers = layers
+    this.setState({layers, mapOptions})
+  }
+
+  updateMapOptions({mapOptions}) {
+    // console.log('updating mapOptions')
+    var layers = _.cloneDeep(this.state.layers)
+    layers = mapOptions.layers
+    this.setState({mapOptions, layers})
   }
 
   render() {
@@ -57,6 +76,13 @@ class root extends React.Component {
         React.createElement(mapWrapper, {
           layers: this.state.layers,
           mapOptions: this.state.mapOptions
+        })
+      ),
+      React.createElement('div', {className: 'mapControlsContainer'},
+        React.createElement(mapControls, {
+          updateLayers: this.updateLayers,
+          mapOptions: this.state.mapOptions,
+          updateMapOptions: this.updateMapOptions
         })
       )
     )

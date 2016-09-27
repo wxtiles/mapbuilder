@@ -50,13 +50,18 @@ class mapControls extends React.Component {
   constructor() {
     super()
     this.state = {}
+    this.updateMapOptions = this.updateMapOptions.bind(this)
   }
 
   componentWillMount() {
   }
 
+  updateMapOptions({mapOptions}) {
+    this.props.updateMapOptions({mapOptions})
+  }
+
   render() {
-    var layers = this.props.mapDatums.layers
+    var layers = this.props.mapOptions.layers
     layers = _.filter(layers, (layer) => layer != null)
     var legendsDatums = _.map(legendsDatums, (layer) => {
       return {
@@ -67,18 +72,19 @@ class mapControls extends React.Component {
       }
     })
 
-    var now = moment.utc()
-    var twoDaysAgo = now.clone().add(-2, 'day',)
-    var sevenDaysAhead = now.clone().add(7, 'day')
-    var hardcodedTimes = [now]
+    var hardCodedTimes = this.props.mapOptions.hardCodedTimes
+    var now = hardCodedTimes[0]
     var times = _.map(layers, (layer) => {
       return _.map(layer.times, (time) => {
         return moment.utc(time)
       })
     })
     times = _.flatten(times)
-    times = _.union(times, hardcodedTimes)
+    times = _.union(times, hardCodedTimes)
     var selectTime = ({time}) => {
+      var mapOptions = this.props.mapOptions
+      mapOptions.time = time
+      this.props.updateMapOptions({mapOptions})
       var layersWithTime = findBestTimeStepsForEachLayer({layers, time})
       updateVisibleUrls({
         layers: layersWithTime,
@@ -91,14 +97,14 @@ class mapControls extends React.Component {
     var timeSliderDatums = {
       times,
       selectTime,
-      updateMapOptions: this.props.updateMapOptions,
+      updateMapOptions: this.updateMapOptions,
       mapOptions: this.props.mapOptions,
       defaultTime: +now
     }
 
     var generateUrlDatums = {
-      zoom: this.props.mapDatums.zoom,
-      center: this.props.mapDatums.center,
+      zoom: this.props.mapOptions.zoom,
+      center: this.props.mapOptions.center,
       layers: _.map(layers, (layer) => {
         return {
           id: layer.id,
