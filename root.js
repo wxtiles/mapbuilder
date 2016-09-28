@@ -44,13 +44,14 @@ class root extends React.Component {
       mapOptions: {
         time: this.props.now,
         displayTime: this.props.now,
-        layers
+        layers,
+        marks: {}
       }
     })
   }
 
   updateLayers({layers}) {
-    var mapOptions = _.cloneDeep(this.state.mapOptions)
+    var mapOptions = this.state.mapOptions
     mapOptions.layers = layers
     var times = _.map(layers, (layer) => {
       return _.map(layer.times, (time) => {
@@ -60,6 +61,10 @@ class root extends React.Component {
     times = _.flatten(times)
     times.push(this.props.now)
     times = _.sortBy(times, (time) => +time)
+    mapOptions.marks = {}
+    _.forEach(times, (time) => {
+      mapOptions.marks[+time] = ''
+    })
     mapOptions.times = times
     mapOptions.earliestTime = _.first(times)
     mapOptions.latestTime = _.last(times)
@@ -67,7 +72,7 @@ class root extends React.Component {
   }
 
   updateMapOptions({mapOptions}) {
-    var layers = _.cloneDeep(this.state.layers)
+    var layers = this.state.layers
     layers = mapOptions.layers
     this.setState({mapOptions, layers})
   }

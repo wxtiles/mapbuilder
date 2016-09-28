@@ -28,7 +28,7 @@ class layersEditor extends React.Component {
 
     drake.on('drop', (el, target, source, sibling) => {
       var layersInDom = drake.containers[0].children
-      var layers = _.cloneDeep(this.props.layers)
+      var layers = this.props.layers
       layers = _.map(layers, (layer) => {
         if(!layer) return undefined
         var indexOfLayer = _.findIndex(layersInDom, (layerDom) => {
@@ -45,7 +45,7 @@ class layersEditor extends React.Component {
 
   //This is called when the user clicks the button to add a new layer.
   addLayerSelectionRow() {
-    var layers = _.cloneDeep(this.props.layers)
+    var layers = this.props.layers
     layers.unshift({
       key: this.state.totalLayers,
       zIndex: this.state.totalLayers,
@@ -60,7 +60,7 @@ class layersEditor extends React.Component {
   //This is called when the use selects a time value for the layer.
   //This also happens once when the slayer selection row is first loaded, the 0th time value is auto selected for the user.
   createLayer({layerObject}) {
-    var layers = _.cloneDeep(this.props.layers)
+    var layers = this.props.layers
     var layerIndex = _.findIndex(layers, (layer) => {
       if (!layer) return false
       return (layer.key == layerObject.key)
@@ -70,7 +70,7 @@ class layersEditor extends React.Component {
   }
 
   removeLayer({key}) {
-    var layers = _.cloneDeep(this.props.layers)
+    var layers = this.props.layers
     layers = _.remove(layers, (layer) => layer.key != key)
     this.props.updateLayers({layers})
   }

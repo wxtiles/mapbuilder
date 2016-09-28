@@ -20,9 +20,9 @@ class mapWrapper extends React.Component {
     var position = [this.state.lat, this.state.lng]
     var zoom = this.state.zoom
 
-    var wxtilesLayers = _.cloneDeep(this.props.layers)
+    var wxtilesLayers = this.props.layers
     wxtilesLayers = _.filter(wxtilesLayers, (wxtileLayer) => wxtileLayer.visibleUrl)
-    var mapOptions = _.cloneDeep(this.props.mapOptions)
+    var mapOptions = this.props.mapOptions
     var mapTime = mapOptions.time.clone()
     var tileLayers = []
     if (mapOptions.isAnimating) {
@@ -67,7 +67,7 @@ class mapWrapper extends React.Component {
       style: {height: '100%'},
       onMoveend: (e) => {
         var target = e.target
-        mapOptions = _.cloneDeep(this.props.mapOptions)
+        mapOptions = this.props.mapOptions
         mapOptions.zoom = target.getZoom()
         mapOptions.center = {
           lat: target.getCenter().lat,

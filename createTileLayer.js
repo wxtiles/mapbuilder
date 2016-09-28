@@ -27,7 +27,7 @@ class createTileLayer extends React.Component {
       return instance
     })
     instances = _.sortBy(instances, (instance) => { return instance.displayName }).reverse()
-    var layer = _.cloneDeep(this.props.layer)
+    var layer = this.props.layer
     layer.id = selectingLayer.id
     layer.instances = instances
     layer.instanceId = instances[0].id
@@ -80,7 +80,6 @@ class createTileLayer extends React.Component {
   }
 
   selectInstance(instance) {
-    var layer = _.cloneDeep(this.props.layer)
   }
 
   componentWillMount() {
@@ -91,13 +90,13 @@ class createTileLayer extends React.Component {
   }
 
   setOpacity(opacity) {
-    var layerObject = _.cloneDeep(this.props.layer)
+    var layerObject = this.props.layer
     layerObject.opacity = opacity
     this.props.updateLayer({layerObject})
   }
 
   render() {
-    var layer = _.cloneDeep(this.props.layer)
+    var layer = this.props.layer
     return React.createElement('div', {className: 'createTileLayer'},
       React.createElement('div', {className: 'select-container'},
         React.createElement('div', {className: 'select-list'},

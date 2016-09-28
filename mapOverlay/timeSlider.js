@@ -13,7 +13,7 @@ class timeSlider extends React.Component {
   }
 
   componentWillMount() {
-    setInterval(this.doAnimationFrame, 200)
+    setInterval(this.doAnimationFrame, 100)
   }
 
   doAnimationFrame() {
@@ -32,7 +32,7 @@ class timeSlider extends React.Component {
   }
 
   toggleAnimating() {
-    var mapOptions = _.cloneDeep(this.props.mapOptions)
+    var mapOptions = this.props.mapOptions
     if (mapOptions.earliestTime && mapOptions.latestTime) {
       mapOptions.isAnimating = !mapOptions.isAnimating
     }
@@ -40,17 +40,13 @@ class timeSlider extends React.Component {
   }
 
   render() {
-    var mapOptions = _.cloneDeep(this.props.mapOptions)
+    var mapOptions = this.props.mapOptions
     var times = mapOptions.times
     var earliestTime = mapOptions.earliestTime
     if (!earliestTime) earliestTime = 1
     var latestTime = mapOptions.latestTime
     if (!latestTime) latestTime = 1
-
-    var marks = {}
-    _.forEach(times, (time) => {
-      marks[+time] = ''
-    })
+    var marks = mapOptions.marks
 
     return React.createElement('div', {className: 'timeSlider'},
       React.createElement('div', {},

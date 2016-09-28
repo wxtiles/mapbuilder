@@ -27,7 +27,7 @@ var findBestTimeStepsForEachLayer = ({layers, time}) => {
 }
 
 var updateVisibleUrls = ({layers, onSuccess}) => {
-  var scopedLayers = _.cloneDeep(layers)
+  var scopedLayers = layers
   Promise.all(_.map(scopedLayers, (layer) => {
     return new Promise((resolve, reject) => {
       layer.visibleUrl = null
@@ -61,7 +61,7 @@ class mapControls extends React.Component {
   }
 
   render() {
-    var mapOptions = _.cloneDeep(this.props.mapOptions)
+    var mapOptions = this.props.mapOptions
     var layers = mapOptions.layers
 
     var legendsDatums = _.filter(layers, (layer) => layer.legendUrl)
