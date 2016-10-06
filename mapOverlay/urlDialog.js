@@ -37,13 +37,13 @@ class urlDialog extends React.Component {
         React.createElement(ModalDialog, {onClose: this.props.close},
           React.createElement('div', {className: 'dialog'},
             React.createElement('div', {className: 'glyphiconContainer'},
-              React.createElement('div', {className: 'glyphicon glyphicon-link'}),
+              React.createElement('div', {className: 'glyphicon glyphicon-link'})
             ),
             !this.state.url && React.createElement('form-horizontal', {},
               React.createElement('div', {className: 'form-group'},
                 React.createElement('label', {className: 'col-sm-2'}, 'ApiKey'),
                 React.createElement('div', {className: 'col-sm-10'},
-                  React.createElement('input', {onChange: this.updateApiKey, className: 'form-control'}),
+                  React.createElement('input', {onChange: this.updateApiKey, className: 'form-control'})
                 )
               ),
               React.createElement('div', {className: 'form-group'},

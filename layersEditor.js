@@ -58,7 +58,7 @@ class layersEditor extends React.Component {
   }
 
   //This is called when the use selects a time value for the layer.
-  //This also happens once when the slayer selection row is first loaded, the 0th time value is auto selected for the user.
+  //This also happens once when the layer selection row is first loaded, the 0th time value is auto selected for the user.
   createLayer({layerObject}) {
     var layers = this.props.layers
     var layerIndex = _.findIndex(layers, (layer) => {

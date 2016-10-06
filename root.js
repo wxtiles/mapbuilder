@@ -78,6 +78,7 @@ class root extends React.Component {
   }
 
   render() {
+    console.log(this.state.layers)
     return React.createElement('div', {className: 'root'},
       React.createElement('div', {className: 'layers-container'},
         React.createElement('a', {className: 'logo', href: 'https://wxtiles.com', target: '_blank'},
@@ -87,7 +88,7 @@ class root extends React.Component {
           layers: this.state.layers,
           layerOptions: this.state.layerOptions,
           updateLayers: this.updateLayers
-        }),
+        })
       ),
       React.createElement('div', {className: 'mapContainer'},
         React.createElement(mapWrapper, {

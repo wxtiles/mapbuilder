@@ -25,7 +25,7 @@ class layerLabel extends React.Component {
             onChange: this.props.selectLayer,
             clearable: false
           })
-        ),
+        )
       ),
       React.createElement('span', {className: 'chevy glyphicon glyphicon-move'}, '')
     )

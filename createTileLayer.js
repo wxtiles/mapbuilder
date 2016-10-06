@@ -23,7 +23,6 @@ class createTileLayer extends React.Component {
   selectLayer(selectingLayer) {
     var instances = _.map(selectingLayer.instances, (instance) => {
       instance.value = instance.id
-      instance.label = "Instance: " + instance.displayName
       return instance
     })
     instances = _.sortBy(instances, (instance) => { return instance.displayName }).reverse()
@@ -32,6 +31,7 @@ class createTileLayer extends React.Component {
     layer.instances = instances
     layer.instanceId = instances[0].id
     layer.label = selectingLayer.meta.name
+    layer.bounds = selectingLayer.bounds
     if(selectingLayer.resources.legend) {
       layer.legendUrl = selectingLayer.resources.legend
         .replace('<instance>', instances[0].id)

@@ -2,6 +2,24 @@ import React from 'react'
 import {Map, TileLayer} from 'react-leaflet'
 import wxtiles from './wxtiles'
 import _ from 'lodash'
+import leaflet from 'leaflet'
+
+var get_bounds = function (bounds) {
+  if (bounds.east > bounds.west && (bounds.west - bounds.east) <= 0.5) {
+    // Valid
+    return leaflet.latLngBounds(
+        leaflet.latLng({lon: bounds.east, lat: bounds.north}),
+        leaflet.latLng({lon: bounds.west, lat: bounds.south})
+    )
+  } else {
+    // NOTE: hack workaround for layer bounds that are broken for some layers?
+    // TODO: remove when GFS and MWW3 layers return valid bounds in prod
+    return leaflet.latLngBounds(
+        leaflet.latLng({lon: -180, lat: 90}),
+        leaflet.latLng({lon: 180, lat: -90})
+    )
+  }
+}
 
 class mapWrapper extends React.Component {
   constructor() {
@@ -43,7 +61,8 @@ class mapWrapper extends React.Component {
             url: url,
             key: wxtilesLayer.key + ' ' + url,
             zIndex: wxtilesLayer.zIndex,
-            opacity: isVisibleUrl ? wxtilesLayer.opacity : 0
+            opacity: isVisibleUrl ? wxtilesLayer.opacity : 0,
+            bounds: get_bounds(wxtilesLayer.bounds)
           }
         })
       })
@@ -55,7 +74,8 @@ class mapWrapper extends React.Component {
           url: wxtilesLayer.visibleUrl,
           key: wxtilesLayer.key + ' ' + wxtilesLayer.visibleUrl,
           zIndex: wxtilesLayer.zIndex,
-          opacity: wxtilesLayer.opacity
+          opacity: wxtilesLayer.opacity,
+          bounds: get_bounds(wxtilesLayer.bounds)
         }
       })
     }
@@ -83,6 +103,7 @@ class mapWrapper extends React.Component {
             url: tileLayer.url,
             key: tileLayer.key,
             tms: true,
+            bounds: tileLayer.bounds,
             zIndex: tileLayer.zIndex,
             opacity: tileLayer.opacity
           })
