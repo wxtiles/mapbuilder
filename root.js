@@ -36,7 +36,7 @@ class root extends React.Component {
     var layers = [{
       label: 'New layer',
       key: 0,
-      opacity:0.8,
+      opacity:1,
       zIndex: 0
     }]
     this.setState({
@@ -59,7 +59,7 @@ class root extends React.Component {
       })
     })
     times = _.flatten(times)
-    times.push(this.props.now)
+    // times.push(this.props.now)
     times = _.sortBy(times, (time) => +time)
     mapOptions.marks = {}
     _.forEach(times, (time) => {
