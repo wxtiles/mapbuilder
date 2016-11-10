@@ -109,8 +109,14 @@ class mapWrapper extends React.Component {
           })
         }),
         React.createElement(TileLayer, {
-          url: 'http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png',
-          subdomains: 'abcd'
+          url: 'https://api.mapbox.com/styles/v1/metocean/civblde3g001c2ipkwfs17qh3/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWV0b2NlYW4iLCJhIjoia1hXZjVfSSJ9.rQPq6XLE0VhVPtcD9Cfw6A',
+          zIndex: 500
+        }),
+        React.createElement(TileLayer, {
+          url: 'http://{s}.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}.png',
+          subdomains: 'abcd',
+          zIndex: 501,
+          alpha: 0.8
         })
       )
     )
