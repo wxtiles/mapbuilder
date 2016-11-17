@@ -44,7 +44,7 @@ class createTileLayer extends React.Component {
       instanceId: layer.instanceId,
       onSuccess: (instanceObject) => {
         var times = instanceObject.times
-        while(times.length > 100) {
+        while(times.length > 20) {
           times = _.remove(times, (time, key) => key % 2 == 0)
         }
         layer.times = times

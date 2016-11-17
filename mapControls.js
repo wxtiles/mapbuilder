@@ -17,7 +17,7 @@ var findBestTimeStepsForEachLayer = ({layers, time}) => {
     _.forEach(allTimesForLayer, (timeForLayer, key) => {
       if(timeToSelect) return
       if (time.isBefore(timeForLayer)) return
-      if (time.isAfter(allTimesForLayer[key+1])) return
+      if (time.isSameOrAfter(allTimesForLayer[key+1])) return
       timeToSelect = timeForLayer
     })
     layer.time = null
