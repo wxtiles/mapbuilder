@@ -26,7 +26,7 @@
     "build-swagger-js-client": "java -jar ./swagger/swagger-codegen-cli.jar generate -i ./swagger/api/swagger/swagger.yaml -l javascript -o ./clients/javascript"
   },
   "author": "Troy Mare",
-  "license": "MIT",
+  "license": "MIT License",
   "dependencies": {
     "leaflet": "^0.7.7",
     "lodash": "^4.13.1",
