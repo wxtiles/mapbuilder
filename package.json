@@ -2,6 +2,7 @@
   "name": "cloudburst-example",
   "version": "0.0.1",
   "description": "cloudburst example",
+  "repository": "https://github.com/wxtiles/mapbuilder",
   "main": "index.js",
   "browserify": {
     "transform": [
@@ -23,7 +24,7 @@
     "build": "npm run js && npm run css && echo Build Complete"
   },
   "author": "Troy Mare",
-  "license": "MIT License",
+  "license": "MIT",
   "dependencies": {
     "leaflet": "^0.7.7",
     "lodash": "^4.13.1",
