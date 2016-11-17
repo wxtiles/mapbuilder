@@ -35,7 +35,7 @@
     "rc-slider": "4.0.1",
     "react": "15.1.0",
     "react-dom": "15.1.0",
-    "react-dragula": "1.1.17",
+    "react-dragula": "^1.1.17",
     "react-leaflet": "0.12.3",
     "react-modal-dialog": "3.0.2",
     "react-select": "1.0.0-beta13",
