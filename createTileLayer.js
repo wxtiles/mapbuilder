@@ -31,8 +31,11 @@ class createTileLayer extends React.Component {
     layer.instances = instances
     layer.instanceId = instances[0].id
     layer.label = selectingLayer.meta.name
+    layer.description = selectingLayer.meta.description
     layer.bounds = selectingLayer.bounds
-    if(selectingLayer.resources.legend) {
+    var legendUrl = selectingLayer.resources.legend
+    layer.hasLegend = legendUrl != undefined
+    if(legendUrl != undefined) {
       layer.legendUrl = selectingLayer.resources.legend
         .replace('<instance>', instances[0].id)
         .replace('<size>', 'small')

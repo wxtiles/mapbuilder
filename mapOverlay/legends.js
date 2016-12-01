@@ -34,7 +34,9 @@ class legends extends React.Component {
           React.createElement(legend, {
             layerId: legendDatums.layerId,
             instanceId: legendDatums.instanceId,
-            label: legendDatums.label
+            label: legendDatums.label,
+            description: legendDatums.description,
+            hasLegend: legendDatums.hasLegend
           })
         )
       }),

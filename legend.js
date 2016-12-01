@@ -2,6 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import _ from 'lodash'
 import wxtilesjs from './wxtiles'
+import rcPopover from 'rc-popover'
 
 class legend extends React.Component {
   constructor() {
@@ -23,10 +24,22 @@ class legend extends React.Component {
     })
   }
 
+  loadingError() {
+    this.setState({url: null})
+  }
+
   render() {
+    var popoverTitle = React.createElement('span', {className: 'legendPopoverTitle'}, this.props.label)
     return React.createElement('div', {className: 'legend'},
-      React.createElement('div', {}, this.props.label),
-      this.state.url && React.createElement('img', {src: this.state.url})
+      React.createElement('div', {},
+        React.createElement('div', {className: 'legendLabel'}, this.props.label),
+        React.createElement(rcPopover, {title: popoverTitle, content: this.props.description, trigger: 'click'},
+          React.createElement('a', {href: 'javascript:void(0);', className: 'description glyphicon glyphicon-question-sign'})
+        )
+      ),
+      this.state.url && React.createElement('div', {className: 'imgWrapper'},
+        this.props.hasLegend && React.createElement('img', {src: this.state.url, onError: this.loadingError})
+      )
     )
   }
 }

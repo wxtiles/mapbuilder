@@ -1,7 +1,17 @@
 .legend {
   text-align: center;
-  min-height: 70px;
+  min-height: 20px;
   border-top: 1px solid #bbb;
+
+  .imgWrapper {
+    width: 315px;
+    display: inline-block;
+
+    img {
+      max-width: 310px;
+      max-height: 80px;
+    }
+  }
 
   .showMeh {
     display: inline-block;
@@ -9,7 +19,20 @@
   .hideMeh {
     display: none;
   }
-  img {
-    height: 70px;
+  .legendLabel {
+    display: inline;
   }
+  .description {
+    float: right;
+    top: 3px;
+    right: 2px;
+  }
+}
+
+.ant-popover-inner {
+  min-width: 200px;
+}
+
+.legendPopoverTitle {
+  font-weight: bold;
 }

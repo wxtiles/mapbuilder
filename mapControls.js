@@ -68,7 +68,9 @@ class mapControls extends React.Component {
     legendsDatums = _.map(legendsDatums, (layer) => {
       return {
         label: layer.label,
-        url: layer.legendUrl,
+        description: layer.description,
+        hasLegend: layer.hasLegend,
+        url: layer.hasLegend ? layer.legendUrl : null,
         layerId: layer.id,
         instanceId: layer.instanceId,
       }

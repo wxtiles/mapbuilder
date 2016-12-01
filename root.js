@@ -74,7 +74,7 @@ class root extends React.Component {
   updateMapOptions({mapOptions}) {
     var layers = this.state.layers
     layers = mapOptions.layers
-    this.setState({mapOptions, layers})
+    this.setState({layers, mapOptions})
   }
 
   render() {
