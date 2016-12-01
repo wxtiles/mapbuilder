@@ -9,6 +9,23 @@ import legend from './legend'
 import timeSelector from './timeSelector'
 import moment from 'moment'
 
+function degradeArray(array, options) {
+  _.defaults(options, {fromLeftSide: false, maxLength: 30})
+  var offset = 2
+  var retArray = array
+  var i = null
+  while(retArray.length > options.maxLength) {
+    i = !options.fromLeftSide ? array.length - offset : offset - 1
+    if (array[i] != undefined) {
+      retArray = _.without(retArray, array[i])
+      offset += 2
+    } else {
+      return degradeArray(retArray, options)
+    }
+  }
+  return retArray
+}
+
 class createTileLayer extends React.Component {
   constructor() {
     super()
@@ -33,6 +50,7 @@ class createTileLayer extends React.Component {
     layer.label = selectingLayer.meta.name
     layer.description = selectingLayer.meta.description
     layer.bounds = selectingLayer.bounds
+    layer.instanceType = selectingLayer.instanceType
     var legendUrl = selectingLayer.resources.legend
     layer.hasLegend = legendUrl != undefined
     if(legendUrl != undefined) {
@@ -46,12 +64,11 @@ class createTileLayer extends React.Component {
       layerId: layer.id,
       instanceId: layer.instanceId,
       onSuccess: (instanceObject) => {
-        var times = instanceObject.times
-        while(times.length > 20) {
-          times = _.remove(times, (time, key) => key % 2 == 0)
-        }
+        var times = degradeArray(instanceObject.times, {
+          fromLeftSide: layer.instanceType != 'observational' ? false: true
+        })
         layer.times = times
-        layer.time = times[2]
+        layer.time = times[2] // TODO eh?
         wxTiles.getAllTileLayerUrls({
           layerId: layer.id,
           instanceId: layer.instanceId,
