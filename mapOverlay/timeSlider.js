@@ -9,6 +9,9 @@ class timeSlider extends React.Component {
     this.state = {}
     this.selectTime = this.selectTime.bind(this)
     this.toggleAnimating = this.toggleAnimating.bind(this)
+    this.changeAnimationRate = this.changeAnimationRate.bind(this)
+    this.halveSpeed = this.halveSpeed.bind(this)
+    this.doubleSpeed = this.doubleSpeed.bind(this)
     this.doAnimationFrame = this.doAnimationFrame.bind(this)
   }
 
@@ -17,13 +20,17 @@ class timeSlider extends React.Component {
   }
 
   doAnimationFrame() {
-    if(this.props.mapOptions.isAnimating) {
-      var time = this.props.mapOptions.time
-      time.add(30, 'minute')
-      if(time.isAfter(this.props.mapOptions.latestTime)) {
-        time = this.props.mapOptions.earliestTime
+    var mapOptions = this.props.mapOptions
+    if(mapOptions.isAnimating) {
+      var time = mapOptions.time
+      var animationSpeed = mapOptions.animationFrameMinutes ? mapOptions.animationFrameMinutes : ((mapOptions.latestTime - mapOptions.earliestTime) / 1000 / 60) * 0.01
+      time.add(animationSpeed, 'minute')
+      if(time.isAfter(mapOptions.latestTime)) {
+        time = mapOptions.earliestTime
       }
+      mapOptions.animationFrameMinutes = animationSpeed
       this.selectTime(+time)
+      this.props.updateMapOptions({mapOptions})
     }
   }
 
@@ -39,6 +46,25 @@ class timeSlider extends React.Component {
     this.props.updateMapOptions({mapOptions})
   }
 
+  changeAnimationRate(options) {
+    _.defaults(options, {rate: 1})
+    var mapOptions = this.props.mapOptions
+    if (mapOptions.animationFrameMinutes === undefined) {
+      mapOptions.animationFrameMinutes = 30
+    }
+    var maxRate = ((mapOptions.latestTime - mapOptions.earliestTime) / 1000 / 60) * 0.33
+    mapOptions.animationFrameMinutes = _.clamp(mapOptions.animationFrameMinutes * options.rate, 1, maxRate)
+    this.props.updateMapOptions({mapOptions})
+  }
+
+  halveSpeed(){
+    this.changeAnimationRate({rate: 0.5})
+  }
+
+  doubleSpeed(){
+    this.changeAnimationRate({rate: 2})
+  }
+
   render() {
     var mapOptions = this.props.mapOptions
     var times = mapOptions.times
@@ -50,8 +76,12 @@ class timeSlider extends React.Component {
 
     return React.createElement('div', {className: 'timeSlider'},
       React.createElement('div', {},
-        !mapOptions.isAnimating && React.createElement('div', {onClick: this.toggleAnimating, className: 'glyphicon glyphicon-play'}),
-        mapOptions.isAnimating && React.createElement('div', {onClick: this.toggleAnimating, className: 'glyphicon glyphicon-pause'}),
+        React.createElement('div', {className: 'animationControl'},
+          !mapOptions.isAnimating && React.createElement('div', {onClick: this.toggleAnimating, className: 'glyphicon glyphicon-play'}),
+          mapOptions.isAnimating && React.createElement('div', {onClick: this.toggleAnimating, className: 'glyphicon glyphicon-pause'}),
+          React.createElement('div', {onClick: this.halveSpeed, className: 'speed-button glyphicon glyphicon-minus-sign'}),
+          React.createElement('div', {onClick: this.doubleSpeed, className: 'speed-button glyphicon glyphicon-plus-sign'})
+        ),
         React.createElement('div', {className: 'reactSliderContainer'},
           React.createElement(rcSlider, {
             included: false,
@@ -64,7 +94,7 @@ class timeSlider extends React.Component {
           })
         )
       ),
-      React.createElement('div', {}, mapOptions.displayTime.local().format('MMM DD - hh:mm a') + ' ' + moment.tz(moment.tz.guess()).format('z'))
+      React.createElement('div', {className: 'displayDate'}, mapOptions.displayTime.local().format('ddd MMM DD - hh:mm a') + ' ' + moment.tz(moment.tz.guess()).format('z'))
     )
   }
 }

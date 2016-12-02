@@ -6,7 +6,7 @@ import _ from 'lodash'
 import layerLabel from './layerLabel'
 import rcSlider from 'rc-slider'
 import legend from './legend'
-import timeSelector from './timeSelector'
+// import timeSelector from './timeSelector'
 import moment from 'moment'
 
 function degradeArray(array, options) {
@@ -14,9 +14,10 @@ function degradeArray(array, options) {
   var offset = 2
   var start = options.retainEnds ? array[0] : undefined
   var end = options.retainEnds ? array[array.length - 1] : undefined
-  var retArray = array.slice(1,-1)
+  var maxLength = options.retainEnds ? options.maxLength - 2 : options.maxLength
+  var retArray = options.retainEnds ? array.slice(1,-1) : array 
   var i = null
-  while(retArray.length > options.maxLength) {
+  while(retArray.length > maxLength) {
     i = !options.fromLeftSide ? array.length - offset : offset - 1
     if (array[i] != undefined) {
       retArray = _.without(retArray, array[i])
@@ -70,7 +71,7 @@ class createTileLayer extends React.Component {
           fromLeftSide: layer.instanceType != 'observational' ? false: true
         })
         layer.times = times
-        layer.time = times[2] // TODO eh?
+        layer.time = times[0]
         wxTiles.getAllTileLayerUrls({
           layerId: layer.id,
           instanceId: layer.instanceId,

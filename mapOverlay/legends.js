@@ -41,8 +41,9 @@ class legends extends React.Component {
         )
       }),
       React.createElement('div', {className: 'wxtilesPlug'},
-        React.createElement('span', {}, 'Powered by '),
-        React.createElement('a', {href: 'https://wxtiles.com', target: '_blank'}, 'WXTiles.com')
+        React.createElement('span', {}, 'Powered by ',
+          React.createElement('a', {href: 'https://wxtiles.com', target: '_blank'}, 'WXTiles.com')
+        )
       )
     )
   }

@@ -15,13 +15,13 @@ var findBestTimeStepsForEachLayer = ({layers, time}) => {
 
     var timeToSelect = null
     _.forEach(allTimesForLayer, (timeForLayer, key) => {
-      if(timeToSelect) return
+      if (timeToSelect) return false
       if (time.isBefore(timeForLayer)) return
       if (time.isSameOrAfter(allTimesForLayer[key+1])) return
       timeToSelect = timeForLayer
     })
-    layer.time = null
-    if(timeToSelect) layer.time = timeToSelect.format('YYYY-MM-DDTHH:mm:ss[Z]')
+    timeToSelect = timeToSelect ? timeToSelect : _.last(allTimesForLayer)
+    layer.time = timeToSelect.format('YYYY-MM-DDTHH:mm:ss[Z]')
     return layer
   })
 }
@@ -81,6 +81,7 @@ class mapControls extends React.Component {
       mapOptions.displayTime = time
       this.props.updateMapOptions({mapOptions})
       var layersWithTime = findBestTimeStepsForEachLayer({layers, time})
+      // console.log(layersWithTime[0].time)
       updateVisibleUrls({
         layers: layersWithTime,
         onSuccess: (layers) => {
