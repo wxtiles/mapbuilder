@@ -10,9 +10,11 @@ import timeSelector from './timeSelector'
 import moment from 'moment'
 
 function degradeArray(array, options) {
-  _.defaults(options, {fromLeftSide: false, maxLength: 30})
+  _.defaults(options, {fromLeftSide: false, maxLength: 30, retainEnds: true})
   var offset = 2
-  var retArray = array
+  var start = options.retainEnds ? array[0] : undefined
+  var end = options.retainEnds ? array[array.length - 1] : undefined
+  var retArray = array.slice(1,-1)
   var i = null
   while(retArray.length > options.maxLength) {
     i = !options.fromLeftSide ? array.length - offset : offset - 1
@@ -23,7 +25,7 @@ function degradeArray(array, options) {
       return degradeArray(retArray, options)
     }
   }
-  return retArray
+  return options.retainEnds ? [start].concat(retArray, [end]) : retArray
 }
 
 class createTileLayer extends React.Component {
