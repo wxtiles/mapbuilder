@@ -37,7 +37,7 @@ class legend extends React.Component {
           React.createElement('a', {href: 'javascript:void(0);', className: 'description glyphicon glyphicon-question-sign'})
         )
       ),
-      this.state.url && React.createElement('div', {className: 'imgWrapper'},
+      React.createElement('div', {className: 'imgWrapper'},
         this.props.hasLegend && React.createElement('img', {src: this.state.url, onError: this.loadingError})
       )
     )
