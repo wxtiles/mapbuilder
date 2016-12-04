@@ -49,7 +49,7 @@ class layersEditor extends React.Component {
     layers.unshift({
       key: this.state.totalLayers,
       zIndex: this.state.totalLayers,
-      opacity: 0.8
+      opacity: 1
     })
     this.setState({totalLayers: this.state.totalLayers+1}, () => {
       this.props.updateLayers({layers})
