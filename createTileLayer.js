@@ -6,7 +6,6 @@ import _ from 'lodash'
 import layerLabel from './layerLabel'
 import rcSlider from 'rc-slider'
 import legend from './legend'
-// import timeSelector from './timeSelector'
 import moment from 'moment'
 
 function degradeArray(array, options) {
