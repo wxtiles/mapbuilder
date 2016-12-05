@@ -8,17 +8,25 @@ import moment from 'moment'
 import wxtiles from './wxtiles'
 
 var findBestTimeStepsForEachLayer = ({layers, time}) => {
+  // For each layer, for each of its available time-based URLs, set the
+  // layer.time property to be equal to the nearest valid time to the time
+  // that is seelcted on the timeslider.
   time = moment.utc(time)
   return _.map(layers, (layer) => {
     var allTimesForLayer = _.map(layer.times, (t) => moment.utc(t, 'YYYY-MM-DDTHH:mm:ss[Z]'))
     allTimesForLayer = _.sortBy(allTimesForLayer, (t) => +t)
 
     var timeToSelect = null
-    _.forEach(allTimesForLayer, (timeForLayer, key) => {
-      if (timeToSelect) return false
-      if (time.isBefore(timeForLayer)) return
-      if (time.isSameOrAfter(allTimesForLayer[key+1])) return
-      timeToSelect = timeForLayer
+    allTimesForLayer = _.forEach(allTimesForLayer, (timeForLayer, key) => {
+      if (timeToSelect) {
+        return false
+      } else if (time.isBefore(timeForLayer)) {
+        return
+      } else if (time.isSameOrAfter(allTimesForLayer[key+1])) {
+        return
+      } else {
+        timeToSelect = timeForLayer
+      }
     })
     timeToSelect = timeToSelect ? timeToSelect : _.last(allTimesForLayer)
     layer.time = timeToSelect.format('YYYY-MM-DDTHH:mm:ss[Z]')
@@ -81,7 +89,6 @@ class mapControls extends React.Component {
       mapOptions.displayTime = time
       this.props.updateMapOptions({mapOptions})
       var layersWithTime = findBestTimeStepsForEachLayer({layers, time})
-      // console.log(layersWithTime[0].time)
       updateVisibleUrls({
         layers: layersWithTime,
         onSuccess: (layers) => {
