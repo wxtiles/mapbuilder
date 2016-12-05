@@ -72,8 +72,7 @@ class mapControls extends React.Component {
     var mapOptions = this.props.mapOptions
     var layers = mapOptions.layers
 
-    var legendsDatums = _.filter(layers, (layer) => layer.legendUrl)
-    legendsDatums = _.map(legendsDatums, (layer) => {
+    var legendsDatums = _.map(layers, (layer) => {
       return {
         label: layer.label,
         description: layer.description,
