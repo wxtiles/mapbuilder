@@ -34,7 +34,7 @@ class root extends React.Component {
     })
 
     var layers = [{
-      label: 'New layer',
+      label: '',
       key: 0,
       opacity:1,
       zIndex: 0

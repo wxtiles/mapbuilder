@@ -98,7 +98,7 @@ class timeSlider extends React.Component {
                 'largest': Math.abs(t) > 3600000 ? 2 : 1,
                 'serialComma': false
               }
-              return t == 0 ? 'now' : t < 0 ? humanizeDuration(t, args) + ' ago' : 'in ' + humanizeDuration(t, args)
+              return t > -60000 && t < 60000 ? 'now' : t < 0 ? humanizeDuration(t, args) + ' ago' : 'in ' + humanizeDuration(t, args)
             },
             onChange: this.selectTime
           })
