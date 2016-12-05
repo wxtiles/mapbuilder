@@ -2,6 +2,7 @@ import React from 'react'
 import rcSlider from 'rc-slider'
 import moment from 'moment-timezone'
 import _ from 'lodash'
+import humanizeDuration from 'humanize-duration'
 
 class timeSlider extends React.Component {
   constructor() {
@@ -86,15 +87,24 @@ class timeSlider extends React.Component {
           React.createElement(rcSlider, {
             included: false,
             min: +earliestTime,
+            // max: +latestTime + (+latestTime - +earliestTime) * 0.05,
             max: +latestTime,
             value: mapOptions.time,
             marks: marks,
-            tipFormatter: null,
+            tipFormatter: (tip) => {
+              var t = moment.duration(moment(tip).diff(moment())).asMilliseconds()
+              var args = {
+                'conjunction': ' and ',
+                'largest': Math.abs(t) > 3600000 ? 2 : 1,
+                'serialComma': false
+              }
+              return t == 0 ? 'now' : t < 0 ? humanizeDuration(t, args) + ' ago' : 'in ' + humanizeDuration(t, args)
+            },
             onChange: this.selectTime
           })
         )
       ),
-      React.createElement('div', {className: 'displayDate'}, mapOptions.displayTime.local().format('ddd MMM DD - hh:mm a') + ' ' + moment.tz(moment.tz.guess()).format('z'))
+      React.createElement('div', {className: 'displayDate'}, mapOptions.displayTime.local().format('ddd MMM DD - hh:mm A') + ' ' + moment.tz(moment.tz.guess()).format('z'))
     )
   }
 }
