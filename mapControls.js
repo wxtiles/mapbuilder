@@ -106,6 +106,7 @@ class mapControls extends React.Component {
     var generateUrlDatums = {
       zoom: this.props.mapOptions.zoom,
       center: this.props.mapOptions.center,
+      animationFrameMinutes: this.props.mapOptions.animationFrameMinutes,
       layers: _.map(layers, (layer) => {
         return {
           id: layer.id,
