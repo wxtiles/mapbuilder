@@ -52,6 +52,8 @@ class createTileLayer extends React.Component {
     layer.label = selectingLayer.meta.name
     layer.description = selectingLayer.meta.description
     layer.bounds = selectingLayer.bounds
+    layer.maxNativeZoom = selectingLayer.maxNativeZoom ? selectingLayer.maxNativeZoom : null
+    layer.minNativeZoom = selectingLayer.minNativeZoom ? selectingLayer.minNativeZoom : 0
     layer.instanceType = selectingLayer.instanceType
     var legendUrl = selectingLayer.resources.legend
     layer.hasLegend = legendUrl != undefined

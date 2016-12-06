@@ -79,7 +79,9 @@ class mapWrapper extends React.Component {
             key: wxtilesLayer.key + ' ' + timeUrl.url,
             zIndex: wxtilesLayer.zIndex,
             opacity: isVisible ? wxtilesLayer.opacity : 0,
-            bounds: getBounds(wxtilesLayer.bounds)
+            bounds: getBounds(wxtilesLayer.bounds),
+            minZoom: wxtilesLayer.minNativeZoom ? wxtilesLayer.minNativeZoom : 0,
+            maxNativeZoom: wxtilesLayer.maxNativeZoom ? wxtilesLayer.maxNativeZoom : null
           }
         })
       })
@@ -101,7 +103,9 @@ class mapWrapper extends React.Component {
           key: wxtilesLayer.key + ' ' + wxtilesLayer.visibleUrl,
           zIndex: wxtilesLayer.zIndex,
           opacity: wxtilesLayer.opacity,
-          bounds: getBounds(wxtilesLayer.bounds)
+          bounds: getBounds(wxtilesLayer.bounds),
+          minZoom: wxtilesLayer.minNativeZoom ? wxtilesLayer.minNativeZoom : 0,
+          maxNativeZoom: wxtilesLayer.maxNativeZoom ? wxtilesLayer.maxNativeZoom : null
         }
       })
     }
@@ -130,6 +134,8 @@ class mapWrapper extends React.Component {
             key: tileLayer.key,
             tms: true,
             bounds: tileLayer.bounds,
+            maxNativeZoom: tileLayer.maxNativeZoom,
+            minZoom: tileLayer.minZoom,
             zIndex: tileLayer.zIndex,
             opacity: tileLayer.opacity
           })
