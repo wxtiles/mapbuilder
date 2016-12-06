@@ -104,7 +104,7 @@ class timeSlider extends React.Component {
           })
         )
       ),
-      React.createElement('div', {className: 'displayDate'}, mapOptions.displayTime.local().format('ddd MMM DD - hh:mm A') + ' ' + moment.tz(moment.tz.guess()).format('z'))
+      React.createElement('div', {className: 'displayDate'}, mapOptions.displayTime.local().format('ddd MMM DD \u2014 hh:mm A') + ' ' + moment.tz(moment.tz.guess()).format('z'))
     )
   }
 }
