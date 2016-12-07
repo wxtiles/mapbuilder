@@ -3,42 +3,12 @@ import ReactDOM from 'react-dom'
 import _ from 'lodash'
 import wxtilesjs from './wxtiles'
 import rcPopover from 'rc-popover'
-// import Radio from 'antd/lib/radio'
-import { Radio, Select } from 'antd'
-import 'antd/lib/radio/style/css'
-import 'antd/lib/select/style/css'
-
-const RadioButton = Radio.Button
-const RadioGroup = Radio.Group
-const Option = Select.Option
+import styleSelector from './styleSelector'
 
 class legend extends React.Component {
   constructor() {
     super()
     this.state = {}
-    this.state.url = null
-  }
-
-  componentWillMount() {
-    wxtilesjs.getLegendUrl({
-      layerId: this.props.layerId,
-      styleId: this.props.styleId,
-      onSuccess: (legendUrl) => {
-        this.setState({url: legendUrl})
-      },
-      onError: (err) => {
-        console.log(err)
-      }
-    })
-  }
-
-  loadingError() {
-    this.setState({url: null})
-  }
-
-  onStyleChange(e) {
-    console.log(`radio checked:${e.target.value}`)
-    // this.setState({})
   }
 
   render() {
@@ -51,9 +21,10 @@ class legend extends React.Component {
         )
       ),
       this.props.hasLegend && React.createElement('div', {className: 'styleSelectWrapper'},
-        React.createElement(Select, {defaultValue: 'default-legend', style: {width: '100%'}},
-          React.createElement(Option, {className: 'styleSelectPreview', value: 'default-legend'}, React.createElement('img', {src: this.state.url, onError: this.loadingError}))
-        )
+        React.createElement(styleSelector, {
+          layerId: this.props.layerId,
+          styleId: this.props.styleId
+        })
       )
     )
   }
