@@ -9,8 +9,25 @@
 
     img {
       max-width: 310px;
-      max-height: 80px;
+      max-height: auto;
     }
+  }
+
+  .styleSelectWrapper {
+    padding-bottom: 3px;
+    width: 315px;
+    // float: none;
+    img {
+      width: 100%;
+      height: auto;
+    }
+    .ant-select-selection {
+      // margin-bottom: -14px; // hack, not sure where these bonus pixels are coming from
+      // float: none;
+      display: inline-block;
+      height: 100%;
+    }
+
   }
 
   .showMeh {
@@ -35,4 +52,15 @@
 
 .legendPopoverTitle {
   font-weight: bold;
+}
+
+
+
+li {
+  line-height: 1;
+  width: 100%;
+  img {
+    width: 100%;
+    height: auto;
+  }
 }

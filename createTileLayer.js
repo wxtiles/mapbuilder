@@ -66,13 +66,11 @@ class createTileLayer extends React.Component {
         .replace('<size>', 'small')
         .replace('<orientation>', 'horizontal')
     }
-    console.log(layer.legendUrl)
 
     wxTiles.getInstance({
       layerId: layer.id,
       instanceId: layer.instanceId,
       onSuccess: (instanceObject) => {
-        console.log(instanceObject)
         var times = degradeArray(instanceObject.times, {
           fromLeftSide: layer.instanceType != 'observational' ? false: true
         })
