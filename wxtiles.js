@@ -1,9 +1,9 @@
 import request from 'superagent'
 import _ from 'lodash'
 
-const server = 'https://api.wxtiles.com/v0'
+// const server = 'https://api.wxtiles.com/v0'
 // const server = 'http://172.16.1.16/v0';
-// const server = 'http://172.16.1.15/v1';
+const server = 'http://172.16.1.15/v1';
 
 // /<ownerID>/layer/
 var getAllLayers = ({onSuccess, onError}) => {
@@ -14,7 +14,7 @@ var getAllLayers = ({onSuccess, onError}) => {
       onSuccess(JSON.parse(res.text))
     })
 }
-
+// /<ownerID>/layer/<layerID>/instance/<instanceID>/
 var getInstance = ({layerId, instanceId, onSuccess, onError}) => {
   request
     .get(`${server}/wxtiles/layer/${layerId}/instance/${instanceId}/`)
@@ -24,7 +24,17 @@ var getInstance = ({layerId, instanceId, onSuccess, onError}) => {
     })
 }
 
-// /<ownerID>/layer/<layerID>/<instanceID>/times/
+// /<ownerID>/layer/<layerID>/style/<styleID>/
+var getStyle = ({layerId, styleId, onSuccess, onError}) => {
+  request
+    .get(`${server}/wxtiles/layer/${layerId}/style/${styleId}/`)
+    .end((err, res) => {
+      if (err) return onError(err)
+      onSuccess(res.body)
+    })
+}
+
+// /<ownerID>/layer/<layerID>/instance/<instanceID>/times/
 var getTimesForInstance = (options) => {
   request
     .get(`${server}/wxtiles/layer/${options.layerId}/instance/${options.instanceId}/times/`)
@@ -34,7 +44,7 @@ var getTimesForInstance = (options) => {
     })
 }
 
-// /<ownerID>/layer/<layerID>/<instanceID>/levels/
+// /<ownerID>/layer/<layerID>/instance/<instanceID>/levels/
 var getLevelsForInstance = (options) => {
   request
     .get(`${server}/wxtiles/layer/${options.layerId}/instance/${options.instanceId}/levels/`)
@@ -44,35 +54,35 @@ var getLevelsForInstance = (options) => {
     })
 }
 
-var getAllTileLayerUrls = ({layerId, instanceId, times, level, onSuccess, onError}) => {
+var getAllTileLayerUrls = ({layerId, styleId, instanceId, times, level, onSuccess, onError}) => {
   var urls = []
   Promise.all(_.map(times, (time) => {
     return new Promise((resolve, reject) => {
       var scopedSuccess = (url) => {
         resolve({time, url})
       }
-      getTileLayerUrl({layerId, instanceId, time, level, onSuccess: scopedSuccess, onError})
+      getTileLayerUrl({layerId, styleId, instanceId, time, level, onSuccess: scopedSuccess, onError})
     })
   })).then((timeUrls) => {
     onSuccess(timeUrls)
   })
 }
 
-// /<ownerID>/tile/<layerID>/<instanceID>/<time>/<level>/<z>/<x>/<y>.<extension>
-var getTileLayerUrl = ({layerId, instanceId, time, level, onSuccess, onError}) => {
+// /<ownerID>/tile/<layerID>/<styleID>/<instanceID>/<time>/<level>/<z>/<x>/<y>.<extension>
+var getTileLayerUrl = ({layerId, styleId, instanceId, time, level, onSuccess, onError}) => {
   level = level || 0
   time = time || 0
-  onSuccess(`${server}/wxtiles/tile/${layerId}/${instanceId}/${time}/${level}/{z}/{x}/{y}.png`)
+  onSuccess(`${server}/wxtiles/tile/${layerId}/${styleId}/${instanceId}/${time}/${level}/{z}/{x}/{y}.png`)
 }
 
-// https://api.wxtiles.com/v0/{ownerId}/legend/{layerId}/{instanceId}/{size}/{orientation}.png
-var getLegendUrl = ({layerId, instanceId, onSuccess, onError}) => {
-  onSuccess(`${server}/wxtiles/legend/${layerId}/${instanceId}/small/horizontal.png`)
+// https://api.wxtiles.com/v1/{ownerId}/legend/{layerId}/{styleId}/{size}/{orientation}.png
+var getLegendUrl = ({layerId, styleId, onSuccess, onError}) => {
+  console.log(layerId, styleId)
+  onSuccess(`${server}/wxtiles/legend/${layerId}/${styleId}/small/horizontal.png`)
 }
 
 
-//Call this with your url and plug the returned object into google maps.
-//E.G:
+//Call this with your url and plug the returned object into google maps, e.g.:
 //var mapLayer = wxTiles.google.getImageMapType(layerTilesUrl);
 //googleMap.overlayMapTypes.setAt(layerKey, mapLayer);
 var googleMaps = {}

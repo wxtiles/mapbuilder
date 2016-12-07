@@ -49,25 +49,30 @@ class createTileLayer extends React.Component {
     layer.id = selectingLayer.id
     layer.instances = instances
     layer.instanceId = instances[0].id
-    layer.label = selectingLayer.meta.name
-    layer.description = selectingLayer.meta.description
+    layer.label = selectingLayer.name
+    layer.description = selectingLayer.description
     layer.bounds = selectingLayer.bounds
     layer.maxNativeZoom = selectingLayer.maxNativeZoom ? selectingLayer.maxNativeZoom : null
     layer.minNativeZoom = selectingLayer.minNativeZoom ? selectingLayer.minNativeZoom : 0
     layer.instanceType = selectingLayer.instanceType
-    var legendUrl = selectingLayer.resources.legend
+    layer.styles = selectingLayer.styles
+    layer.styleId = selectingLayer.defaults.style // Instantiate with default
+    var style = _.find(layer.styles, (s) => {
+      return s.id == layer.styleId })
+    var legendUrl = style.resources.legend
     layer.hasLegend = legendUrl != undefined
     if(legendUrl != undefined) {
-      layer.legendUrl = selectingLayer.resources.legend
-        .replace('<instance>', instances[0].id)
+      layer.legendUrl = legendUrl
         .replace('<size>', 'small')
         .replace('<orientation>', 'horizontal')
     }
+    console.log(layer.legendUrl)
 
     wxTiles.getInstance({
       layerId: layer.id,
       instanceId: layer.instanceId,
       onSuccess: (instanceObject) => {
+        console.log(instanceObject)
         var times = degradeArray(instanceObject.times, {
           fromLeftSide: layer.instanceType != 'observational' ? false: true
         })
@@ -75,6 +80,7 @@ class createTileLayer extends React.Component {
         layer.time = times[0]
         wxTiles.getAllTileLayerUrls({
           layerId: layer.id,
+          styleId: layer.styleId,
           instanceId: layer.instanceId,
           times: layer.times,
           level: 0,
@@ -86,6 +92,7 @@ class createTileLayer extends React.Component {
             layer.timeUrls = timeUrls
             wxTiles.getTileLayerUrl({
               layerId: layer.id,
+              styleId: layer.styleId,
               instanceId: layer.instanceId,
               time: layer.time,
               level: 0,

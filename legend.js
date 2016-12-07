@@ -14,7 +14,7 @@ class legend extends React.Component {
   componentWillMount() {
     wxtilesjs.getLegendUrl({
       layerId: this.props.layerId,
-      instanceId: this.props.instanceId,
+      styleId: this.props.styleId,
       onSuccess: (legendUrl) => {
         this.setState({url: legendUrl})
       },

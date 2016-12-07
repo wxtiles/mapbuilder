@@ -25,7 +25,7 @@ class root extends React.Component {
       onSuccess: (layerOptions) => {
         layerOptions = _.map(layerOptions, (layerOption) => {
           layerOption.value = layerOption.id
-          layerOption.label = layerOption.meta.name
+          layerOption.label = layerOption.name
           return layerOption
         })
         this.setState({layerOptions})

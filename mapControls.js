@@ -42,6 +42,7 @@ var updateVisibleUrls = ({layers, onSuccess}) => {
       if (!layer.time) return resolve(layer)
       wxtiles.getTileLayerUrl({
         layerId: layer.id,
+        styleId: layer.styleId,
         instanceId: layer.instanceId,
         time: layer.time,
         level: 0,
@@ -80,7 +81,7 @@ class mapControls extends React.Component {
         hasLegend: layer.hasLegend,
         url: layer.hasLegend ? layer.legendUrl : null,
         layerId: layer.id,
-        instanceId: layer.instanceId,
+        styleId: layer.styleId,
       }
     })
 
