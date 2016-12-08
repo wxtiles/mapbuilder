@@ -20,10 +20,12 @@ class legend extends React.Component {
           React.createElement('a', {href: 'javascript:void(0);', className: 'description glyphicon glyphicon-question-sign'})
         )
       ),
-      this.props.hasLegend && React.createElement('div', {className: 'styleSelectWrapper'},
+      React.createElement('div', {className: 'styleSelectWrapper'},
         React.createElement(styleSelector, {
           layerId: this.props.layerId,
-          styleId: this.props.styleId
+          styleId: this.props.styleId,
+          styles: this.props.styles,
+          selectStyle: this.props.selectStyle
         })
       )
     )

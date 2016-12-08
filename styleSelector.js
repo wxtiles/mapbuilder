@@ -1,42 +1,42 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import wxtilesjs from './wxtiles'
+import _ from 'lodash'
 import { Select } from 'antd'
 import 'antd/lib/select/style/css'
+import styleOption from './styleOption'
 
 const Option = Select.Option
 
 class styleSelector extends React.Component {
   constructor() {
     super()
-    this.state = {}
-    this.state.url = null
+    this.state = {defaultValue: null}
+    this.onStyleChange = this.onStyleChange.bind(this)
   }
 
   componentWillMount() {
-    wxtilesjs.getLegendUrl({
-      layerId: this.props.layerId,
-      styleId: this.props.styleId,
-      onSuccess: (legendUrl) => {
-        this.setState({url: legendUrl})
-      },
-      onError: (err) => {
-        console.log(err)
-      }
-    })
-  }
-  loadingError() {
-    this.setState({url: null})
   }
 
   onStyleChange(value) {
-    console.log(`style checked: ${value}`)
-    // this.setState({})
+    console.log(`style changed: ${value}`)
+    this.props.selectStyle({layerId: this.props.layerId, styleId: value})
+    this.setState({defaultValue: value})
   }
 
   render() {
-    return React.createElement(Select, {defaultValue: 'default-legend', onChange: this.onStyleChange, style: {width: '100%'}},
-      React.createElement(Option, {className: 'styleSelectPreview', value: 'default-legend'}, React.createElement('img', {src: this.state.url, onError: this.loadingError}))
+    console.log(this.state)
+    var defaultValue = this.state.defaultValue ? this.state.defaultValue : this.props.styleId
+    return React.createElement(Select, {value: this.state.defaultValue, onChange: this.onStyleChange, style: {width: '100%'}},
+      _.map(this.props.styles, (style, key) => {
+        return React.createElement(Option, {className: 'styleSelectPreview', value: style.id, key: style.id + ' ' + key},
+          // TODO style name, description?
+          style.hasLegend && React.createElement(styleOption, {
+            styleId: style.id,
+            layerId: this.props.layerId
+            // description: style.description
+          })
+        )
+      })
     )
   }
 }

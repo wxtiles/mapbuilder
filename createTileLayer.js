@@ -35,6 +35,7 @@ class createTileLayer extends React.Component {
     this.state.selectedLayer = null
     this.state.loadingInstance = false
     this.selectLayer = this.selectLayer.bind(this)
+    this.selectStyle = this.selectStyle.bind(this)
     this.deleteLayer = this.deleteLayer.bind(this)
     this.setOpacity = this.setOpacity.bind(this)
   }
@@ -57,15 +58,16 @@ class createTileLayer extends React.Component {
     layer.instanceType = selectingLayer.instanceType
     layer.styles = selectingLayer.styles
     layer.styleId = selectingLayer.defaults.style // Instantiate with default
-    var style = _.find(layer.styles, (s) => {
-      return s.id == layer.styleId })
-    var legendUrl = style.resources.legend
-    layer.hasLegend = legendUrl != undefined
-    if(legendUrl != undefined) {
-      layer.legendUrl = legendUrl
-        .replace('<size>', 'small')
-        .replace('<orientation>', 'horizontal')
-    }
+    layer.styles = _.map(layer.styles, (style) => {
+      var legendUrl = style.resources.legend
+      style.hasLegend = legendUrl != undefined
+      if (style.hasLegend) {
+        style.legendUrl = legendUrl
+          .replace('<size>', 'small')
+          .replace('<orientation>', 'horizontal')
+      }
+      return style
+    })
 
     wxTiles.getInstance({
       layerId: layer.id,
@@ -121,6 +123,12 @@ class createTileLayer extends React.Component {
   setOpacity(opacity) {
     var layerObject = this.props.layer
     layerObject.opacity = opacity
+    this.props.updateLayer({layerObject})
+  }
+
+  selectStyle(styleId) {
+    var layerObject = this.props.layer
+    layerObject.styleId = styleId
     this.props.updateLayer({layerObject})
   }
 

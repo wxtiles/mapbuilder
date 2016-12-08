@@ -77,7 +77,6 @@ var getTileLayerUrl = ({layerId, styleId, instanceId, time, level, onSuccess, on
 
 // https://api.wxtiles.com/v1/{ownerId}/legend/{layerId}/{styleId}/{size}/{orientation}.png
 var getLegendUrl = ({layerId, styleId, onSuccess, onError}) => {
-  console.log(layerId, styleId)
   onSuccess(`${server}/wxtiles/legend/${layerId}/${styleId}/small/horizontal.png`)
 }
 

@@ -29,14 +29,15 @@ class legends extends React.Component {
         !this.state.showLegends && React.createElement('a', {href: '#', onClick: this.showLegends}, 'Show legends'),
         this.state.showLegends && React.createElement('a', {href: '#', onClick: this.hideLegends}, 'Hide legends')
       ),
-      this.state.showLegends && _.map(this.props.legends, (legendDatums) => {
-        return React.createElement('div', {key: legendDatums.layerId + ' ' + legendDatums.instanceId},
+      this.state.showLegends && _.map(this.props.legends.layers, (layer) => {
+        return React.createElement('div', {key: layer.layerId + ' ' + layer.instanceId},
           React.createElement(legend, {
-            layerId: legendDatums.layerId,
-            styleId: legendDatums.styleId,
-            label: legendDatums.label,
-            description: legendDatums.description,
-            hasLegend: legendDatums.hasLegend
+            layerId: layer.layerId,
+            styleId: layer.styleId,
+            label: layer.label,
+            description: layer.description,
+            styles: layer.styles,
+            selectStyle: this.props.legends.selectStyle
           })
         )
       }),

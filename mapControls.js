@@ -73,18 +73,6 @@ class mapControls extends React.Component {
     var mapOptions = this.props.mapOptions
     var layers = mapOptions.layers
 
-    var legendsDatums = _.filter(layers, (layer) => layer.label)
-    legendsDatums = _.map(legendsDatums, (layer) => {
-      return {
-        label: layer.label,
-        description: layer.description,
-        hasLegend: layer.hasLegend,
-        url: layer.hasLegend ? layer.legendUrl : null,
-        layerId: layer.id,
-        styleId: layer.styleId,
-      }
-    })
-
     var selectTime = ({time}) => {
       mapOptions.time = time
       mapOptions.displayTime = time
@@ -98,11 +86,38 @@ class mapControls extends React.Component {
       })
     }
 
+    var selectStyle = ({layerId, styleId}) => {
+      _.find(mapOptions.layers, (l) => { return l.id == layerId }).styleId = styleId
+      this.props.updateMapOptions({mapOptions})
+      // this.props.updateLayers({layers: mapOptions.layers})
+      updateVisibleUrls({
+        layers: mapOptions.layers,
+        onSuccess: (layers) => {
+          this.props.updateLayers({layers})
+        }
+      })
+    }
+
     var timeSliderDatums = {
       selectTime,
       updateMapOptions: this.updateMapOptions,
       mapOptions: this.props.mapOptions
     }
+
+    var legendsDatums = {
+      layers: _.filter(layers, (layer) => layer.label),
+      selectStyle
+    }
+    legendsDatums.layers = _.map(legendsDatums.layers, (layer) => {
+      return {
+        label: layer.label,
+        description: layer.description,
+        hasLegend: layer.hasLegend,
+        layerId: layer.id,
+        styles: layer.styles,
+        styleId: layer.styleId,
+      }
+    })
 
     var generateUrlDatums = {
       zoom: this.props.mapOptions.zoom,
