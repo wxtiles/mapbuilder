@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom'
 import _ from 'lodash'
 import wxtilesjs from './wxtiles'
 import rcPopover from 'rc-popover'
-import styleSelector from './styleSelector'
+import StyleSelector from './styleSelector'
 
 class legend extends React.Component {
   constructor() {
@@ -21,7 +21,7 @@ class legend extends React.Component {
         )
       ),
       React.createElement('div', {className: 'styleSelectWrapper'},
-        React.createElement(styleSelector, {
+        React.createElement(StyleSelector, {
           layerId: this.props.layerId,
           styleId: this.props.styleId,
           styles: this.props.styles,

@@ -16,30 +16,31 @@
   .styleSelectWrapper {
     padding-bottom: 3px;
     width: 315px;
-    // float: none;
     img {
       width: 100%;
       height: auto;
     }
     .ant-select-selection {
-      // margin-bottom: -14px; // hack, not sure where these bonus pixels are coming from
-      // float: none;
       display: inline-block;
       height: 100%;
-      min-width: 275px;
+      min-width: 315px;
     }
-
   }
 
   .showMeh {
     display: inline-block;
   }
+
   .hideMeh {
     display: none;
   }
+
   .legendLabel {
     display: inline;
+    line-height: 2;
+    font-weight: bold;
   }
+
   .description {
     float: right;
     top: 3px;
@@ -51,10 +52,15 @@
   min-width: 200px;
 }
 
-.legendPopoverTitle {
-  font-weight: bold;
+.ant-select-selection-selected-value {
+  font-size: 1vw;
 }
 
+.styleName {
+  font-size: 1vw;
+  color: #176097;
+  font-family: "Trebuchet MS", Helvetica, sans-serif;
+}
 
 
 li {
