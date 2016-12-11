@@ -9,6 +9,7 @@ class timeSlider extends React.Component {
     super()
     this.state = {}
     this.selectTime = this.selectTime.bind(this)
+    this.handleAfterChange = this.handleAfterChange.bind(this)
     this.toggleAnimating = this.toggleAnimating.bind(this)
     this.changeAnimationRate = this.changeAnimationRate.bind(this)
     this.halveSpeed = this.halveSpeed.bind(this)
@@ -36,7 +37,11 @@ class timeSlider extends React.Component {
   }
 
   selectTime(time) {
-    this.props.selectTime({time: moment.utc(time)})
+    this.props.selectTime({time: moment.utc(time), ignore: !this.props.mapOptions.isAnimating})
+  }
+
+  handleAfterChange(time) {
+    this.props.selectTime({time: moment.utc(time), ignore: false})
   }
 
   toggleAnimating() {
@@ -100,7 +105,8 @@ class timeSlider extends React.Component {
               }
               return t > -60000 && t < 60000 ? 'now' : t < 0 ? humanizeDuration(t, args) + ' ago' : 'in ' + humanizeDuration(t, args)
             },
-            onChange: this.selectTime
+            onChange: this.selectTime,
+            onAfterChange: this.handleAfterChange
           })
         )
       ),

@@ -73,10 +73,12 @@ class mapControls extends React.Component {
     var mapOptions = this.props.mapOptions
     var layers = mapOptions.layers
 
-    var selectTime = ({time}) => {
+    var selectTime = ({time, ignore}) => {
+      var ignore = ignore ? ignore : false
       mapOptions.time = time
       mapOptions.displayTime = time
       this.props.updateMapOptions({mapOptions})
+      if (ignore) { return }
       var layersWithTime = findBestTimeStepsForEachLayer({layers, time})
       updateVisibleUrls({
         layers: layersWithTime,
