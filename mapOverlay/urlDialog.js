@@ -41,19 +41,20 @@ class urlDialog extends React.Component {
             ),
             !this.state.url && React.createElement('form-horizontal', {},
               React.createElement('div', {className: 'form-group'},
-                React.createElement('label', {className: 'col-sm-2'}, 'ApiKey'),
-                React.createElement('div', {className: 'col-sm-10'},
+                React.createElement('label', {className: 'col-sm-3'}, 'API key'),
+                React.createElement('div', {className: 'col-sm-9'},
                   React.createElement('input', {onChange: this.updateApiKey, className: 'form-control'})
                 )
               ),
               React.createElement('div', {className: 'form-group'},
-                React.createElement('div', {className: 'col-sm-offset-2 col-sm-10'},
+                React.createElement('div', {className: 'col-sm-offset-3 col-sm-9'},
                   React.createElement('button', {onClick: this.generateUrl, className: 'btn btn-primary'}, 'Generate Url')
                 )
               )
             ),
             this.state.url && React.createElement('div', {className: 'url'},
-              React.createElement('a', {href: this.state.url, target: '_blank'}, 'Click here for the map')
+              React.createElement('a', {href: this.state.url, target: '_blank'}, 'Click here for a link to your map.'),
+              React.createElement('div', {}, 'You can share this link and the map will automatically stay current.')
             )
           )
         )

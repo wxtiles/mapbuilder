@@ -129,7 +129,8 @@ class mapControls extends React.Component {
         return {
           id: layer.id,
           opacity: layer.opacity,
-          zIndex: layer.zIndex
+          zIndex: layer.zIndex,
+          styleId: layer.styleId
         }
       })
     }
