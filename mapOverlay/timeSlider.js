@@ -97,7 +97,6 @@ class timeSlider extends React.Component {
             value: mapOptions.time,
             marks: marks,
             tipFormatter: (tip, index) => {
-              console.log(tip)
               var t = moment.duration(moment(tip).diff(moment())).asMilliseconds()
               var args = {
                 'conjunction': ' and ',
