@@ -65,6 +65,23 @@ class root extends React.Component {
     _.forEach(times, (time) => {
       mapOptions.marks[+time] = ''
     })
+    var arrowStyle = {} // {"color": "#FFFFFF", "weight": "bold"}
+    if (+this.props.now < +_.first(times)) {
+      mapOptions.marks[+_.first(times)] = {
+        'style': arrowStyle,
+        'label': "\u21E6"
+      }
+    } else if (+this.props.now > +_.last(times)) {
+      mapOptions.marks[+_.last(times)] = {
+        'style': arrowStyle,
+        'label': "\u21E8"
+      }
+    } else {
+      mapOptions.marks[+this.props.now] = {
+        'style': arrowStyle,
+        'label': "\u21E7"
+      }
+    }
     mapOptions.times = times
     mapOptions.earliestTime = _.first(times)
     mapOptions.latestTime = _.last(times)
