@@ -36,9 +36,13 @@
   }
 
   .legendLabel {
-    display: inline;
-    line-height: 2;
+    display: inline-block;
+    line-height: 1.5;
     font-weight: bold;
+    word-wrap: break-word;
+    white-space: pre-wrap;
+    width: 300px;
+    margin-right: 5px;
   }
 
   .description {
@@ -48,8 +52,22 @@
   }
 }
 
-.ant-popover-inner {
-  min-width: 200px;
+.ant-popover {
+  max-width: 500px;
+
+  .ant-popover-title {
+    font-weight: bold;
+    height: auto;
+    line-height: inherit;
+    min-height: 34px;
+    word-wrap: break-word;
+    white-space: pre-wrap;
+  }
+
+  .ant-popover-inner {
+    min-width: 200px;
+    margin-right: 5px;
+  }
 }
 
 .ant-select-selection-selected-value {
@@ -57,7 +75,10 @@
 }
 
 .styleName {
-  font-size: 1vw;
+  font-size: small;
+  word-wrap: break-word;
+  line-height: normal;
+  white-space: pre-wrap;
   color: #176097;
   font-family: "Trebuchet MS", Helvetica, sans-serif;
 }
