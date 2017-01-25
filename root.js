@@ -65,7 +65,7 @@ class root extends React.Component {
     _.forEach(times, (time) => {
       mapOptions.marks[+time] = ''
     })
-    var arrowStyle = {} // {"color": "#FFFFFF", "weight": "bold"}
+    var arrowStyle = {}
     if (+this.props.now < +_.first(times)) {
       mapOptions.marks[+_.first(times)] = {
         'style': arrowStyle,

@@ -97,7 +97,7 @@ class timeSlider extends React.Component {
             value: mapOptions.time,
             step: null,
             marks: marks,
-            tipFormatter: (tip) => {
+            tipFormatter: (tip, index) => {
               var t = moment.duration(moment(tip).diff(moment())).asMilliseconds()
               var args = {
                 'conjunction': ' and ',
@@ -106,6 +106,7 @@ class timeSlider extends React.Component {
               }
               return t > -60000 && t < 60000 ? 'now' : t < 0 ? humanizeDuration(t, args) + ' ago' : 'in ' + humanizeDuration(t, args)
             },
+            // step: null, // NOTE null step makes intermediate positions impossible, but disables tip fomatting. https://github.com/react-component/slider/issues/174
             onChange: this.selectTime,
             onAfterChange: this.handleAfterChange
           })

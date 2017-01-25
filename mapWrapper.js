@@ -1,5 +1,5 @@
 import React from 'react'
-import {Map, TileLayer} from 'react-leaflet'
+import {Map, TileLayer, ZoomControl} from 'react-leaflet'
 import wxtiles from './wxtiles'
 import _ from 'lodash'
 import leaflet from 'leaflet'
@@ -149,6 +149,9 @@ class mapWrapper extends React.Component {
           subdomains: 'abcd',
           zIndex: 501,
           alpha: 1
+        }),
+        React.createElement(ZoomControl, {
+          position: 'bottomright'
         })
       )
     )
