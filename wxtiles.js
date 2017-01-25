@@ -2,8 +2,7 @@ import request from 'superagent'
 import _ from 'lodash'
 
 // const server = 'https://api.wxtiles.com/v1'
-// const server = 'http://172.16.1.16/v0';
-const server = 'http://172.16.1.15/v1';
+const server = 'http://172.16.1.50/v1';
 
 // /<ownerID>/layer/
 var getAllLayers = ({onSuccess, onError}) => {
@@ -75,7 +74,7 @@ var getTileLayerUrl = ({layerId, styleId, instanceId, time, level, onSuccess, on
   onSuccess(`${server}/wxtiles/tile/${layerId}/${styleId}/${instanceId}/${time}/${level}/{z}/{x}/{y}.png`)
 }
 
-// https://api.wxtiles.com/v1/{ownerId}/legend/{layerId}/{styleId}/{size}/{orientation}.png
+// /{ownerId}/legend/{layerId}/{styleId}/{size}/{orientation}.png
 var getLegendUrl = ({layerId, styleId, onSuccess, onError}) => {
   onSuccess(`${server}/wxtiles/legend/${layerId}/${styleId}/small/horizontal.png`)
 }
