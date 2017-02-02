@@ -13,7 +13,6 @@ class root extends React.Component {
     this.state = {
       layers: [],
       mapOptions: {},
-      layerOptions: [],
       now: null
     }
     this.updateLayers = this.updateLayers.bind(this)
@@ -21,18 +20,6 @@ class root extends React.Component {
   }
 
   componentWillMount() {
-    wxTiles.getAllLayers({
-      onSuccess: (layerOptions) => {
-        layerOptions = _.map(layerOptions, (layerOption) => {
-          layerOption.value = layerOption.id
-          layerOption.label = layerOption.name
-          return layerOption
-        })
-        this.setState({layerOptions})
-      },
-      onError: (error) => console.log(error)
-    })
-
     var layers = [{
       label: '',
       key: 0,
@@ -102,7 +89,6 @@ class root extends React.Component {
         ),
         React.createElement(layersEditor, {
           layers: this.state.layers,
-          layerOptions: this.state.layerOptions,
           updateLayers: this.updateLayers
         })
       ),

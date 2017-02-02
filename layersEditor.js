@@ -93,7 +93,7 @@ class layersEditor extends React.Component {
         React.createElement('div', {id: 'testIdizzle'},
           _.map(this.props.layers, (layer) =>
             layer && React.createElement('div', {className: 'layerContainer', key: layer.key, 'data-key': layer.key},
-              React.createElement(createTileLayer, {layer, layerOptions: this.props.layerOptions, updateLayer: this.createLayer, removeLayer: this.removeLayer})
+              React.createElement(createTileLayer, {layer, updateLayer: this.createLayer, removeLayer: this.removeLayer})
             )
           )
         )

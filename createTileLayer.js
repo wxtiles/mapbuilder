@@ -34,6 +34,7 @@ class createTileLayer extends React.Component {
     this.state = {}
     this.state.selectedLayer = null
     this.state.loadingInstance = false
+    this.state.layerOptions = []
     this.selectLayer = this.selectLayer.bind(this)
     this.selectStyle = this.selectStyle.bind(this)
     this.deleteLayer = this.deleteLayer.bind(this)
@@ -114,6 +115,17 @@ class createTileLayer extends React.Component {
   }
 
   componentWillMount() {
+    wxTiles.getAllLayers({
+      onSuccess: (layerOptions) => {
+        layerOptions = _.map(layerOptions, (layerOption) => {
+          layerOption.value = layerOption.id
+          layerOption.label = layerOption.name
+          return layerOption
+        })
+        this.setState({layerOptions})
+      },
+      onError: (error) => console.log(error)
+    })
   }
 
   deleteLayer() {
@@ -139,7 +151,7 @@ class createTileLayer extends React.Component {
         React.createElement('div', {className: 'select-list'},
           React.createElement(layerLabel, {
             deleteLayer: this.deleteLayer,
-            layers: this.props.layerOptions,
+            layers: this.state.layerOptions,
             selectLayer: this.selectLayer,
             layer: layer.id
           }),
