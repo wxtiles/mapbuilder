@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom'
 import wxTiles from './wxtiles'
 import _ from 'lodash'
 import layersEditor from './layersEditor'
+import apikeyField from './apikeyField'
 import mapWrapper from './mapWrapper'
 import mapControls from './mapControls'
 import moment from 'moment'
@@ -16,6 +17,7 @@ class root extends React.Component {
       now: null
     }
     this.updateLayers = this.updateLayers.bind(this)
+    this.updateApikey = this.updateApikey.bind(this)
     this.updateMapOptions = this.updateMapOptions.bind(this)
   }
 
@@ -75,6 +77,12 @@ class root extends React.Component {
     this.setState({layers, mapOptions})
   }
 
+  updateApikey({apikey}) {
+    var mapOptions = this.state.mapOptions
+    mapOptions.apikey = apikey
+    this.setState({mapOptions})
+  }
+
   updateMapOptions({mapOptions}) {
     var layers = this.state.layers
     layers = mapOptions.layers
@@ -87,6 +95,9 @@ class root extends React.Component {
         React.createElement('a', {className: 'logo', href: 'https://wxtiles.com', target: '_blank'},
           React.createElement('img', {src: 'wxtiles-logo.png'})
         ),
+        React.createElement(apikeyField, {
+          updateApikey: this.updateApikey
+        }),
         React.createElement(layersEditor, {
           layers: this.state.layers,
           updateLayers: this.updateLayers
