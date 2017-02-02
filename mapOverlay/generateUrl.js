@@ -24,7 +24,7 @@ class generateUrl extends React.Component {
 
   render() {
     return React.createElement('div', {className: 'generateUrl'},
-      this.state.isGeneratingUrl && React.createElement(urlDialog, {close: this.closeDialog, urlDatums: this.props.urlDatums}),
+      this.state.isGeneratingUrl && React.createElement(urlDialog, {close: this.closeDialog, urlDatums: this.props.urlDatums, apikey: this.props.apikey}),
       React.createElement('div', {onClick: this.openDialog, className: 'btn btn-primary'}, 'Generate URL for this map')
     )
   }

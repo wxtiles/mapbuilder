@@ -71,6 +71,7 @@ class createTileLayer extends React.Component {
     })
 
     wxTiles.getInstance({
+      apikey: this.props.apikey,
       layerId: layer.id,
       instanceId: layer.instanceId,
       onSuccess: (instanceObject) => {
@@ -80,6 +81,7 @@ class createTileLayer extends React.Component {
         layer.times = times
         layer.time = times[0]
         wxTiles.getAllTileLayerUrls({
+          apikey: this.props.apikey,
           layerId: layer.id,
           styleId: layer.styleId,
           instanceId: layer.instanceId,
@@ -92,6 +94,7 @@ class createTileLayer extends React.Component {
             })
             layer.timeUrls = timeUrls
             wxTiles.getTileLayerUrl({
+              apikey: this.props.apikey,
               layerId: layer.id,
               styleId: layer.styleId,
               instanceId: layer.instanceId,
@@ -116,6 +119,7 @@ class createTileLayer extends React.Component {
 
   componentWillMount() {
     wxTiles.getAllLayers({
+      apikey: this.props.apikey,
       onSuccess: (layerOptions) => {
         layerOptions = _.map(layerOptions, (layerOption) => {
           layerOption.value = layerOption.id

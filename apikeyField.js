@@ -12,8 +12,8 @@ class apikeyField extends React.Component {
 
   handleUserInput(e) {
     var apikey = e.target.value
-    this.setState({apikey})
     this.props.updateApikey({apikey})
+    this.setState({apikey})
   }
 
   render() {
@@ -29,7 +29,8 @@ class apikeyField extends React.Component {
         className: 'getApikeyLink',
         for: "apikey"
         }, React.createElement('a', {
-            href: "https://wxtiles.com/my-account/"
+            href: "https://wxtiles.com/my-account/",
+            target: "_blank"
           }, "Don't have an API key?"
         )
       )

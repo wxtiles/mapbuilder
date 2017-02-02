@@ -1,6 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import _ from 'lodash'
+import apikeyField from './apikeyField'
 import createTileLayer from './createTileLayer'
 import dragula from 'react-dragula';
 
@@ -13,6 +14,7 @@ class layersEditor extends React.Component {
     this.state.isMakingUrl = false
     this.drake = null
 
+    this.updateApikey = this.updateApikey.bind(this)
     this.addLayerSelectionRow = this.addLayerSelectionRow.bind(this)
     this.createLayer = this.createLayer.bind(this)
     this.removeLayer = this.removeLayer.bind(this)
@@ -84,8 +86,19 @@ class layersEditor extends React.Component {
     })
   }
 
+  updateApikey({apikey}) {
+    var layers = this.props.layers
+    var mapOptions = this.props.mapOptions
+    mapOptions.apikey = apikey
+    this.props.updateLayers({layers})
+    this.props.updateMapOptions({mapOptions})
+  }
+
   render() {
     return React.createElement('div', {className: 'layers'},
+      React.createElement(apikeyField, {
+        updateApikey: this.updateApikey
+      }),
       React.createElement('div', {},
         React.createElement('div', {className: 'addLayerRow'},
           React.createElement('div', {className: 'btn btn-success addLayer', onClick: this.addLayerSelectionRow}, 'Add a layer')
@@ -93,7 +106,7 @@ class layersEditor extends React.Component {
         React.createElement('div', {id: 'testIdizzle'},
           _.map(this.props.layers, (layer) =>
             layer && React.createElement('div', {className: 'layerContainer', key: layer.key, 'data-key': layer.key},
-              React.createElement(createTileLayer, {layer, updateLayer: this.createLayer, removeLayer: this.removeLayer})
+              React.createElement(createTileLayer, {layer, updateLayer: this.createLayer, removeLayer: this.removeLayer, apikey: this.props.mapOptions.apikey})
             )
           )
         )

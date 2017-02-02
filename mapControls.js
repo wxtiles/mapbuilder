@@ -136,7 +136,7 @@ class mapControls extends React.Component {
     }
 
     return React.createElement('div', {className: 'mapControls'},
-      React.createElement(generateUrl, {urlDatums: generateUrlDatums}),
+      React.createElement(generateUrl, {urlDatums: generateUrlDatums, apikey: this.props.mapOptions.apikey}),
       React.createElement(legends, {legends: legendsDatums}),
       React.createElement('div', {className: 'timeSliderContainer'},
         React.createElement('div', {className: 'timeSliderWrapper'},
