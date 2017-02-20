@@ -34,13 +34,14 @@ var findBestTimeStepsForEachLayer = ({layers, time}) => {
   })
 }
 
-var updateVisibleUrls = ({layers, onSuccess}) => {
+var updateVisibleUrls = ({layers, apikey, onSuccess}) => {
   var scopedLayers = layers
   Promise.all(_.map(scopedLayers, (layer) => {
     return new Promise((resolve, reject) => {
       layer.visibleUrl = null
       if (!layer.time) return resolve(layer)
       wxtiles.getTileLayerUrl({
+        apikey: apikey,
         layerId: layer.id,
         styleId: layer.styleId,
         instanceId: layer.instanceId,
@@ -82,6 +83,7 @@ class mapControls extends React.Component {
       var layersWithTime = findBestTimeStepsForEachLayer({layers, time})
       updateVisibleUrls({
         layers: layersWithTime,
+        apikey: mapOptions.apikey,
         onSuccess: (layers) => {
           this.props.updateLayers({layers})
         }
@@ -94,6 +96,7 @@ class mapControls extends React.Component {
       // this.props.updateLayers({layers: mapOptions.layers})
       updateVisibleUrls({
         layers: mapOptions.layers,
+        apikey: mapOptions.apikey,
         onSuccess: (layers) => {
           this.props.updateLayers({layers})
         }
