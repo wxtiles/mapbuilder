@@ -3,11 +3,13 @@ import _ from 'lodash'
 
 const server = 'https://api.wxtiles.com/v1'
 // const server = 'http://172.16.1.50/v1';
+// const owner = 'wxtiles'
+const owner = 'metocean'
 
 // /<ownerID>/layer/
 var getAllLayers = ({apikey, onSuccess, onError}) => {
   request
-    .get(`${server}/wxtiles/layer/`)
+    .get(`${server}/${owner}/layer/`)
     .set('apikey', apikey)
     .end((err, res) => {
       if (err) return onError(err)
@@ -17,7 +19,7 @@ var getAllLayers = ({apikey, onSuccess, onError}) => {
 // /<ownerID>/layer/<layerID>/instance/<instanceID>/
 var getInstance = ({apikey, layerId, instanceId, onSuccess, onError}) => {
   request
-    .get(`${server}/wxtiles/layer/${layerId}/instance/${instanceId}/`)
+    .get(`${server}/${owner}/layer/${layerId}/instance/${instanceId}/`)
     .set('apikey', apikey)
     .end((err, res) => {
       if (err) return onError(err)
@@ -28,7 +30,7 @@ var getInstance = ({apikey, layerId, instanceId, onSuccess, onError}) => {
 // /<ownerID>/layer/<layerID>/style/<styleID>/
 var getStyle = ({apikey, layerId, styleId, onSuccess, onError}) => {
   request
-    .get(`${server}/wxtiles/layer/${layerId}/style/${styleId}/`)
+    .get(`${server}/${owner}/layer/${layerId}/style/${styleId}/`)
     .set('apikey', apikey)
     .end((err, res) => {
       if (err) return onError(err)
@@ -39,7 +41,7 @@ var getStyle = ({apikey, layerId, styleId, onSuccess, onError}) => {
 // /<ownerID>/layer/<layerID>/instance/<instanceID>/times/
 var getTimesForInstance = (options) => {
   request
-    .get(`${server}/wxtiles/layer/${options.layerId}/instance/${options.instanceId}/times/`)
+    .get(`${server}/${owner}/layer/${options.layerId}/instance/${options.instanceId}/times/`)
     .set('apikey', options.apikey)
     .end((err, res) => {
       if (err) return options.onError(err)
@@ -50,7 +52,7 @@ var getTimesForInstance = (options) => {
 // /<ownerID>/layer/<layerID>/instance/<instanceID>/levels/
 var getLevelsForInstance = (options) => {
   request
-    .get(`${server}/wxtiles/layer/${options.layerId}/instance/${options.instanceId}/levels/`)
+    .get(`${server}/${owner}/layer/${options.layerId}/instance/${options.instanceId}/levels/`)
     .set('apikey', options.apikey)
     .end((err, res) => {
       if (err) return options.onError(err)
@@ -76,12 +78,12 @@ var getAllTileLayerUrls = ({apikey, layerId, styleId, instanceId, times, level, 
 var getTileLayerUrl = ({apikey, layerId, styleId, instanceId, time, level, onSuccess, onError}) => {
   level = level || 0
   time = time || 0
-  onSuccess(`${server}/wxtiles/tile/${layerId}/${styleId}/${instanceId}/${time}/${level}/{z}/{x}/{y}.png?apikey=${apikey}`)
+  onSuccess(`${server}/${owner}/tile/${layerId}/${styleId}/${instanceId}/${time}/${level}/{z}/{x}/{y}.png?apikey=${apikey}`)
 }
 
 // /{ownerId}/legend/{layerId}/{styleId}/{size}/{orientation}.png
 var getLegendUrl = ({apikey, layerId, styleId, onSuccess, onError}) => {
-  onSuccess(`${server}/wxtiles/legend/${layerId}/${styleId}/small/horizontal.png?apikey=${apikey}`)
+  onSuccess(`${server}/${owner}/legend/${layerId}/${styleId}/small/horizontal.png?apikey=${apikey}`)
 }
 
 
