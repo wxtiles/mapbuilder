@@ -1,8 +1,8 @@
 import request from 'superagent'
 import _ from 'lodash'
 
-// const server = 'https://api.wxtiles.com/v1'
-const server = 'http://172.16.1.50/v1';
+const server = 'https://api.wxtiles.com/v1'
+// const server = 'http://172.16.1.50/v1';
 
 // /<ownerID>/layer/
 var getAllLayers = ({apikey, onSuccess, onError}) => {
