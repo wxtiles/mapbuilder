@@ -41,7 +41,7 @@ class timeSlider extends React.Component {
   }
 
   handleAfterChange(time) {
-    this.props.selectTime({time: moment.utc(time), ignoge: false})
+    this.props.selectTime({time: moment.utc(time), ignore: false})
   }
 
   toggleAnimating() {
