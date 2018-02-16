@@ -113,7 +113,7 @@ class mapWrapper extends React.Component {
     var mapParams = {
       center: position,
       zoom: zoom,
-      zoomControl: false,
+      zoomControl: true,
       style: {height: '100%'},
       onMoveend: (e) => {
         var target = e.target
