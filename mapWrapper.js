@@ -149,10 +149,10 @@ class mapWrapper extends React.Component {
           subdomains: 'abcd',
           zIndex: 501,
           alpha: 1
-      }),
-      React.createElement(ZoomControl, {
+        }),
+        React.createElement(ZoomControl, {
           position: 'bottomright'
-      })
+        })
       )
     )
   }

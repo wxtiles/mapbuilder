@@ -95,6 +95,7 @@ class timeSlider extends React.Component {
             // max: +latestTime + (+latestTime - +earliestTime) * 0.05,
             max: +latestTime,
             value: mapOptions.time,
+            step: null,
             marks: marks,
             tipFormatter: (tip, index) => {
               var t = moment.duration(moment(tip).diff(moment())).asMilliseconds()

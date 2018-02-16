@@ -9,19 +9,42 @@
 
     img {
       max-width: 310px;
-      max-height: 80px;
+      max-height: auto;
+    }
+  }
+
+  .styleSelectWrapper {
+    padding-bottom: 3px;
+    width: 315px;
+    img {
+      width: 100%;
+      height: auto;
+    }
+    .ant-select-selection {
+      display: inline-block;
+      height: 100%;
+      min-width: 315px;
     }
   }
 
   .showMeh {
     display: inline-block;
   }
+
   .hideMeh {
     display: none;
   }
+
   .legendLabel {
-    display: inline;
+    display: inline-block;
+    line-height: 1.5;
+    font-weight: bold;
+    word-wrap: break-word;
+    white-space: pre-wrap;
+    width: 300px;
+    margin-right: 5px;
   }
+
   .description {
     float: right;
     top: 3px;
@@ -29,10 +52,43 @@
   }
 }
 
-.ant-popover-inner {
-  min-width: 200px;
+.ant-popover {
+  max-width: 500px;
+
+  .ant-popover-title {
+    font-weight: bold;
+    height: auto;
+    line-height: inherit;
+    min-height: 34px;
+    word-wrap: break-word;
+    white-space: pre-wrap;
+  }
+
+  .ant-popover-inner {
+    min-width: 200px;
+    margin-right: 5px;
+  }
 }
 
-.legendPopoverTitle {
-  font-weight: bold;
+.ant-select-selection-selected-value {
+  font-size: 1vw;
+}
+
+.styleName {
+  font-size: small;
+  word-wrap: break-word;
+  line-height: normal;
+  white-space: pre-wrap;
+  color: #176097;
+  font-family: "Trebuchet MS", Helvetica, sans-serif;
+}
+
+
+li {
+  line-height: 1;
+  width: 100%;
+  img {
+    width: 100%;
+    height: auto;
+  }
 }

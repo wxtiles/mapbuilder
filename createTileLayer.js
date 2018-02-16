@@ -34,7 +34,9 @@ class createTileLayer extends React.Component {
     this.state = {}
     this.state.selectedLayer = null
     this.state.loadingInstance = false
+    this.state.layerOptions = []
     this.selectLayer = this.selectLayer.bind(this)
+    this.selectStyle = this.selectStyle.bind(this)
     this.deleteLayer = this.deleteLayer.bind(this)
     this.setOpacity = this.setOpacity.bind(this)
   }
@@ -49,22 +51,27 @@ class createTileLayer extends React.Component {
     layer.id = selectingLayer.id
     layer.instances = instances
     layer.instanceId = instances[0].id
-    layer.label = selectingLayer.meta.name
-    layer.description = selectingLayer.meta.description
+    layer.label = selectingLayer.name
+    layer.description = selectingLayer.description
     layer.bounds = selectingLayer.bounds
     layer.maxNativeZoom = selectingLayer.maxNativeZoom ? selectingLayer.maxNativeZoom : null
     layer.minNativeZoom = selectingLayer.minNativeZoom ? selectingLayer.minNativeZoom : 0
     layer.instanceType = selectingLayer.instanceType
-    var legendUrl = selectingLayer.resources.legend
-    layer.hasLegend = legendUrl != undefined
-    if(legendUrl != undefined) {
-      layer.legendUrl = selectingLayer.resources.legend
-        .replace('<instance>', instances[0].id)
-        .replace('<size>', 'small')
-        .replace('<orientation>', 'horizontal')
-    }
+    layer.styles = selectingLayer.styles
+    layer.styleId = selectingLayer.defaults.style // Instantiate with default
+    layer.styles = _.map(layer.styles, (style) => {
+      var legendUrl = style.resources.legend
+      style.hasLegend = legendUrl != undefined
+      if (style.hasLegend) {
+        style.legendUrl = legendUrl
+          .replace('<size>', 'small')
+          .replace('<orientation>', 'horizontal')
+      }
+      return style
+    })
 
     wxTiles.getInstance({
+      apikey: this.props.apikey,
       layerId: layer.id,
       instanceId: layer.instanceId,
       onSuccess: (instanceObject) => {
@@ -74,7 +81,9 @@ class createTileLayer extends React.Component {
         layer.times = times
         layer.time = times[0]
         wxTiles.getAllTileLayerUrls({
+          apikey: this.props.apikey,
           layerId: layer.id,
+          styleId: layer.styleId,
           instanceId: layer.instanceId,
           times: layer.times,
           level: 0,
@@ -85,7 +94,9 @@ class createTileLayer extends React.Component {
             })
             layer.timeUrls = timeUrls
             wxTiles.getTileLayerUrl({
+              apikey: this.props.apikey,
               layerId: layer.id,
+              styleId: layer.styleId,
               instanceId: layer.instanceId,
               time: layer.time,
               level: 0,
@@ -107,6 +118,18 @@ class createTileLayer extends React.Component {
   }
 
   componentWillMount() {
+    wxTiles.getAllLayers({
+      apikey: this.props.apikey,
+      onSuccess: (layerOptions) => {
+        layerOptions = _.map(layerOptions, (layerOption) => {
+          layerOption.value = layerOption.id
+          layerOption.label = layerOption.name
+          return layerOption
+        })
+        this.setState({layerOptions})
+      },
+      onError: (error) => console.log(error)
+    })
   }
 
   deleteLayer() {
@@ -119,6 +142,12 @@ class createTileLayer extends React.Component {
     this.props.updateLayer({layerObject})
   }
 
+  selectStyle(styleId) {
+    var layerObject = this.props.layer
+    layerObject.styleId = styleId
+    this.props.updateLayer({layerObject})
+  }
+
   render() {
     var layer = this.props.layer
     return React.createElement('div', {className: 'createTileLayer'},
@@ -126,7 +155,7 @@ class createTileLayer extends React.Component {
         React.createElement('div', {className: 'select-list'},
           React.createElement(layerLabel, {
             deleteLayer: this.deleteLayer,
-            layers: this.props.layerOptions,
+            layers: this.state.layerOptions,
             selectLayer: this.selectLayer,
             layer: layer.id
           }),

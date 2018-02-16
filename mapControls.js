@@ -34,14 +34,16 @@ var findBestTimeStepsForEachLayer = ({layers, time}) => {
   })
 }
 
-var updateVisibleUrls = ({layers, onSuccess}) => {
+var updateVisibleUrls = ({layers, apikey, onSuccess}) => {
   var scopedLayers = layers
   Promise.all(_.map(scopedLayers, (layer) => {
     return new Promise((resolve, reject) => {
       layer.visibleUrl = null
       if (!layer.time) return resolve(layer)
       wxtiles.getTileLayerUrl({
+        apikey: apikey,
         layerId: layer.id,
+        styleId: layer.styleId,
         instanceId: layer.instanceId,
         time: layer.time,
         level: 0,
@@ -72,20 +74,8 @@ class mapControls extends React.Component {
     var mapOptions = this.props.mapOptions
     var layers = mapOptions.layers
 
-    var legendsDatums = _.filter(layers, (layer) => layer.label)
-    legendsDatums = _.map(legendsDatums, (layer) => {
-      return {
-        label: layer.label,
-        description: layer.description,
-        hasLegend: layer.hasLegend,
-        url: layer.hasLegend ? layer.legendUrl : null,
-        layerId: layer.id,
-        instanceId: layer.instanceId,
-      }
-    })
-
     var selectTime = ({time, ignore}) => {
-      var ignore = ignore ? ignore: false
+      var ignore = ignore ? ignore : false
       mapOptions.time = time
       mapOptions.displayTime = time
       this.props.updateMapOptions({mapOptions})
@@ -93,6 +83,20 @@ class mapControls extends React.Component {
       var layersWithTime = findBestTimeStepsForEachLayer({layers, time})
       updateVisibleUrls({
         layers: layersWithTime,
+        apikey: mapOptions.apikey,
+        onSuccess: (layers) => {
+          this.props.updateLayers({layers})
+        }
+      })
+    }
+
+    var selectStyle = ({layerId, styleId}) => {
+      _.find(mapOptions.layers, (l) => { return l.id == layerId }).styleId = styleId
+      this.props.updateMapOptions({mapOptions})
+      // this.props.updateLayers({layers: mapOptions.layers})
+      updateVisibleUrls({
+        layers: mapOptions.layers,
+        apikey: mapOptions.apikey,
         onSuccess: (layers) => {
           this.props.updateLayers({layers})
         }
@@ -105,6 +109,21 @@ class mapControls extends React.Component {
       mapOptions: this.props.mapOptions
     }
 
+    var legendsDatums = {
+      layers: _.filter(layers, (layer) => layer.label),
+      selectStyle
+    }
+    legendsDatums.layers = _.map(legendsDatums.layers, (layer) => {
+      return {
+        label: layer.label,
+        description: layer.description,
+        hasLegend: layer.hasLegend,
+        layerId: layer.id,
+        styles: layer.styles,
+        styleId: layer.styleId,
+      }
+    })
+
     var generateUrlDatums = {
       zoom: this.props.mapOptions.zoom,
       center: this.props.mapOptions.center,
@@ -113,13 +132,14 @@ class mapControls extends React.Component {
         return {
           id: layer.id,
           opacity: layer.opacity,
-          zIndex: layer.zIndex
+          zIndex: layer.zIndex,
+          styleId: layer.styleId
         }
       })
     }
 
     return React.createElement('div', {className: 'mapControls'},
-      React.createElement(generateUrl, {urlDatums: generateUrlDatums}),
+      React.createElement(generateUrl, {urlDatums: generateUrlDatums, apikey: this.props.mapOptions.apikey}),
       React.createElement(legends, {legends: legendsDatums}),
       React.createElement('div', {className: 'timeSliderContainer'},
         React.createElement('div', {className: 'timeSliderWrapper'},

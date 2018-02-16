@@ -13,7 +13,6 @@ class root extends React.Component {
     this.state = {
       layers: [],
       mapOptions: {},
-      layerOptions: [],
       now: null
     }
     this.updateLayers = this.updateLayers.bind(this)
@@ -21,18 +20,6 @@ class root extends React.Component {
   }
 
   componentWillMount() {
-    wxTiles.getAllLayers({
-      onSuccess: (layerOptions) => {
-        layerOptions = _.map(layerOptions, (layerOption) => {
-          layerOption.value = layerOption.id
-          layerOption.label = layerOption.meta.name
-          return layerOption
-        })
-        this.setState({layerOptions})
-      },
-      onError: (error) => console.log(error)
-    })
-
     var layers = [{
       label: '',
       key: 0,
@@ -45,7 +32,8 @@ class root extends React.Component {
         time: this.props.now,
         displayTime: this.props.now,
         layers,
-        marks: {}
+        marks: {},
+        apikey: ''
       }
     })
   }
@@ -66,7 +54,7 @@ class root extends React.Component {
       mapOptions.marks[+time] = ''
     })
     var arrowStyle = {}
-    if (+this.props.now < _.first(times)) {
+    if (+this.props.now < +_.first(times)) {
       mapOptions.marks[+_.first(times)] = {
         'style': arrowStyle,
         'label': "\u21E6"
@@ -102,8 +90,9 @@ class root extends React.Component {
         ),
         React.createElement(layersEditor, {
           layers: this.state.layers,
-          layerOptions: this.state.layerOptions,
-          updateLayers: this.updateLayers
+          updateLayers: this.updateLayers,
+          mapOptions: this.state.mapOptions,
+          updateMapOptions: this.updateMapOptions
         })
       ),
       React.createElement('div', {className: 'mapContainer'},
