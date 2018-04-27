@@ -1,7 +1,8 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
-import wxTiles from './wxtiles'
-import _ from 'lodash'
+import sortBy from 'lodash.sortby'
+import first from 'lodash.first'
+import last from 'lodash.last'
+import flatten from 'lodash.flatten'
 import layersEditor from './layersEditor'
 import mapWrapper from './mapWrapper'
 import mapControls from './mapControls'
@@ -41,26 +42,26 @@ class root extends React.Component {
   updateLayers({layers}) {
     var mapOptions = this.state.mapOptions
     mapOptions.layers = layers
-    var times = _.map(layers, (layer) => {
-      return _.map(layer.times, (time) => {
+    var times = layers.map((layer) => {
+      return layer.times.map((time) => {
         return moment.utc(time)
       })
     })
-    times = _.flatten(times)
+    times = flatten(times)
     // times.push(this.props.now)
-    times = _.sortBy(times, (time) => +time)
+    times = sortBy(times, (time) => +time)
     mapOptions.marks = {}
-    _.forEach(times, (time) => {
+    times.forEach((time) => {
       mapOptions.marks[+time] = ''
     })
     var arrowStyle = {}
-    if (+this.props.now < +_.first(times)) {
-      mapOptions.marks[+_.first(times)] = {
+    if (+this.props.now < +first(times)) {
+      mapOptions.marks[+first(times)] = {
         'style': arrowStyle,
         'label': "\u21E6"
       }
-    } else if (+this.props.now > +_.last(times)) {
-      mapOptions.marks[+_.last(times)] = {
+    } else if (+this.props.now > +last(times)) {
+      mapOptions.marks[+last(times)] = {
         'style': arrowStyle,
         'label': "\u21E8"
       }
@@ -71,8 +72,8 @@ class root extends React.Component {
       }
     }
     mapOptions.times = times
-    mapOptions.earliestTime = _.first(times)
-    mapOptions.latestTime = _.last(times)
+    mapOptions.earliestTime = first(times)
+    mapOptions.latestTime = last(times)
     this.setState({layers, mapOptions})
   }
 

@@ -1,7 +1,4 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
-import select from 'react-select'
-import _ from 'lodash'
 
 class mapButton extends React.Component {
   constructor(props) {

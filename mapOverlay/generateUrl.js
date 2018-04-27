@@ -1,5 +1,4 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
 import urlDialog from './urlDialog'
 
 class generateUrl extends React.Component {

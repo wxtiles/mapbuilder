@@ -1,15 +1,16 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
 import wxTiles from './wxtiles'
 import select from 'react-select'
-import _ from 'lodash'
+import sortBy from 'lodash.sortby'
+import defaults from 'lodash.defaults'
+import without from 'lodash.without'
 import layerLabel from './layerLabel'
 import rcSlider from 'rc-slider'
 import legend from './legend'
 import moment from 'moment'
 
 function degradeArray(array, options) {
-  _.defaults(options, {fromLeftSide: false, maxLength: 30, retainEnds: true})
+  defaults(options, {fromLeftSide: false, maxLength: 30, retainEnds: true})
   var offset = 2
   var start = options.retainEnds ? array[0] : undefined
   var end = options.retainEnds ? array[array.length - 1] : undefined
@@ -19,7 +20,7 @@ function degradeArray(array, options) {
   while(retArray.length > maxLength) {
     i = !options.fromLeftSide ? array.length - offset : offset - 1
     if (array[i] != undefined) {
-      retArray = _.without(retArray, array[i])
+      retArray = without(retArray, array[i])
       offset += 2
     } else {
       return degradeArray(retArray, options)
@@ -42,11 +43,11 @@ class createTileLayer extends React.Component {
   }
 
   selectLayer(selectingLayer) {
-    var instances = _.map(selectingLayer.instances, (instance) => {
+    var instances = selectingLayer.instances.map((instance) => {
       instance.value = instance.id
       return instance
     })
-    instances = _.sortBy(instances, (instance) => { return instance.displayName }).reverse()
+    instances = sortBy(instances, (instance) => { return instance.displayName }).reverse()
     var layer = this.props.layer
     layer.id = selectingLayer.id
     layer.instances = instances
@@ -59,7 +60,7 @@ class createTileLayer extends React.Component {
     layer.instanceType = selectingLayer.instanceType
     layer.styles = selectingLayer.styles
     layer.styleId = selectingLayer.defaults.style // Instantiate with default
-    layer.styles = _.map(layer.styles, (style) => {
+    layer.styles = layer.styles.map((style) => {
       var legendUrl = style.resources.legend
       style.hasLegend = legendUrl != undefined
       if (style.hasLegend) {
@@ -88,7 +89,7 @@ class createTileLayer extends React.Component {
           times: layer.times,
           level: 0,
           onSuccess: (timeUrls) => {
-            var timeUrls = _.map(timeUrls, (timeUrl) => {
+            var timeUrls = timeUrls.map((timeUrl) => {
               timeUrl.time = moment.utc(timeUrl.time, 'YYYY-MM-DDTHH:mm:ss[Z]')
               return timeUrl
             })
@@ -121,7 +122,7 @@ class createTileLayer extends React.Component {
     wxTiles.getAllLayers({
       apikey: this.props.apikey,
       onSuccess: (layerOptions) => {
-        layerOptions = _.map(layerOptions, (layerOption) => {
+        layerOptions = layerOptions.map((layerOption) => {
           layerOption.value = layerOption.id
           layerOption.label = layerOption.name
           return layerOption

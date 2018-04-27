@@ -1,6 +1,4 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
-import _ from 'lodash'
 import select from 'react-select'
 
 class layerLabel extends React.Component {

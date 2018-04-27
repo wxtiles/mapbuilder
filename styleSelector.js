@@ -1,6 +1,4 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
-import _ from 'lodash'
 import { Select } from 'antd'
 import 'antd/lib/select/style/css'
 import StyleOption from './styleOption'
@@ -16,7 +14,7 @@ class StyleSelector extends React.Component {
   }
 
   componentWillMount() {
-    _.map(this.props.styles, (style) => {
+    this.props.styles.map((style) => {
       style.url = undefined
       wxtilesjs.getLegendUrl({
         layerId: this.props.layerId,
@@ -42,7 +40,7 @@ class StyleSelector extends React.Component {
         value: this.state.value,
         onChange: this.onStyleChange
       },
-      _.map(this.props.styles, (mapStyle, key) => {
+      this.props.styles.map((mapStyle, key) => {
         return React.createElement(
           Option,
           {

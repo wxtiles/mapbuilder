@@ -1,7 +1,8 @@
 import React from 'react'
 import {Map, TileLayer, ZoomControl} from 'react-leaflet'
-import wxtiles from './wxtiles'
-import _ from 'lodash'
+import first from 'lodash.first'
+import last from 'lodash.last'
+import flatten from 'lodash.flatten'
 import leaflet from 'leaflet'
 import moment from 'moment'
 
@@ -46,20 +47,20 @@ class mapWrapper extends React.Component {
     var lowerBufferLength = 5
     if (mapOptions.isAnimating) {
       var buffer = []
-      tileLayers = _.map(wxtilesLayers, (wxtilesLayer) => {
-        var afterSelectedTime = _.filter(wxtilesLayer.timeUrls, (timeUrl, key) => {
+      tileLayers = wxtilesLayers.map((wxtilesLayer) => {
+        var afterSelectedTime = wxtilesLayer.timeUrls.filter((timeUrl, key) => {
           return timeUrl.time.isSameOrAfter(mapTime)
         }).slice(0, bufferLength)
         if (afterSelectedTime.length == 0) {
           // Current time is beyond upper range of layer
           // TODO tolerance time at upper edge?
           return false
-        } else if (!mapTime.isSame(_.first(afterSelectedTime).time)) {
+        } else if (!mapTime.isSame(first(afterSelectedTime).time)) {
           // We're actually working with durations
           // Preprend the last time that is before the current time
           afterSelectedTime.unshift(wxtilesLayer.timeUrls[wxtilesLayer.timeUrls.indexOf(afterSelectedTime[0])-1])
         }
-        var beforeSelectedTime = _.filter(wxtilesLayer.timeUrls, (timeUrl) => {
+        var beforeSelectedTime = wxtilesLayer.timeUrls.filter((timeUrl) => {
           return timeUrl.time.isBefore(mapTime)
         }).slice(0, bufferLength)//.slice(0, -1)
         if (beforeSelectedTime.length == 0) {
@@ -72,7 +73,7 @@ class mapWrapper extends React.Component {
         } else {
           buffer = afterSelectedTime
         }
-        return _.map(buffer, (timeUrl, key) => {
+        return buffer.map((timeUrl, key) => {
           var isVisible = wxtilesLayer.visibleUrl == timeUrl.url
           return {
             url: timeUrl.url,
@@ -85,19 +86,19 @@ class mapWrapper extends React.Component {
           }
         })
       })
-      tileLayers = _.flatten(tileLayers.filter(Boolean)) // TODO needed?
+      tileLayers = flatten(tileLayers.filter(Boolean)) // TODO needed?
     }
     else if (!mapOptions.isAnimating) {
       var inRange = function(start, end) {
         return mapTime.isSameOrBefore(end) && mapTime.isSameOrAfter(start)
       }
-      wxtilesLayers = _.filter(wxtilesLayers, (wxtileLayer) => {
+      wxtilesLayers = wxtilesLayers.filter((wxtileLayer) => {
         return (inRange(
-            moment(_.first(wxtileLayer.times)),
-            moment(_.last(wxtileLayer.times))
+            moment(first(wxtileLayer.times)),
+            moment(last(wxtileLayer.times))
         ) && wxtileLayer.visibleUrl)
       })
-      tileLayers = _.map(wxtilesLayers, (wxtilesLayer) => {
+      tileLayers = wxtilesLayers.map((wxtilesLayer) => {
         return {
           url: wxtilesLayer.visibleUrl,
           key: wxtilesLayer.key + ' ' + wxtilesLayer.visibleUrl,
@@ -128,7 +129,7 @@ class mapWrapper extends React.Component {
     }
     return React.createElement('div', {className: 'mapWrapper'},
       React.createElement(Map, mapParams,
-        _.map(tileLayers, (tileLayer) => {
+        tileLayers.map((tileLayer) => {
           return React.createElement(TileLayer, {
             url: tileLayer.url,
             key: tileLayer.key,

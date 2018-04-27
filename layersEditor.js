@@ -1,6 +1,5 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
-import _ from 'lodash'
+import remove from 'lodash.remove'
 import apikeyField from './apikeyField'
 import createTileLayer from './createTileLayer'
 import dragula from 'react-dragula';
@@ -31,9 +30,9 @@ class layersEditor extends React.Component {
     drake.on('drop', (el, target, source, sibling) => {
       var layersInDom = drake.containers[0].children
       var layers = this.props.layers
-      layers = _.map(layers, (layer) => {
+      layers = layers.map((layer) => {
         if(!layer) return undefined
-        var indexOfLayer = _.findIndex(layersInDom, (layerDom) => {
+        var indexOfLayer = layersInDom.findIndex((layerDom) => {
           return layerDom.attributes[1].nodeValue == layer.key
         })
         layer.zIndex = layersInDom.length - indexOfLayer
@@ -63,7 +62,7 @@ class layersEditor extends React.Component {
   //This also happens once when the layer selection row is first loaded, the 0th time value is auto selected for the user.
   createLayer({layerObject}) {
     var layers = this.props.layers
-    var layerIndex = _.findIndex(layers, (layer) => {
+    var layerIndex = layers.findIndex((layer) => {
       if (!layer) return false
       return (layer.key == layerObject.key)
     })
@@ -73,7 +72,7 @@ class layersEditor extends React.Component {
 
   removeLayer({key}) {
     var layers = this.props.layers
-    layers = _.remove(layers, (layer) => layer.key != key)
+    layers = remove(layers, (layer) => layer.key != key)
     this.props.updateLayers({layers})
   }
 
@@ -104,7 +103,7 @@ class layersEditor extends React.Component {
           React.createElement('div', {className: 'btn btn-success addLayer', onClick: this.addLayerSelectionRow}, 'Add a layer')
         ),
         React.createElement('div', {id: 'testIdizzle'},
-          _.map(this.props.layers, (layer) =>
+          this.props.layers.map((layer) =>
             layer && React.createElement('div', {className: 'layerContainer', key: layer.key, 'data-key': layer.key},
               React.createElement(createTileLayer, {layer, updateLayer: this.createLayer, removeLayer: this.removeLayer, apikey: this.props.mapOptions.apikey})
             )

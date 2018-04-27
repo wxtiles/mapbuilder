@@ -1,7 +1,8 @@
 import React from 'react'
 import rcSlider from 'rc-slider'
 import moment from 'moment-timezone'
-import _ from 'lodash'
+import defaults from 'lodash.defaults'
+import clamp from 'lodash.clamp'
 import humanizeDuration from 'humanize-duration'
 
 class timeSlider extends React.Component {

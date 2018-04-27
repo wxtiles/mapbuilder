@@ -1,6 +1,4 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
-import _ from 'lodash'
 import legend from '../legend'
 
 class legends extends React.Component {
@@ -29,7 +27,7 @@ class legends extends React.Component {
         !this.state.showLegends && React.createElement('a', {href: '#', onClick: this.showLegends}, 'Show legends'),
         this.state.showLegends && React.createElement('a', {href: '#', onClick: this.hideLegends}, 'Hide legends')
       ),
-      this.state.showLegends && _.map(this.props.legends.layers, (layer) => {
+      this.state.showLegends && this.props.legends.layers.map((layer) => {
         return React.createElement('div', {key: layer.layerId + ' ' + layer.instanceId},
           React.createElement(legend, {
             layerId: layer.layerId,

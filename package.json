@@ -17,7 +17,7 @@
     ]
   },
   "scripts": {
-    "js": "browserify index.js -g browserify-css -o dist.js --debug",
+    "js": "browserify index.js -g browserify-css -o dist.js",
     "css": "lessc --clean-css style.less dist.css",
     "build": "npm run js && npm run css && echo Build Complete"
   },
@@ -27,7 +27,14 @@
     "antd": "^2.5.1",
     "humanize-duration": "^3.10.0",
     "leaflet": "^0.7.7",
-    "lodash": "^4.13.1",
+    "lodash.clamp": "^4.0.3",
+    "lodash.defaults": "^4.2.0",
+    "lodash.first": "^3.0.0",
+    "lodash.flatten": "^4.4.0",
+    "lodash.last": "^3.0.0",
+    "lodash.remove": "^4.7.0",
+    "lodash.sortby": "^4.7.0",
+    "lodash.without": "^4.4.0",
     "moment": "2.14.1",
     "moment-timezone": "0.5.5",
     "rc-popover": "^1.0.6",
@@ -48,6 +55,7 @@
     "less": "^2.7.1",
     "less-plugin-clean-css": "^1.5.1",
     "nodemon": "1.10.0",
+    "uglifyify": "^5.0.0",
     "watchify": "^3.7.0"
   }
 }
