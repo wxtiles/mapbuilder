@@ -1,8 +1,8 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
 import generateUrl from './mapOverlay/generateUrl'
 import legends from './mapOverlay/legends'
-import _ from 'lodash'
+import sortBy from 'lodash.sortby'
+import last from 'lodash.last'
 import timeSlider from './mapOverlay/timeSlider'
 import moment from 'moment'
 import wxtiles from './wxtiles'
@@ -12,12 +12,12 @@ var findBestTimeStepsForEachLayer = ({layers, time}) => {
   // layer.time property to be equal to the nearest valid time to the time
   // that is seelcted on the timeslider.
   time = moment.utc(time)
-  return _.map(layers, (layer) => {
-    var allTimesForLayer = _.map(layer.times, (t) => moment.utc(t, 'YYYY-MM-DDTHH:mm:ss[Z]'))
-    allTimesForLayer = _.sortBy(allTimesForLayer, (t) => +t)
+  return layers.map((layer) => {
+    var allTimesForLayer = layer.times.map((t) => moment.utc(t, 'YYYY-MM-DDTHH:mm:ss[Z]'))
+    allTimesForLayer = sortBy(allTimesForLayer, (t) => +t)
 
     var timeToSelect = null
-    allTimesForLayer = _.forEach(allTimesForLayer, (timeForLayer, key) => {
+    allTimesForLayer = allTimesForLayer.forEach((timeForLayer, key) => {
       if (timeToSelect) {
         return false
       } else if (time.isBefore(timeForLayer)) {
@@ -28,7 +28,7 @@ var findBestTimeStepsForEachLayer = ({layers, time}) => {
         timeToSelect = timeForLayer
       }
     })
-    timeToSelect = timeToSelect ? timeToSelect : _.last(allTimesForLayer)
+    timeToSelect = timeToSelect ? timeToSelect : last(allTimesForLayer)
     layer.time = timeToSelect.format('YYYY-MM-DDTHH:mm:ss[Z]')
     return layer
   })
@@ -36,7 +36,7 @@ var findBestTimeStepsForEachLayer = ({layers, time}) => {
 
 var updateVisibleUrls = ({layers, apikey, onSuccess}) => {
   var scopedLayers = layers
-  Promise.all(_.map(scopedLayers, (layer) => {
+  Promise.all(scopedLayers.map((layer) => {
     return new Promise((resolve, reject) => {
       layer.visibleUrl = null
       if (!layer.time) return resolve(layer)
@@ -91,7 +91,7 @@ class mapControls extends React.Component {
     }
 
     var selectStyle = ({layerId, styleId}) => {
-      _.find(mapOptions.layers, (l) => { return l.id == layerId }).styleId = styleId
+      mapOptions.layers.find((l) => { return l.id == layerId }).styleId = styleId
       this.props.updateMapOptions({mapOptions})
       // this.props.updateLayers({layers: mapOptions.layers})
       updateVisibleUrls({
@@ -110,10 +110,10 @@ class mapControls extends React.Component {
     }
 
     var legendsDatums = {
-      layers: _.filter(layers, (layer) => layer.label),
+      layers: layers.filter((layer) => layer.label),
       selectStyle
     }
-    legendsDatums.layers = _.map(legendsDatums.layers, (layer) => {
+    legendsDatums.layers = legendsDatums.layers.map((layer) => {
       return {
         label: layer.label,
         description: layer.description,
@@ -128,7 +128,7 @@ class mapControls extends React.Component {
       zoom: this.props.mapOptions.zoom,
       center: this.props.mapOptions.center,
       animationFrameMinutes: this.props.mapOptions.animationFrameMinutes,
-      layers: _.map(layers, (layer) => {
+      layers: layers.map((layer) => {
         return {
           id: layer.id,
           opacity: layer.opacity,

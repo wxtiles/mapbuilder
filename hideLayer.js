@@ -1,6 +1,4 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
-import _ from 'lodash'
 import maps from './maps'
 
 class hideLayer extends React.Component {

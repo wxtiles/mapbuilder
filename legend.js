@@ -1,7 +1,4 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
-import _ from 'lodash'
-import wxtilesjs from './wxtiles'
 import rcPopover from 'rc-popover'
 import StyleSelector from './styleSelector'
 

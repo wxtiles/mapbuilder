@@ -1,8 +1,4 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
-import _ from 'lodash'
-import { Select } from 'antd'
-import 'antd/lib/select/style/css'
 
 class StyleOption extends React.Component {
   constructor() {
