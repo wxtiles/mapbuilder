@@ -32,6 +32,7 @@
     "lodash.first": "^3.0.0",
     "lodash.flatten": "^4.4.0",
     "lodash.last": "^3.0.0",
+    "lodash.map": "^4.6.0",
     "lodash.remove": "^4.7.0",
     "lodash.sortby": "^4.7.0",
     "lodash.without": "^4.4.0",
