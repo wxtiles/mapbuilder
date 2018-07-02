@@ -60,14 +60,14 @@ class timeSlider extends React.Component {
   }
 
   changeAnimationRate(options) {
-    _.defaults(options, { rate: 1 });
+    defaults(options, { rate: 1 });
     var mapOptions = this.props.mapOptions;
     if (mapOptions.animationFrameMinutes === undefined) {
       mapOptions.animationFrameMinutes = 30;
     }
     var maxRate =
       ((mapOptions.latestTime - mapOptions.earliestTime) / 1000 / 60) * 0.33;
-    mapOptions.animationFrameMinutes = _.clamp(
+    mapOptions.animationFrameMinutes = clamp(
       mapOptions.animationFrameMinutes * options.rate,
       1,
       maxRate
