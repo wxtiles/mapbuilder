@@ -146,7 +146,7 @@ class mapWrapper extends React.Component {
           zIndex: 500
         }),
         React.createElement(TileLayer, {
-          url: 'http://{s}.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}.png',
+          url: 'https://{s}.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}.png',
           subdomains: 'abcd',
           zIndex: 501,
           alpha: 1
