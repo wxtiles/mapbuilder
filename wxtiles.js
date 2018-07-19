@@ -1,6 +1,7 @@
 import request from "superagent";
 
 const server = "https://api.wxtiles.com/v1";
+// const server = "http://172.16.2.50/v1";
 
 // /<ownerID>/layer/
 var getAllLayers = ({ apikey, onSuccess, onError }) => {

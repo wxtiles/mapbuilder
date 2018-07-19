@@ -129,22 +129,24 @@ class createTileLayer extends React.Component {
     this.setState({ layerOptions: [] });
   }
 
-  componentDidUpdate() {
-    wxTiles.getAllLayers({
-      apikey: this.props.apikey,
-      onSuccess: layerOptions => {
-        layerOptions = layerOptions.map(layerOption => {
-          layerOption.value = layerOption.id;
-          layerOption.label = layerOption.name;
-          return layerOption;
-        });
-        this.setState({ layerOptions });
-      },
-      onError: error => {
-        console.log(error);
-        this.setState({ layerOptions: [] });
-      }
-    });
+  componentDidUpdate(prevProps) {
+    if (this.props.apikey !== prevProps.apikey) {
+      wxTiles.getAllLayers({
+        apikey: this.props.apikey,
+        onSuccess: layerOptions => {
+          layerOptions = layerOptions.map(layerOption => {
+            layerOption.value = layerOption.id;
+            layerOption.label = layerOption.name;
+            return layerOption;
+          });
+          this.setState({ layerOptions });
+        },
+        onError: error => {
+          console.log(error);
+          this.setState({ layerOptions: [] });
+        }
+      });
+    }
   }
 
   deleteLayer() {
