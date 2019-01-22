@@ -87,8 +87,7 @@ class mapWrapper extends React.Component {
         })
       })
       tileLayers = flatten(tileLayers.filter(Boolean)) // TODO needed?
-    }
-    else if (!mapOptions.isAnimating) {
+    } else {
       var inRange = function(start, end) {
         return mapTime.isSameOrBefore(end) && mapTime.isSameOrAfter(start)
       }
