@@ -32,7 +32,7 @@ function degradeArray(array, options) {
 }
 
 class createTileLayer extends React.Component {
-  constructor() {
+  constructor(props) {
     super();
     this.state = {};
     this.state.selectedLayer = null;
@@ -42,6 +42,21 @@ class createTileLayer extends React.Component {
     this.selectStyle = this.selectStyle.bind(this);
     this.deleteLayer = this.deleteLayer.bind(this);
     this.setOpacity = this.setOpacity.bind(this);
+    this.loadLayersToChoose = this.loadLayersToChoose.bind(this);
+  }
+
+  componentDidMount() {
+    this.loadLayersToChoose();
+  }
+
+  componentDidCatch() {
+    this.setState({ layerOptions: [] });
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.apikey !== prevProps.apikey) {
+      this.loadLayersToChoose()
+    }
   }
 
   selectLayer(selectingLayer) {
@@ -125,28 +140,22 @@ class createTileLayer extends React.Component {
 
   selectInstance(instance) {}
 
-  componentDidCatch() {
-    this.setState({ layerOptions: [] });
-  }
-
-  componentDidUpdate(prevProps) {
-    if (this.props.apikey !== prevProps.apikey) {
-      wxTiles.getAllLayers({
-        apikey: this.props.apikey,
-        onSuccess: layerOptions => {
-          layerOptions = layerOptions.map(layerOption => {
-            layerOption.value = layerOption.id;
-            layerOption.label = layerOption.name;
-            return layerOption;
-          });
-          this.setState({ layerOptions });
-        },
-        onError: error => {
-          console.log(error);
-          this.setState({ layerOptions: [] });
-        }
-      });
-    }
+  loadLayersToChoose() {
+    this.props.apikey && wxTiles.getAllLayers({
+      apikey: this.props.apikey,
+      onSuccess: layerOptions => {
+        layerOptions = layerOptions.map(layerOption => {
+          layerOption.value = layerOption.id;
+          layerOption.label = layerOption.name;
+          return layerOption;
+        });
+        this.setState({ layerOptions });
+      },
+      onError: error => {
+        console.log(error);
+        this.setState({ layerOptions: [] });
+      }
+    });
   }
 
   deleteLayer() {
