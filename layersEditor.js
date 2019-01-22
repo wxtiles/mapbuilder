@@ -58,10 +58,9 @@ class layersEditor extends React.Component {
     this.setState({ totalLayers: this.state.totalLayers + 1 }, () => {
       this.props.updateLayers({ layers });
     });
-    //createLayer will be called at the end of this chain, after all the data has come back from the server.
   }
 
-  //This is called when the use selects a time value for the layer.
+  //This is called when the user selects a time value for the layer.
   //This also happens once when the layer selection row is first loaded, the 0th time value is auto selected for the user.
   createLayer({ layerObject }) {
     var layers = this.props.layers;
