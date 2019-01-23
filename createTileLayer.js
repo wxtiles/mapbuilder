@@ -14,12 +14,9 @@ function degradeArray(array, options) {
   var offset = 2;
   var start = options.retainEnds ? array[0] : undefined;
   var end = options.retainEnds ? array[array.length - 1] : undefined;
-  var maxLength = options.retainEnds
-    ? options.maxLength - 2
-    : options.maxLength;
-  var retArray = options.retainEnds ? array.slice(1, -1) : array;
+  var retArray = array.slice();
   var i = null;
-  while (retArray.length > maxLength) {
+  while (retArray.length > options.maxLength) {
     i = !options.fromLeftSide ? array.length - offset : offset - 1;
     if (array[i] != undefined) {
       retArray = without(retArray, array[i]);
